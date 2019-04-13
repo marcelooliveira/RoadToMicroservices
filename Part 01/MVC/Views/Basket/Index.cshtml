@@ -1,116 +1,23 @@
-﻿@{
+﻿@using MVC.Controllers
+@{
     ViewData["Title"] = "My Basket";
 
-    var items = new[]
+    List<BasketItem> items = new List<BasketItem>
     {
-        new { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90, Quantity = 2 },
-        new { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90, Quantity = 3 },
-        new { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90, Quantity = 4 }
+        new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
+        new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
+        new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
     };
 }
 
-<div class="row">
-    <div class="col-sm-12">
-        <div class="pull-right">
-            <a class="btn btn-success" href="/">
-                Add More Products
-            </a>
-            <a class="btn btn-success" href="/registration">
-                Fill in Registration
-            </a>
-        </div>
-    </div>
-</div>
+<partial name="_BasketControls" />
 
 <h3>My Basket</h3>
 
-<div class="card">
-    <div class="card-header">
-        <div class="row">
-            <div class="col-sm-6">
-                Item
-            </div>
-            <div class="col-sm-2 text-center">
-                Unit Price
-            </div>
-            <div class="col-sm-2 text-center">
-                Quantity
-            </div>
-            <div class="col-sm-2">
-                <span class="pull-right">
-                    Subtotal
-                </span>
-            </div>
-        </div>
-    </div>
-    <div class="card-body">
-        @foreach (var item in items)
-        {
-        <div class="row row-center product-line" item-id="@item.Id.ToString("000")">
-            <div class="col-sm-2">
-                <img class="img-product-basket w-75" src="/images/catalog/large_@(item.ProductId.ToString("000")).jpg" />
-            </div>
-            <input type="hidden" name="productId" value="012" />
-            <div class="col-sm-4">@item.Name</div>
-            <div class="col-sm-2 text-center">@item.UnitPrice.ToString("C")</div>
-            <div class="col-sm-2 text-center">
-                <div class="input-group">
-                    <button type="button" class="btn btn-light">
-                        <span class="fa fa-minus"></span>
-                    </button>
-                    <input type="text" value="@item.Quantity"
-                            class="form-control text-center quantity" />
-                    <button type="button" class="btn btn-light">
-                        <span class="fa fa-plus"></span>
-                    </button>
-                </div>
-            </div>
-            <div class="col-sm-2">
-                <div class="pull-right">
-                    <span class="pull-right" subtotal>
-                        @((item.Quantity * item.UnitPrice).ToString("C"))
-                    </span>
-                </div>
-            </div>
-        </div>
-        <br />
-        }
-    </div>
-    <div class="card-footer">
-        <div class="row">
-            <div class="col-sm-10">
-                <span numero-items>
-                    Total: @items.Length
-                    item@(items.Length > 1 ? "s" : "")
-                </span>
-            </div>
-            <div class="col-sm-2">
-                Total: <span class="pull-right" total>
-                    @(items.Sum(item => item.Quantity * item.UnitPrice).ToString("C"))
-                </span>
-            </div>
-        </div>
-    </div>
-</div>
+<partial name="_BasketList" for="@items" />
 
 <br />
 
-<div class="row">
-    <div class="col-sm-12">
-        <div class="pull-right">
-            <a class="btn btn-success" href="/">
-                Add More Products
-            </a>
-            <a class="btn btn-success" href="/registration">
-                Fill in Registration
-            </a>
-        </div>
-    </div>
-</div>
+<partial name="_BasketControls" />
 
-<div class="row">&nbsp;</div>
 
-<hr />
-<footer>
-    <p>&copy; 2018 - The Grocery Store</p>
-</footer>
