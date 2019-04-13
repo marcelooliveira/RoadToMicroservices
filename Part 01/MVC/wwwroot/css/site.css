@@ -102,3 +102,8 @@ body {
     content: "\f07a";
     font-family: "FontAwesome";
 }
+
+.btn-search::before {
+    content: "\f002";
+    font-family: "FontAwesome";
+}

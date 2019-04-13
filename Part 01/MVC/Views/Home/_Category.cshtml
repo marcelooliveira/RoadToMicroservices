@@ -6,50 +6,50 @@
     const int PageSize = 4;
 }
 
-@for (int category = 0; category < (products.Count() / productsPerCategory); category++)
-{
-    <h3>Category @(category + 1)</h3>
+<div class="container">
+    @for (int category = 0; category < (products.Count() / productsPerCategory); category++)
+    {
+        <h3>Category @(category + 1)</h3>
 
-    <div id="carouselExampleIndicators-@category" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">
-            @{
-                int pageCount = (int)Math.Ceiling((double)productsPerCategory / PageSize);
-                var productsInCategory =
-                    products
-                    .Skip(category * productsPerCategory)
-                    .Take(productsPerCategory);
+        <div id="carouselExampleIndicators-@category" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                @{
+                    int pageCount = (int)Math.Ceiling((double)productsPerCategory / PageSize);
+                    var productsInCategory =
+                        products
+                        .Skip(category * productsPerCategory)
+                        .Take(productsPerCategory);
 
-                for (int pageIndex = 0; pageIndex < pageCount; pageIndex++)
-                {
-                <div class="carousel-item @(pageIndex == 0 ? "active" : "")">
-                    <div class="container">
-                        <div class="row">
-                            @{
-                                var productsInPage =
-                                    productsInCategory
-                                    .Skip(pageIndex * PageSize)
-                                    .Take(PageSize);
+                    for (int pageIndex = 0; pageIndex < pageCount; pageIndex++)
+                    {
+                        <div class="carousel-item @(pageIndex == 0 ? "active" : "")">
+                            <div class="container">
+                                <div class="row">
+                                    @{
+                                        var productsInPage =
+                                            productsInCategory
+                                            .Skip(pageIndex * PageSize)
+                                            .Take(PageSize);
 
-                                foreach (var productIndex in productsInPage)
-                                {
-                                    <partial name="_ProductCard" for="@productIndex"/>
-                                }
-                            }
+                                        foreach (var productIndex in productsInPage)
+                                        {
+                                            <partial name="_ProductCard" for="@productIndex" />
+                                        }
+                                    }
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    }
                 }
-            }
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators-@category" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators-@category" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
         </div>
-        <a class="carousel-control-prev" href="#carouselExampleIndicators-@category" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleIndicators-@category" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-    </div>
-}
-
-
+    }
+</div>
