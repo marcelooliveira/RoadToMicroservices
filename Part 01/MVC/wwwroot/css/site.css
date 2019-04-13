@@ -107,3 +107,8 @@ body {
     content: "\f002";
     font-family: "FontAwesome";
 }
+
+.row-center {
+    display: flex;
+    align-items: center;
+}
