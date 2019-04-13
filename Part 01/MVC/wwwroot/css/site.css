@@ -5,6 +5,9 @@ a.navbar-brand {
     white-space: normal;
     text-align: center;
     word-break: break-all;
+    background: url('../images/logo.png');
+    width: 215px;
+    height: 55px;
 }
 
 /* Sticky footer styles
