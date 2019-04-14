@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MVC.Models;
-using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace MVC.Controllers
 {
     public class CatalogController : BaseController
     {
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var products = await SeedData.GetProducts();
+            return View(products);
         }
     }
 }

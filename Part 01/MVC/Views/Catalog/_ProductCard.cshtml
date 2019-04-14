@@ -1,17 +1,17 @@
-﻿@model int;
+﻿@model Product;
 
 @{ 
-    var productIndex = Model;
+    var product = Model;
 }
 
 <div class="col-sm-3">
     <div class="card">
         <div class="card-body">
-            <img class="d-block w-100" src="~/images/catalog/large_@((productIndex + 1).ToString("000")).jpg">
+            <img class="d-block w-100" src="@(product.ImageURL)">
         </div>
         <div class="card-footer">
-            <p class="card-text">Product Name</p>
-            <h5 class="card-title text-center">$ 39.90</h5>
+            <p class="card-text">@product.Name</p>
+            <h5 class="card-title text-center">@product.Price.ToString("C")</h5>
             <div class="text-center">
                 <a href="#" class="btn btn-success">
                     <span class="fa fa-shopping-cart"></span>
