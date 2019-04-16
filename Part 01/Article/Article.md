@@ -53,17 +53,9 @@ The View part is responsible for rendering/displaying user interface components.
 but in fact the web page is technically a complete set of HTML files (including header, body and footer), images, icons, CSS stylesheets,
 JavaScript code and so on. A single view might render all the webpage, but usually each view is only responsible for the inner page contents.
 
-The Controllers are the components responsible for dealing with the incoming requests made to a set of views, preparing the data and invoking the
-views accordingly. Controllers will also deal with data violations, redirecting the application to error pages when needed.
-
-MVC SIGNIFICA MODEL-VIEW-CONTROLLER, E É UM PADRÃO PARA CRIAR O FRONT-END DE UMA APLICAÇÃO WebHost
-
-MODEL SIGNIFICA
-
-VIEW SIGNIFICA
-
-CONTROLLER É UM TIPO DE COMPONENTE RESPONSÁVEL POR TRATAR AS REQUISIÕES E RESPOSTAS A UM DETERMINADO RECURSO DA APLICAÇÃO WEB.
-ESSE RECURSO PODE SER UMA PÁGINA HTML OU UMA ACTION QUE RETORNA UM ARQUIVO JSON, POR EXEMPLO
+The Controllers are the components responsible for dealing with the incoming requests made to a set of views, deciding which
+data needs to be provided for the views, and requesting and preparing such data and invoking the views accordingly.
+Controllers will also deal with data violations, redirecting the application to error pages when needed.
 
 *** COMO CRIAR UM NOVO PROJETO MVC?
 
