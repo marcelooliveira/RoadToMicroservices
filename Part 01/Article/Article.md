@@ -6,29 +6,51 @@
 
 *** SOBRE O QUE É ESTE ARTIGO?
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
+NESTE ARTIGO VOU MOSTRAR COMO CRIAR AS VIEWS E O FLUXO BÁSICO PARA UM E-COMMERCE
 
 *** O QUE VEM DEPOIS DESTE ARTIGO?
+
+ESTE ARTIGO É O PRIMEIRO DE UMA SÉRIE DE ARTIGOS QUE LEVARÃO ATÉ A CRIAÇÃO DE MICROSSERVIÇOS USANDO ASP.NET CORE E VISUAL STUDIO.
 
 ### Creating the Project
 
 *** O QUE É MVC?
 
+MVC SIGNIFICA MODEL-VIEW-CONTROLLER, E É UM PADRÃO PARA CRIAR O FRONT-END DE UMA APLICAÇÃO WebHost
+
+MODEL SIGNIFICA
+
+VIEW SIGNIFICA
+
+CONTROLLER É UM TIPO DE COMPONENTE RESPONSÁVEL POR TRATAR AS REQUISIÕES E RESPOSTAS A UM DETERMINADO RECURSO DA APLICAÇÃO WEB.
+ESSE RECURSO PODE SER UMA PÁGINA HTML OU UMA ACTION QUE RETORNA UM ARQUIVO JSON, POR EXEMPLO
+
 *** COMO CRIAR UM NOVO PROJETO MVC?
 
+PODEMOS CRIAR FACILMENTE UM PROJETO MVC COM VISUAL STUDIO, UTILIZANDO O WIZARD PARA CRIAR PROJETOS
+
 ![New Project](new_project.png)
+
+ESCOLHEMOS ENTÃO UM PROJETO MVC
 
 ![New Project Mvc](new_project_mvc.png)
 
 *** COMO É A CARA DE UM PROJETO MVC RODANDO?
 
+AO RODARMOS A APLICAÇÃO MVC COM O TEMPLATE PADRÃO, TEMOS UMA APLICAÇÃO WEB BÁSICA, COM A PÁGINA A SEGUIR
+
 ![Running](running.png)
 
 *** QUAL A ESTRUTURA DE UM PROJETO MVC?
 
+PODEMOS VER QUE O PROJEOT MVC TEM AS PASTAS APROPRIADAS PARA MODEL, VIEW E CONTROLLER
+
 ![Project Files](project_files.png)
 
 *** COMO É A CLASSE QUE INICIA UM PROGRAMA MVC?
+
+TODA APLICAÇÃO .NET EXECUTÁVEL INICIA PELO MÉTODO MAIN DA CLASSE PROGRAM. NA APLICAÇÃO WEB ASP .NET CORE,
+PODEMOS VER A CRIAÇÃO DE UM WEB HOST, QUE´E UM COMPONENTE QUE IRÁ MANTER A SUA APLICAÇÃO WEB RODANDO
 
 ```csharp
 public class Program
@@ -46,7 +68,16 @@ public class Program
 
 *** O QUE É A CLASSE STARTUP?
 
+NUMA APLICAÇÃO WEB, UM PIPELINE É
+
+NUMA APLICAÇÃO WEB, UM MIDDLEWARE É
+
+A CLASSE STARTUP É O PONTO CENTRAL DE UMA APLICAÇÃO ASPNET CORE, E SERVE TANTO PARA CONFIGURAR A APICAÃO QUANTO PARA
+DEFINIR O PIPELINE E SEUS RESPECTIVOS MIDDLEWARES
+
 *** QUAL A ANATOMIA DE UMA CLASSE STARTUP?
+
+NOTE OS DOIS MÉTODOS DA STARTUP, CONFIGURE E CONFIGURESERVICES
 
 ```csharp
 public class Startup
@@ -104,9 +135,13 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 ### Index page
 
+VAMOS TRABALHAR COM UM CONJUNTO LIMITADO DE 30 PRODUTOS DA LOJA
+
 *** USANDO IMAGENS NO CATÁLOGO
 
 ![Catalog Images](catalog_images.png)
+
+A VIEW DE CATÁLOGO INCLUI UM COMPONETNE PRINCIPAL QUE É O CARROSSEL
 
 *** A VIEW DO CATÁLOGO
 
@@ -189,9 +224,10 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 }
 ```
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
 
 ### Styling
+
+VAMOS ESTILIZAR O CARROSSEL UTILIZANDO UM FONTE ESPECIAL PARA TRABALHAR COM ÍCONES
 
 *** USANDO UMA FONTE PARA ÍCONES
 
@@ -199,12 +235,16 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 ![Add Font Awesome](add_font_awesome.png)
 
+PARA USAR ESSA FONTE É NECESSÁRIO REFERNECIAÁ-LA NO _LAYOUT.CSHTML
+
 *** REFERENCIANDO A FONTE AWESOME
 
 ```html
 <link href="~/lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
 <link rel="stylesheet" href="~/css/site.css" />
 ```
+
+AGORA QUE ADICIONAMOS A REFERENCIA, VAMOS USAR UM ÍCONE DA FONTE, PARA O CARRINHO DE COMPRAS NO BOTÃO DO PRODUTO
 
 *** ADICIONANDO O ÍCONE DE CARRINHO
 
@@ -217,11 +257,17 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 *** A NOVA VIEW DE CATÁLOGO
 
+RODANDO A APLICAÇÃO, A VIEW DE CATÁLOGO AGORA TEM ESTA APARENCIA
+
 ![Index Page](index_page.png)
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
 
 ### Branding
+
+O TEMPLATE FORNECIDO PELO ASPNET CORE FORNECE MEIOS PARA ADIOCIONAR SUA MARCA. VAMOS VER COMO FAZER ISSO
+
+VAMOS TROCAR O NOME DA LOJA NO RODAPÉ DA PÁGINA
 
 *** TROCANDO O NOME DA LOJA
 
@@ -230,6 +276,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
     &copy; 2019 - The Grocery Store - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
 </div>
 ```
+
+AGORA VAMOS DEFINIR O LOGOTIPO NA BARRA
 
 *** USANDO LOGO NO PLANO DE FUNDO DA BARRA DE NAVEGAÇÃO
 
