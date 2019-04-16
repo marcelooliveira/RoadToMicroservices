@@ -57,29 +57,35 @@ The Controllers are the components responsible for dealing with the incoming req
 data needs to be provided for the views, and requesting and preparing such data and invoking the views accordingly.
 Controllers will also deal with data violations, redirecting the application to error pages when needed.
 
-*** COMO CRIAR UM NOVO PROJETO MVC?
+So let's get started by creating a new ASP.NET Core MVC project using Visual Studio.
 
-PODEMOS CRIAR FACILMENTE UM PROJETO MVC COM VISUAL STUDIO, UTILIZANDO O WIZARD PARA CRIAR PROJETOS
+First, we click new project from Visual Studio menu, selecting the "Web Application" option.
 
 ![New Project](new_project.png)
 
-ESCOLHEMOS ENTÃO UM PROJETO MVC
+This will open up the wizard window, where we must choose the "Model-View-Controller" option. Be sure to unselect the
+"SSL" option, because for the sake of simplicity, we are not using secure HTTP (HTTPS), at least not now.
 
 ![New Project Mvc](new_project_mvc.png)
 
-*** COMO É A CARA DE UM PROJETO MVC RODANDO?
-
-AO RODARMOS A APLICAÇÃO MVC COM O TEMPLATE PADRÃO, TEMOS UMA APLICAÇÃO WEB BÁSICA, COM A PÁGINA A SEGUIR
+As soon as the project is loaded from the selected MVC template, we can run (by pressing F5) and now we can see the
+application's home page opening in our favorite web browser.
 
 ![Running](running.png)
 
-*** QUAL A ESTRUTURA DE UM PROJETO MVC?
+The above image shows a quite simple web application. The new project already gives us the files needed for a basic MVC architecture.
 
-PODEMOS VER QUE O PROJEOT MVC TEM AS PASTAS APROPRIADAS PARA MODEL, VIEW E CONTROLLER
+Now, which files are we talking about? Lets examine the solution tree in Visual Studio:
 
 ![Project Files](project_files.png)
 
-*** COMO É A CLASSE QUE INICIA UM PROGRAMA MVC?
+Notice in the above image how we have project folders for all of MVC parts: Model, View and Controller.
+
+But how does our ASP.NET Core MVC application starts? As with every .NET application, the executable has
+an "entry point", which must be a Main() method included in a Program class.
+
+In an ASP.NET Core application, the Main() method must set up and launch a "web host", that is, the host for our
+web application.
 
 TODA APLICAÇÃO .NET EXECUTÁVEL INICIA PELO MÉTODO MAIN DA CLASSE PROGRAM. NA APLICAÇÃO WEB ASP .NET CORE,
 PODEMOS VER A CRIAÇÃO DE UM WEB HOST, QUE´E UM COMPONENTE QUE IRÁ MANTER A SUA APLICAÇÃO WEB RODANDO
