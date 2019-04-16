@@ -299,10 +299,10 @@ Index.cshtml
     var products = Enumerable.Range(0, 30);
 }
 
-<partial name="_Category" for="@products" />
+<partial name="_Categories" for="@products" />
 ```
 
-_Category.cshtml
+_Categories.cshtml
 ```html
 ﻿@model IEnumerable<int>;
 
@@ -402,10 +402,10 @@ _Index.cshtml
 
 <partial name="_SearchProducts"/>
 
-<partial name="_Category" for="@products" />
+<partial name="_Categories" for="@products" />
 ```
 
-_Category.cshtml
+_Categories.cshtml
 
 ```cshtml
 @{
@@ -934,6 +934,8 @@ Index.cshtml
 </div>
 ```
 
+![Checkout](Article/checkout.png)
+
 aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
 
 ### Notifications View
@@ -1021,7 +1023,417 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 ### Json product load
 
+```csharp
+public class CatalogController : BaseController
+{
+    public async Task<IActionResult> Index()
+    {
+        var products = await SeedData.GetProducts();
+        return View(products);
+    }
+}
+```
 
+```csharp
+﻿using System.Runtime.Serialization;
+
+namespace MVC.Models
+{
+    public abstract class BaseModel
+    {
+        public int Id { get; set; }
+    }
+}
+```
+
+```csharp
+public class Category : BaseModel
+{
+    public Category(int id, string name)
+    {
+        Id = id;
+        Name = name;
+    }
+
+    public string Name { get; private set; }
+}
+```
+
+```csharp
+public class Product : BaseModel
+{
+    public Category Category { get; set; }
+    public string Code { get; set; }
+    public string Name { get; set; }
+    public decimal Price { get; set; }
+    public string ImageURL { get { return $"/images/catalog/large_{Code}.jpg"; } }
+
+    public Product(int id, string code, string name, decimal price, Category category)
+    {
+        Id = id;
+        Code = code;
+        Name = name;
+        Price = price;
+        Category = category;
+    }
+}
+```
+
+```csharp
+public class SeedData
+{
+    public static async Task<List<Product>> GetProducts()
+    {
+        var json = await File.ReadAllTextAsync("products.json");
+        var data = JsonConvert.DeserializeObject<List<ProductData>>(json);
+
+        var dict = new Dictionary<string, Category>();
+
+        var categories = 
+            data
+            .Select(i => i.category)
+            .Distinct();
+
+        foreach (var name in categories)
+        {
+            var category = new Category(dict.Count + 1, name);
+            dict.Add(name, category);
+        }
+
+        var products = new List<Product>();
+
+        foreach (var item in data)
+        {
+            Product product = new Product(
+                products.Count + 1,
+                item.number.ToString("000"),
+                item.name,
+                item.price,
+                dict[item.category]);
+            products.Add(product);
+        }
+
+        return products;
+    }
+}
+
+public class ProductData
+{
+    public int number { get; set; }
+    public string name { get; set; }
+    public string category { get; set; }
+    public decimal price { get; set; }
+}
+```
+
+Index.cshtml
+
+```html
+﻿@model List<Product>;
+@using MVC.Models;
+@{
+    ViewData["Title"] = "Catalog";
+}
+
+<partial name="_SearchProducts"/>
+
+<partial name="_Categories" for="@Model" />
+```
+
+_ProductCard.cshtml
+```html
+﻿@model Product;
+@using MVC.Models;
+
+@{ 
+    var product = Model;
+}
+
+<div class="col-sm-3">
+    <div class="card">
+        <div class="card-body">
+            <img class="d-block w-100" src="@(product.ImageURL)">
+        </div>
+        <div class="card-footer">
+            <p class="card-text">@product.Name</p>
+            <h5 class="card-title text-center">@product.Price.ToString("C")</h5>
+            <div class="text-center">
+                <a href="#" class="btn btn-success">
+                    <span class="fa fa-shopping-cart"></span>
+.
+.
+.
+```
+
+_Categories.cshtml
+
+```html
+﻿@model List<Product>;
+
+@{
+    var products = Model;
+    const int PageSize = 4;
+    var categories = products.Select(p => p.Category).Distinct();
+}
+.
+.
+.
+@foreach (var category in categories)
+{
+    <h3>@category.Name</h3>
+
+    <div id="carouselExampleIndicators-@category.Id" class="carousel slide" data-ride="carousel">
+.
+.
+.
+        var productsInCategory = products
+            .Where(p => p.Category.Id == category.Id);
+        int pageCount = (int)Math.Ceiling((double)productsInCategory.Count() / PageSize);
+.
+.
+.
+<a class="carousel-control-prev" href="#carouselExampleIndicators-@category.Id" role="button" data-slide="prev">
+.
+.
+.
+<a class="carousel-control-next" href="#carouselExampleIndicators-@category.Id" role="button" data-slide="next">
+```
+
+
+```csharp
+public class SeedData
+{
+    public static async Task<List<Product>> GetProducts()
+    {
+        var json = await File.ReadAllTextAsync("products.json");
+        var data = JsonConvert.DeserializeObject<List<ProductData>>(json);
+
+        var dict = new Dictionary<string, Category>();
+
+        var categories = 
+            data
+            .Select(i => i.category)
+            .Distinct();
+
+        foreach (var name in categories)
+        {
+            var category = new Category(dict.Count + 1, name);
+            dict.Add(name, category);
+        }
+
+        var products = new List<Product>();
+
+        foreach (var item in data)
+        {
+            Product product = new Product(
+                products.Count + 1,
+                item.number.ToString("000"),
+                item.name,
+                item.price,
+                dict[item.category]);
+            products.Add(product);
+        }
+
+        return products;
+    }
+}
+
+public class ProductData
+{
+    public int number { get; set; }
+    public string name { get; set; }
+    public string category { get; set; }
+    public decimal price { get; set; }
+}
+```
+
+products.json
+
+```json
+[
+  {
+    "number": 1,
+    "name": "Oranges",
+    "category": "Fruits",
+    "price": 5.90
+  },
+  {
+    "number": 2,
+    "name": "Lemons",
+    "category": "Fruits",
+    "price": 5.90
+  },
+  {
+    "number": 3,
+    "name": "Bananas",
+    "category": "Fruits",
+    "price": 6.90
+  },
+  {
+    "number": 4,
+    "name": "Strawberries",
+    "category": "Fruits",
+    "price": 7.90
+  },
+  {
+    "number": 5,
+    "name": "Grapes",
+    "category": "Fruits",
+    "price": 5.90
+  },
+  {
+    "number": 6,
+    "name": "Carrots",
+    "category": "Legumes",
+    "price": 5.90
+  },
+  {
+    "number": 7,
+    "name": "Yellow peppers",
+    "category": "Legumes",
+    "price": 8.90
+  },
+  {
+    "number": 8,
+    "name": "Potatoes",
+    "category": "Legumes",
+    "price": 5.90
+  },
+  {
+    "number": 9,
+    "name": "Tomatoes",
+    "category": "Legumes",
+    "price": 4.90
+  },
+  {
+    "number": 10,
+    "name": "Eggplants",
+    "category": "Legumes",
+    "price": 5.90
+  },
+  {
+    "number": 11,
+    "name": "Lettuce",
+    "category": "Vegetables",
+    "price": 7.90
+  },
+  {
+    "number": 12,
+    "name": "Broccoli",
+    "category": "Vegetables",
+    "price": 5.90
+  },
+  {
+    "number": 13,
+    "name": "Cauliflower",
+    "category": "Vegetables",
+    "price": 4.90
+  },
+  {
+    "number": 14,
+    "name": "Onion",
+    "category": "Vegetables",
+    "price": 5.90
+  },
+  {
+    "number": 15,
+    "name": "Aspargus",
+    "category": "Vegetables",
+    "price": 8.90
+  },
+  {
+    "number": 16,
+    "name": "Rice",
+    "category": "Grains / Beans",
+    "price": 6.90
+  },
+  {
+    "number": 17,
+    "name": "Beans",
+    "category": "Grains / Beans",
+    "price": 6.90
+  },
+  {
+    "number": 18,
+    "name": "Oat",
+    "category": "Grains / Beans",
+    "price": 3.90
+  },
+  {
+    "number": 19,
+    "name": "Corn",
+    "category": "Grains / Beans",
+    "price": 3.90
+  },
+  {
+    "number": 20,
+    "name": "Peas",
+    "category": "Grains / Beans",
+    "price": 5.90
+  },
+  {
+    "number": 21,
+    "name": "Milk",
+    "category": "Dairy products",
+    "price": 4.90
+  },
+  {
+    "number": 22,
+    "name": "Cheese",
+    "category": "Dairy products",
+    "price": 8.90
+  },
+  {
+    "number": 23,
+    "name": "Yogurt",
+    "category": "Dairy products",
+    "price": 6.90
+  },
+  {
+    "number": 24,
+    "name": "Butter",
+    "category": "Dairy products",
+    "price": 5.90
+  },
+  {
+    "number": 25,
+    "name": "Cream cheese",
+    "category": "Dairy products",
+    "price": 6.90
+  },
+  {
+    "number": 26,
+    "name": "Sliced ham",
+    "category": "Meat & eggs",
+    "price": 7.90
+  },
+  {
+    "number": 27,
+    "name": "Beef",
+    "category": "Meat & eggs",
+    "price": 6.90
+  },
+  {
+    "number": 28,
+    "name": "Shrimp",
+    "category": "Meat & eggs",
+    "price": 8.90
+  },
+  {
+    "number": 29,
+    "name": "Barbecue",
+    "category": "Meat & eggs",
+    "price": 6.90
+  },
+  {
+    "number": 30,
+    "name": "Eggs",
+    "category": "Meat & eggs",
+    "price": 4.90
+  }
+]
+
+```
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
 
