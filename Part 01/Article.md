@@ -224,7 +224,7 @@ Index.cshtml
 
 ```html
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Catalog";
 }
 
 @for (int category = 0; category < 6; category++)
@@ -359,7 +359,7 @@ _Category.cshtml
 }
 ```
 
-_ProductCart.cshtml
+_ProductCard.cshtml
 
 ![Product Cart](Article/product_cart.png)
 
@@ -655,36 +655,373 @@ site.css
 }
 ```
 
+![Basket](Article/basket.png)
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
 
 ### Basket partial views
 
-![Pic](Article/pic.png)
+BasketController.cs
+
+```csharp
+public class BasketItem
+{
+    public int Id { get; set; }
+    public int ProductId { get; set; }
+    public string Name { get; set; }
+    public decimal UnitPrice { get; set; }
+    public int Quantity { get; set; }
+}
+```
+
+_BasketControls.cshtml
+
+```html
+﻿<div class="row">
+    <div class="col-sm-12">
+        <div class="pull-right">
+            <a class="btn btn-success" href="/">
+                Add More Products
+            </a>
+            <a class="btn btn-success" href="/">
+                Fill in Registration
+            </a>
+        </div>
+    </div>
+</div>
+```
+
+Index.cshtml
+
+```html
+﻿@using MVC.Controllers
+@{
+    ViewData["Title"] = "My Basket";
+    List<BasketItem> items = new List<BasketItem>
+    {
+        new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
+        new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
+        new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
+    };
+}
+
+<partial name="_BasketControls" />
+
+<h3>My Basket</h3>
+
+<partial name="_BasketList" for="@items" />
+<br />
+<partial name="_BasketControls" />
+```
+
+_BasketItem.cshtml
+
+```html
+﻿@using MVC.Controllers
+@model List<BasketItem>;
+
+@{
+    var items = Model;
+}
+
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-sm-6">
+                Item
+            </div>
+            <div class="col-sm-2 text-center">
+                Unit Price
+            </div>
+            <div class="col-sm-2 text-center">
+                Quantity
+            </div>
+            <div class="col-sm-2">
+                <span class="pull-right">
+                    Subtotal
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        @foreach (var item in items)
+        {
+            <partial name="_BasketItem" for="@item" />
+        }
+    </div>
+    <div class="card-footer">
+        <div class="row">
+            <div class="col-sm-10">
+                <span numero-items>
+                    Total: @items.Count
+                    item@(items.Count > 1 ? "s" : "")
+                </span>
+            </div>
+            <div class="col-sm-2">
+                Total: <span class="pull-right" total>
+                    @(items.Sum(item => item.Quantity* item.UnitPrice).ToString("C"))
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+```
+
+_BasketItem.cshtml
+
+```html
+﻿@using MVC.Controllers
+
+@model BasketItem
+
+@{
+    var item = Model;
+}
+
+<div class="row row-center product-line" item-id="@item.Id.ToString("000")">
+    <div class="col-sm-2">
+        <img class="img-product-basket w-75" src="/images/catalog/large_@(item.ProductId.ToString("000")).jpg" />
+    </div>
+    <input type="hidden" name="productId" value="012" />
+    <div class="col-sm-4">@item.Name</div>
+    <div class="col-sm-2 text-center">@item.UnitPrice.ToString("C")</div>
+    <div class="col-sm-2 text-center">
+        <div class="input-group">
+            <button type="button" class="btn btn-light">
+                <span class="fa fa-minus"></span>
+            </button>
+            <input type="text" value="@item.Quantity"
+                   class="form-control text-center quantity" />
+            <button type="button" class="btn btn-light">
+                <span class="fa fa-plus"></span>
+            </button>
+        </div>
+    </div>
+    <div class="col-sm-2">
+        <div class="pull-right">
+            <span class="pull-right" subtotal>
+                @((item.Quantity * item.UnitPrice).ToString("C"))
+            </span>
+        </div>
+    </div>
+</div>
+<br />
+```
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
 
 ### Registration View
 
-![Pic](Article/pic.png)
+![Registration](Article/Registration.png)
+
+RegistrationController.cs
+
+```csharp
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace MVC.Controllers
+{
+    public class RegistrationController : BaseController
+    {
+        public IActionResult Index()
+        {
+            return View();
+        }
+    }
+}
+```
+
+Index.cshtml
+
+```html
+﻿<h3>Registration</h3>
+
+<form method="post" action="/">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Customer Name</label>
+                        <input type="text" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Email</label>
+                        <input type="email" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Phone</label>
+                        <input type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Address</label>
+                        <input type="text" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Additional Address</label>
+                        <input type="text" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">District</label>
+                        <input type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">City</label>
+                        <input type="text" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">State</label>
+                        <input type="text" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Zip Code</label>
+                        <input type="text" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <a class="btn btn-success" href="/">
+                            Keep buying
+                        </a>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit"
+                                class="btn btn-success button-notification">
+                            Check out
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+```
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
 
 ### Checkout View
 
-![Pic](Article/pic.png)
+CheckoutControllercs
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
+```csharp
+public class CheckoutController : BaseController
+{
+    public IActionResult Index()
+    {
+        return View();
+    }
+}
+```
+
+Index.cshtml
+
+```html
+﻿@model string
+
+@{ 
+    ViewData["Title"] = "Checkout";
+    var email = "alice@smith.com";
+}
+<h3>Order Has Been Placed!</h3>
+
+<div class="panel-info">
+    <p>Your order has been placed.</p>
+    <p>Soon you will receive an e-mail at <b>@email</b> including all order details.</p>
+    <p><a href="/" class="btn btn-success">Back to product catalog</a></p>
+</div>
+```
+
+aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
 
 ### Notifications View
 
-![Pic](Article/pic.png)
+NotificationsController.cs
+
+```csharp
+public class NotificationsController : BaseController
+{
+    public IActionResult Index()
+    {
+        return View();
+    }
+}
+```
+
+Index.cshtml
+
+```html
+@{
+    ViewData["Title"] = "Notifications";
+}
+<h3>User Notifications</h3>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="pull-right">
+            <a class="btn btn-success" href="/">
+                Back to Catalog
+            </a>
+        </div>
+    </div>
+</div>
+<br />
+
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-sm-2 text-center">
+                <!--NEW?-->
+            </div>
+            <div class="col-sm-8">
+                Message
+            </div>
+            <div class="col-sm-2 text-center">
+                Date / Time
+            </div>
+        </div>
+    </div>
+    <div class="card-body notifications">
+        <div class="row">
+            <div class="col-sm-2 text-center">
+                <span class="fa fa-envelope-open"></span>
+            </div>
+            <div class="col-sm-8">
+                New order placed successfully: 2
+            </div>
+            <div class="col-sm-2 text-center">
+                <span>
+                    13/04/2019
+                </span>
+                &nbsp;
+                <span>
+                    18:04
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-sm-12">
+        <div class="pull-right">
+            <a class="btn btn-success" href="/">
+                Back to Catalog
+            </a>
+        </div>
+    </div>
+</div>
+```
+
+![Notifications](Article/Notifications.png)
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
 
 ### Json product load
 
-![Pic](Article/pic.png)
+
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
 
