@@ -1439,7 +1439,37 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 ### Links
 
-![Pic](Article/pic.png)
+_BasketControls.cshtml
+
+```html
+.
+.
+.
+    <div class="pull-right">
+        <a asp-controller="catalog" class="btn btn-success">
+            Add More Products
+        </a>
+        <a asp-controller="registration" class="btn btn-success">
+            Fill in Registration
+        </a>
+    </div>
+```
+
+_ProductCart.cshtml
+
+```html
+<a href="#" class="btn btn-success">
+```
+
+```html
+<a asp-controller="basket" class="btn btn-success">
+```
+
+Registration\Index.cshtml
+
+```html
+<form method="post" action="checkout">
+```
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
 
