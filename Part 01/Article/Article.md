@@ -2,19 +2,59 @@
 
 ### Introduction
 
-![Pic](pic.png)
+In this article I will show how to create a basic e-commerce application flow using ASP.NET Core, with the help of Visual Studio.
 
-*** SOBRE O QUE É ESTE ARTIGO?
+This article is the first of a series of articles demonstrating various practices, patterns, technologies and frameworks 
+that can be implemented in an ASP.NET Core e-commerce application, while we gradually approach the final goal of building a microservices
+solution.
 
-NESTE ARTIGO VOU MOSTRAR COMO CRIAR AS VIEWS E O FLUXO BÁSICO PARA UM E-COMMERCE
+That said, if you feel a little disappointed for not finding any real microservices in this article, that's because there are
+so many subjects I want to cover, that it would not be possible to talk about all of them (or discuss them more than scratching the surface) 
+in just one article. Also, I would not present microservices right away, because I want to work in an "evolutionary" 
+stepwise approach, refactoring and advancing the codebase as we go down the road. So please be patient, and enjoy the ride.
+ 
+Since this is only the first article of a whole series, I would like to enumerate the envisioned for the next parts:
 
-*** O QUE VEM DEPOIS DESTE ARTIGO?
+* Part 1  : Building the Views
+* Part 2  : View Components
+* Part 3  : Unit Testing with XUnit
+* Part 4  : SQLite
+* Part 5  : Dapper
+* Part 6  : SignalR
+* Part 7  : Unit Testing Web API
+* Part 8  : Unit Testing Web MVC App
+* Part 9  : Monitoring Health Checks       
+* Part 10 : Redis Databases
+* Part 11 : IdentityServer4
+* Part 12 : Ordering Web API
+* Part 13 : Basket Web API
+* Part 14 : Catalog Web API
+* Part 15 : Resilient HTTP Clients with Polly
+* Part 16 : Documenting Web APIs with Swagger
+* Part 17 : Docker containers
+* Part 18 : Docker configurations
+* Part 19 : Central Logging with Kibana
 
-ESTE ARTIGO É O PRIMEIRO DE UMA SÉRIE DE ARTIGOS QUE LEVARÃO ATÉ A CRIAÇÃO DE MICROSSERVIÇOS USANDO ASP.NET CORE E VISUAL STUDIO.
+As we can see, there are many subjects to cover. Although the parts are numbered, that's just for counting purposes. In fact,
+the actual order can change as we advance.
 
 ### Creating the Project
 
-*** O QUE É MVC?
+The project will be created using Visual Studio Community (this can be done via Visual Studio Code or even command-line tools),
+selecting the MVC project template.
+
+The MVC stands for Model-View-Controller, which is today a ubiquitous software architectural pattern for building user interfaces
+while applying separation of concerns principles.
+
+The Model part refers to the data carrying objects, responsible for holding the information displayed in the apparent user interface,
+as well as to validate, gather and transport user typed information to the application back end. 
+
+The View part is responsible for rendering/displaying user interface components. Usually these are referred to in lay terms as "web pages",
+but in fact the web page is technically a complete set of HTML files (including header, body and footer), images, icons, CSS stylesheets,
+JavaScript code and so on. A single view might render all the webpage, but usually each view is only responsible for the inner page contents.
+
+The Controllers are the components responsible for dealing with the incoming requests made to a set of views, preparing the data and invoking the
+views accordingly. Controllers will also deal with data violations, redirecting the application to error pages when needed.
 
 MVC SIGNIFICA MODEL-VIEW-CONTROLLER, E É UM PADRÃO PARA CRIAR O FRONT-END DE UMA APLICAÇÃO WebHost
 
@@ -1463,6 +1503,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 *** AJUSTANDO OS LINKS PARA CRIAR O FLUXO DE NAVEGAÇÃO DA APLICAÇÃO
 
+VAMOS USAR TAG HELPERS PARA OS LINKS DE COMPRAR MAIS PRODUTOS E PREENCHER O REGISTRATION
+
 _BasketControls.cshtml
 
 ```html
@@ -1481,6 +1523,8 @@ _BasketControls.cshtml
 
 *** MODIFICANDO O CARD DE PRODUTO
 
+VAMOS USAR UM TAG HELPER PARA O LINK DE ADICONAR AO CARRINHO NO CARD DE PRODUTO
+
 _ProductCard.cshtml
 
 ```html
@@ -1492,6 +1536,8 @@ _ProductCard.cshtml
 ```
 
 *** MODIFICANDO A VIEW DE REGISTRATION
+
+VAMOS ADICIONAR A ACTION PARA O FORM DE REGISTRATION
 
 Registration\Index.cshtml
 
