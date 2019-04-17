@@ -111,21 +111,16 @@ The Startup has a simple structure. It contains only two methods:
 * Configure()
 
 In this context, a "service" is any component that can be added to provide our application with a specific functionality, 
-e.g: logging, database, authentication, cookies, session, etc.
+e.g: MVC, logging, database, authentication, cookies, session, etc.
+
+Such components are also called "middlewares" that can be part of a "pipeline". Each middleware decides if the request is to be passed to the next 
+component in the pipeline, and may include algorithm to be executed before or after the following component in the pipeline.
 
 Typically, a service called "MyService" would be referenced twice in our Startup class:
 
 * First, in a AddMyService() method in the ConfigureServices() method. Here,
 the AddMyService() method would be provided with appropriate configuration so that the service can function properly;
 * Then, in a UseMyService() in the Configure() method.
-
-
-NUMA APLICAÇÃO WEB, UM PIPELINE É
-
-NUMA APLICAÇÃO WEB, UM MIDDLEWARE É
-
-A CLASSE STARTUP É O PONTO CENTRAL DE UMA APLICAÇÃO ASPNET CORE, E SERVE TANTO PARA CONFIGURAR A APICAÃO QUANTO PARA
-DEFINIR O PIPELINE E SEUS RESPECTIVOS MIDDLEWARES
 
 *** QUAL A ANATOMIA DE UMA CLASSE STARTUP?
 
