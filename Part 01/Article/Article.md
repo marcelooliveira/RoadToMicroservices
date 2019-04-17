@@ -85,10 +85,7 @@ But how does our ASP.NET Core MVC application starts? As with every .NET applica
 an "entry point", which must be a Main() method included in a Program class.
 
 In an ASP.NET Core application, the Main() method must set up and launch a "web host", that is, the host for our
-web application.
-
-TODA APLICAÇÃO .NET EXECUTÁVEL INICIA PELO MÉTODO MAIN DA CLASSE PROGRAM. NA APLICAÇÃO WEB ASP .NET CORE,
-PODEMOS VER A CRIAÇÃO DE UM WEB HOST, QUE´E UM COMPONENTE QUE IRÁ MANTER A SUA APLICAÇÃO WEB RODANDO
+web application. 
 
 ```csharp
 public class Program
@@ -104,7 +101,24 @@ public class Program
 }
 ```
 
-*** O QUE É A CLASSE STARTUP?
+As we can see here, the method `WebHost.CreateDefaultBuilder()` is invoked so that the webhost can be created, but since
+it needs to be configured, we also have to call the `UseStartup()` to pass the Startup class name, which is responsible
+for the webhost configuration. Let's see how this class works and how it's going to be used in our application.
+
+The Startup has a simple structure. It contains only two methods:
+
+* ConfigureServices()
+* Configure()
+
+In this context, a "service" is any component that can be added to provide our application with a specific functionality, 
+e.g: logging, database, authentication, cookies, session, etc.
+
+Typically, a service called "MyService" would be referenced twice in our Startup class:
+
+* First, in a AddMyService() method in the ConfigureServices() method. Here,
+the AddMyService() method would be provided with appropriate configuration so that the service can function properly;
+* Then, in a UseMyService() in the Configure() method.
+
 
 NUMA APLICAÇÃO WEB, UM PIPELINE É
 
