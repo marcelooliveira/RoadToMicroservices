@@ -122,20 +122,13 @@ Typically, a service called "MyService" would be referenced twice in our Startup
 the AddMyService() method would be provided with appropriate configuration so that the service can function properly;
 * Then, in a UseMyService() in the Configure() method.
 
-*** QUAL A ANATOMIA DE UMA CLASSE STARTUP?
-
-NOTE OS DOIS MÉTODOS DA STARTUP, CONFIGURE E CONFIGURESERVICES
+Let's take a look at the methods inside the Startup class. The first method is ConfigureServices,
+which at first just configures the cookie policy options and adds the MVC services to the application:
 
 ```csharp
 public class Startup
 {
-	public Startup(IConfiguration configuration)
-	{
-		Configuration = configuration;
-	}
-
-	public IConfiguration Configuration { get; }
-
+	...
 	// This method gets called by the runtime. Use this method to add services to the container.
 	public void ConfigureServices(IServiceCollection services)
 	{
@@ -145,11 +138,17 @@ public class Startup
 			options.CheckConsentNeeded = context => true;
 			options.MinimumSameSitePolicy = SameSiteMode.None;
 		});
-
-
 		services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 	}
+	...
+```
 
+Then the Configure method defines which middlewares referenced by a set of "Use-Service" methods:
+
+```csharp
+public class Startup
+{
+	...
 	// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 	public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 	{
@@ -178,7 +177,18 @@ public class Startup
 }
 ```
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
+Here we have a short description for each service to be added to the request pipeline:
+
+* app.UseDeveloperExceptionPage: A reference to the app after the operation has completed.
+* app.UseExceptionHandler: Adds a middleware to the pipeline that will catch exceptions, log them, reset
+the request path, and re-execute the request.
+* app.UseHsts: Enables static file serving for the current request path
+* app.UseHttpsRedirection: Adds the CookiePolicyMiddleware handler to the specified IApplicationBuilder, which enables
+cookie policy capabilities.
+* app.UseStaticFiles: Enables static file serving for the current request path
+* app.UseCookiePolicy: Adds the CookiePolicyMiddleware handler to the specified IApplicationBuilder, which enables
+cookie policy capabilities.
+* app.UseMvc: Adds MVC to the IApplicationBuilder request execution pipeline.
 
 ### Index page
 
