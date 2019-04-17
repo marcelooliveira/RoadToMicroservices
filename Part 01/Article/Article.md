@@ -192,15 +192,14 @@ cookie policy capabilities.
 
 ### Index page
 
-VAMOS TRABALHAR COM UM CONJUNTO LIMITADO DE 30 PRODUTOS DA LOJA
-
-*** USANDO IMAGENS NO CATÁLOGO
+We are going to work with a limited set of only 30 products in our store. For each one, we have an image, to be added to the
+/images/catalog folder inside the wwwroot project folder.
 
 ![Catalog Images](catalog_images.png)
 
-A VIEW DE CATÁLOGO INCLUI UM COMPONETNE PRINCIPAL QUE É O CARROSSEL
-
-*** A VIEW DO CATÁLOGO
+Those products will be presented in a "catalog" view, inside the home page. This catalog is shown as a set of products
+grouped by each product category. Each category has a Bootstrap component called "carousel", which automatically rotates the
+category products in groups of 4 products.
 
 ```xml
 ﻿@{
@@ -280,7 +279,6 @@ A VIEW DE CATÁLOGO INCLUI UM COMPONETNE PRINCIPAL QUE É O CARROSSEL
     </div>
 }
 ```
-
 
 ### Styling
 
