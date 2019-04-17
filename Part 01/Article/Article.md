@@ -358,9 +358,15 @@ Instead of a single view file, now our catalog view will be comprised by various
 	* _Categories.cshtml
 	* _ProductCard.cshtml
 
-By working with isolated pieces as partial views, each file now has more maintainability than all-in-one view file.
+By working with isolated pieces as partial views, each file now has more maintainability than the all-in-one view file.
 
-Index.cshtml
+To apply partial views to our application, first we extract most of the markup content to a new _Categories.cshtml file.
+Notice that _Categories.cshtml starts with an underscore, which is the default naming convention for partial views.
+
+The original Index.cshtml file must include a <partial> element for the _Categories.cshtml markup. The <partial> tag
+is actually a tag helper (Microsoft.AspNetCore.Mvc.PartialTagHelper class) which runs on the server and renders the categories in that place.
+
+file Catalog/Index.cshtml
 
 ```html
 @{
@@ -371,9 +377,12 @@ Index.cshtml
 <partial name="_Categories" for="@products" />
 ```
 
+
+
 *** A PARTIAL VIEW DE CATEGORIAS
 
-_Categories.cshtml
+file Catalog/_Categories.cshtml
+
 ```html
 ﻿@model IEnumerable<int>;
 
@@ -432,7 +441,7 @@ _Categories.cshtml
 
 *** A PARTIAL VIEW DE CARD DE PRODUTO
 
-_ProductCard.cshtml
+file Catalog/_ProductCard.cshtml
 
 ![Product Cart](product_cart.png)
 
