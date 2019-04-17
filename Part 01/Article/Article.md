@@ -282,22 +282,23 @@ category products in groups of 4 products.
 
 ### Styling
 
-VAMOS ESTILIZAR O CARROSSEL UTILIZANDO UM FONTE ESPECIAL PARA TRABALHAR COM ÍCONES
+It's a small step, but since Bootstrap 4 doesn't come with icon fonts (gliphicon) anymore, it's up to us to
+install it ourselves.
 
-*** USANDO UMA FONTE PARA ÍCONES
+Visual Studio allows us to install client libraries, such as Font Awesome, a popular font package for
+icons. 
 
 ![Add Client Library](add_client_library.png)
 
 ![Add Font Awesome](add_font_awesome.png)
 
-PARA USAR ESSA FONTE É NECESSÁRIO REFERNECIAÁ-LA NO _LAYOUT.CSHTML
-
-*** REFERENCIANDO A FONTE AWESOME
+Now that the font files have been installed, we must reference them in the _Layout.cshtml file:
 
 ```html
 <link href="~/lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
 <link rel="stylesheet" href="~/css/site.css" />
 ```
+
 
 AGORA QUE ADICIONAMOS A REFERENCIA, VAMOS USAR UM ÍCONE DA FONTE, PARA O CARRINHO DE COMPRAS NO BOTÃO DO PRODUTO
 
