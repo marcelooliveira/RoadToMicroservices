@@ -299,10 +299,8 @@ Now that the font files have been installed, we must reference them in the _Layo
 <link rel="stylesheet" href="~/css/site.css" />
 ```
 
-
-AGORA QUE ADICIONAMOS A REFERENCIA, VAMOS USAR UM ÍCONE DA FONTE, PARA O CARRINHO DE COMPRAS NO BOTÃO DO PRODUTO
-
-*** ADICIONANDO O ÍCONE DE CARRINHO
+Let's see how to add our first icon. In the Home/Index.cshtml view, we add a <span> HTML element with the
+"fa fa-shopping-cart" class.
 
 ```html
 <a href="#" class="btn btn-success">
@@ -311,21 +309,15 @@ AGORA QUE ADICIONAMOS A REFERENCIA, VAMOS USAR UM ÍCONE DA FONTE, PARA O CARRIN
 </a>
 ```
 
-*** A NOVA VIEW DE CATÁLOGO
+This will automatically display the shopping cart icon at the left side of the "Add to basket" button.
 
-RODANDO A APLICAÇÃO, A VIEW DE CATÁLOGO AGORA TEM ESTA APARENCIA
+Running again the application, we see how the shopping cart icon is rendered:
 
 ![Index Page](index_page.png)
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
-
 ### Branding
 
-O TEMPLATE FORNECIDO PELO ASPNET CORE FORNECE MEIOS PARA ADIOCIONAR SUA MARCA. VAMOS VER COMO FAZER ISSO
-
-VAMOS TROCAR O NOME DA LOJA NO RODAPÉ DA PÁGINA
-
-*** TROCANDO O NOME DA LOJA
+By opening the _Layout.cshtml file, we can change the brand with our company's name.
 
 ```html
 <div class="container">
@@ -333,34 +325,40 @@ VAMOS TROCAR O NOME DA LOJA NO RODAPÉ DA PÁGINA
 </div>
 ```
 
-AGORA VAMOS DEFINIR O LOGOTIPO NA BARRA
+Now, since the default ASP.NET Core MVC template doesn't include branding, so let's include it by ourselves.
 
-*** USANDO LOGO NO PLANO DE FUNDO DA BARRA DE NAVEGAÇÃO
+We must also include the company's logo in the top bar, first by defining a background CSS rule for the navigation bar:
 
-```css
-a.navbar-brand {
-    white-space: normal;
-    text-align: center;
-    word-break: break-all;
-    background: url('../images/logo.png');
-    width: 215px;
-    height: 55px;
-}
-```
-
-*** O LOGOTIPO
+The logo.png file
 
 ![Pic](pic.png)
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
+```css
+a.navbar-brand {
+    ...
+	background: url('../images/logo.png');
+    ...
+}
+```
 
 ### Partial views
 
-*** O QUE SÃO PARTIAL Views
+If you take a look at our catalog index razor file, you'll see that it became large and complex, and this may compromise the
+readability and understanding of its contents.
 
-*** POR QUE USAR PARTIAL VIEWS
+With ASP.NET Core, we can use partial views to easily break up large markup files, such as our catalog view, into smaller components.
 
-*** A VIEW INDEX.CSHTML REFATORADA
+A partial view is a Razor file (.cshtml) that renders HTML elements inside another markup file's rendered output.
+
+Instead of a single view file, now our catalog view will be comprised by various logical pieces:
+
+* Views/Catalog
+	* Index.cshtml
+	* _SearchProducts.cshtml
+	* _Categories.cshtml
+	* _ProductCard.cshtml
+
+By working with isolated pieces as partial views, each file now has more maintainability than all-in-one view file.
 
 Index.cshtml
 
