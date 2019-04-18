@@ -1040,11 +1040,10 @@ Index.cshtml
 
 ![Checkout](checkout.png)
 
-
+Our application flow requires the order to be processed not immediately on the checkout of the shopping cart, 
+but asynchronously, at some point in the future.
 
 ### Notifications View
-
-*** CONTROLLER DE NOTIFICATION
 
 NotificationsController.cs
 
@@ -1058,7 +1057,9 @@ public class NotificationsController : BaseController
 }
 ```
 
-*** VIEW DE NOTIFICATION
+As the customer keeps buying, it may take some time for the asynchronous ordering process to persist the actual 
+database order data details. Because of this, we have a notifications view where the customer can check his/her
+previous purchases, and fom this point get more information regarding the actual orders, such as invoicing, shipping, and so on. 
 
 Index.cshtml
 
