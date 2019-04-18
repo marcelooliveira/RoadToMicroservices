@@ -845,8 +845,6 @@ _BasketList.cshtml
 </div>
 ```
 
-
-
 _BasketItem.cshtml
 
 ```html
@@ -892,6 +890,10 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 ### Registration View
 
+After the user decides which products and quantities are to be included in the shopping cart, the user has the option to
+proceed to finish the order. But first, some personal information is needed, and this is usually required for typical
+e-commerce procedures, such as billing, invoicing and shipping, and so on.
+
 ![Registration](Registration.png)
 
 RegistrationController.cs
@@ -913,7 +915,8 @@ namespace MVC.Controllers
 }
 ```
 
-*** A VIEW REGISTRATION
+
+Registration 
 
 Index.cshtml
 
