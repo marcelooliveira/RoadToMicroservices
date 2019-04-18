@@ -1128,24 +1128,42 @@ Index.cshtml
 
 ![Notifications](Notifications.png)
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
-
 ### Json product load
 
-*** CONTROLLER DE CATALOG
+So far, we had a catalog that does not display actual products, but mockup data instead. Let's start a new refactoring cycle
+so that we can inject more real data into our catalog view.
 
-```csharp
-public class CatalogController : BaseController
-{
-    public async Task<IActionResult> Index()
-    {
-        var products = await SeedData.GetProducts();
-        return View(products);
-    }
-}
+This kind of data typically comes from a database or web service. But in our case, let's just retrieve them by reading about
+static JSON file. The products.json file is placed in the root of our project folder, and its contents look like this: 
+
+products.json
+
+```json
+[
+  {
+    "number": 1,
+    "name": "Oranges",
+    "category": "Fruits",
+    "price": 5.90
+  },
+  {
+    "number": 2,
+    "name": "Lemons",
+    "category": "Fruits",
+    "price": 5.90
+  },
+  .
+  .
+  .
+]
 ```
 
-*** BASE MODEL
+In a real world scenario, our catalog database would be initially populated with this JSON file data. This process is called
+"seeding". We would "seed" the database with the JSON file. But since we don't have a database yet, we will use the seed data
+as a direct source for our catalog view.
+
+We still haven't done much with the "M" part in "MVC". For the model, we are creating two classes: Product and Category.
+Since both classes will have the Id property, we can move it to a superclass to be inherited by the model classes.
 
 ```csharp
 ﻿using System.Runtime.Serialization;
@@ -1174,7 +1192,8 @@ public class Category : BaseModel
 }
 ```
 
-*** PRODUCT MODEL
+For the Product class, we can provide a new read-only ImageURL property that calculates the image path. This will take
+away from the view the responsibility for building the path.
 
 ```csharp
 public class Product : BaseModel
@@ -1196,7 +1215,8 @@ public class Product : BaseModel
 }
 ```
 
-*** COMO OS DADOS DE PRODUTOS SÃO CARREGADOS?
+The following class is responsible for reading the products.json file, deserializing it into a collection of product objects,
+and then returning the product list.
 
 ```csharp
 public class SeedData
@@ -1245,7 +1265,22 @@ public class ProductData
 }
 ```
 
-*** MODIFICANDO O MODELO NA VIEW DE CATALOGO
+But of course we have some code to be refactored too. The first component to be modified is the catalog controller.
+
+We will load the product list into a local variable, and then pass it as a model parameter into the View.
+
+```csharp
+public class CatalogController : BaseController
+{
+    public async Task<IActionResult> Index()
+    {
+        var products = await SeedData.GetProducts();
+        return View(products);
+    }
+}
+```
+
+Also, the model type has to be modified to List<Product> in the catalog Index view.
 
 Index.cshtml
 
@@ -1261,9 +1296,14 @@ Index.cshtml
 <partial name="_Categories" for="@Model" />
 ```
 
-*** MODIFICANDO O MODEL DA PARTIAL VIEW DE CARD DE PRODUTO
+Now we have to replace the product fields with C# expressions that bring the data from the model:
+
+* @(product.ImageURL)
+* @product.Name
+* @product.Price.ToString("C")
 
 _ProductCard.cshtml
+
 ```html
 ﻿@model Product;
 @using MVC.Models;
@@ -1288,7 +1328,9 @@ _ProductCard.cshtml
 .
 ```
 
-*** MODIFICANDO O MODEL DA PARTIAL VIEW DE CATEGORIAS
+Also, the _Categories partial view will be refactored. First, we change the model type to List<Product>, and
+change the categories variable assignment to a LINQ query that brings us only the distinct category objects
+within the product list.
 
 _Categories.cshtml
 
@@ -1324,243 +1366,11 @@ _Categories.cshtml
 <a class="carousel-control-next" href="#carouselExampleIndicators-@category.Id" role="button" data-slide="next">
 ```
 
-*** MODIFICANDO A CLASSE DE CARGA DE PRODUTOS
+Since we are working with different Bootstrap 4 Carousel component, they must be identified by the category id property 
+(@category.Id). 
 
-```csharp
-public class SeedData
-{
-    public static async Task<List<Product>> GetProducts()
-    {
-        var json = await File.ReadAllTextAsync("products.json");
-        var data = JsonConvert.DeserializeObject<List<ProductData>>(json);
-
-        var dict = new Dictionary<string, Category>();
-
-        var categories = 
-            data
-            .Select(i => i.category)
-            .Distinct();
-
-        foreach (var name in categories)
-        {
-            var category = new Category(dict.Count + 1, name);
-            dict.Add(name, category);
-        }
-
-        var products = new List<Product>();
-
-        foreach (var item in data)
-        {
-            Product product = new Product(
-                products.Count + 1,
-                item.number.ToString("000"),
-                item.name,
-                item.price,
-                dict[item.category]);
-            products.Add(product);
-        }
-
-        return products;
-    }
-}
-
-public class ProductData
-{
-    public int number { get; set; }
-    public string name { get; set; }
-    public string category { get; set; }
-    public decimal price { get; set; }
-}
-```
-
-O ARQUIVO DE DADOS DE PRODUTOS
-
-products.json
-
-```json
-[
-  {
-    "number": 1,
-    "name": "Oranges",
-    "category": "Fruits",
-    "price": 5.90
-  },
-  {
-    "number": 2,
-    "name": "Lemons",
-    "category": "Fruits",
-    "price": 5.90
-  },
-  {
-    "number": 3,
-    "name": "Bananas",
-    "category": "Fruits",
-    "price": 6.90
-  },
-  {
-    "number": 4,
-    "name": "Strawberries",
-    "category": "Fruits",
-    "price": 7.90
-  },
-  {
-    "number": 5,
-    "name": "Grapes",
-    "category": "Fruits",
-    "price": 5.90
-  },
-  {
-    "number": 6,
-    "name": "Carrots",
-    "category": "Legumes",
-    "price": 5.90
-  },
-  {
-    "number": 7,
-    "name": "Yellow peppers",
-    "category": "Legumes",
-    "price": 8.90
-  },
-  {
-    "number": 8,
-    "name": "Potatoes",
-    "category": "Legumes",
-    "price": 5.90
-  },
-  {
-    "number": 9,
-    "name": "Tomatoes",
-    "category": "Legumes",
-    "price": 4.90
-  },
-  {
-    "number": 10,
-    "name": "Eggplants",
-    "category": "Legumes",
-    "price": 5.90
-  },
-  {
-    "number": 11,
-    "name": "Lettuce",
-    "category": "Vegetables",
-    "price": 7.90
-  },
-  {
-    "number": 12,
-    "name": "Broccoli",
-    "category": "Vegetables",
-    "price": 5.90
-  },
-  {
-    "number": 13,
-    "name": "Cauliflower",
-    "category": "Vegetables",
-    "price": 4.90
-  },
-  {
-    "number": 14,
-    "name": "Onion",
-    "category": "Vegetables",
-    "price": 5.90
-  },
-  {
-    "number": 15,
-    "name": "Aspargus",
-    "category": "Vegetables",
-    "price": 8.90
-  },
-  {
-    "number": 16,
-    "name": "Rice",
-    "category": "Grains / Beans",
-    "price": 6.90
-  },
-  {
-    "number": 17,
-    "name": "Beans",
-    "category": "Grains / Beans",
-    "price": 6.90
-  },
-  {
-    "number": 18,
-    "name": "Oat",
-    "category": "Grains / Beans",
-    "price": 3.90
-  },
-  {
-    "number": 19,
-    "name": "Corn",
-    "category": "Grains / Beans",
-    "price": 3.90
-  },
-  {
-    "number": 20,
-    "name": "Peas",
-    "category": "Grains / Beans",
-    "price": 5.90
-  },
-  {
-    "number": 21,
-    "name": "Milk",
-    "category": "Dairy products",
-    "price": 4.90
-  },
-  {
-    "number": 22,
-    "name": "Cheese",
-    "category": "Dairy products",
-    "price": 8.90
-  },
-  {
-    "number": 23,
-    "name": "Yogurt",
-    "category": "Dairy products",
-    "price": 6.90
-  },
-  {
-    "number": 24,
-    "name": "Butter",
-    "category": "Dairy products",
-    "price": 5.90
-  },
-  {
-    "number": 25,
-    "name": "Cream cheese",
-    "category": "Dairy products",
-    "price": 6.90
-  },
-  {
-    "number": 26,
-    "name": "Sliced ham",
-    "category": "Meat & eggs",
-    "price": 7.90
-  },
-  {
-    "number": 27,
-    "name": "Beef",
-    "category": "Meat & eggs",
-    "price": 6.90
-  },
-  {
-    "number": 28,
-    "name": "Shrimp",
-    "category": "Meat & eggs",
-    "price": 8.90
-  },
-  {
-    "number": 29,
-    "name": "Barbecue",
-    "category": "Meat & eggs",
-    "price": 6.90
-  },
-  {
-    "number": 30,
-    "name": "Eggs",
-    "category": "Meat & eggs",
-    "price": 4.90
-  }
-]
-```
+The productsInCategory local variable now hold the collection of products within each category, and we separate this products
+in groups so that each carousel can be populated appropriately.
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
 
