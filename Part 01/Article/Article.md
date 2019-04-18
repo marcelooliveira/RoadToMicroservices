@@ -377,9 +377,8 @@ file Catalog/Index.cshtml
 <partial name="_Categories" for="@products" />
 ```
 
-
-
-*** A PARTIAL VIEW DE CATEGORIAS
+On the other hand, the _Categories.cshtml file looks exactly like any ordinary razor markup file: we can define the @model directive,
+html elements, tag helpers, C# code, and so on. You may as well include inner partial views using <partial> tag helpers, like in the file below:
 
 file Catalog/_Categories.cshtml
 
@@ -439,7 +438,7 @@ file Catalog/_Categories.cshtml
 }
 ```
 
-*** A PARTIAL VIEW DE CARD DE PRODUTO
+Now, the last catalog partial view must be the one with the product card details. 
 
 file Catalog/_ProductCard.cshtml
 
@@ -470,11 +469,14 @@ file Catalog/_ProductCard.cshtml
 </div>
 ```
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
+Notice how the product image URL is being provided by the appropriate path, by concatenating the product code with the rest of the image path.
 
 ### Search Products Partial View
 
-*** USANDO PARTIAL VIEW PARA BUSCA DE PRODUTOS
+The catalog index view will be used not only to display, but also to search products. The upper part will feature a form where the user 
+will enter and submit a search text, so that only the matching products or category names will be displayed in the catalog.
+
+Again, we should add a new partial view tag helper (<partial>) in the main Index.cshtml razor file.
 
 *** ADICIONANDO UMA PARTIAL VIEW PARA BUSCA DE PRODUTOS
 
@@ -489,7 +491,11 @@ _Index.cshtml
 <partial name="_Categories" for="@products" />
 ```
 
-*** A PARTIAL VIEW DE BUSCA DE PRODUTOS
+Notice how the Index view is kept clean and simple. And since the _SearchProducts partial view doesn't need any data,
+no parameter is passed to it.
+
+The _SearchProducts partial view is basically a form with some elements (label + text field + submit button) required to
+send information to the server.
 
 _SearchProducts.cshtml
 ```html
@@ -520,15 +526,32 @@ _SearchProducts.cshtml
 </div>
 ```
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
+So far, the form doesn't do anything. But we are going to implement the search functionality in the next articles.
 
 ### Basket view
 
-*** CRIANDO UMA SUPERCLASSE PARA OS CONTROLLERS
+After the user selects any product, he/she must be redirected to the "My Basket" view. This view is responsible for the
+shopping cart functionality, and will hold a list of order items information, such as:
+
+* product image
+* product name
+* item quantity
+* unit price
+* subtotal
+
+So far, we only have the HomeController, where our Catalog Index action resides. We could use the HomeController to hold also the
+Basket Index, but instead of cluttering the only controller in our application, let's keep one controller for the catalog and another one
+for the basket.
+
+But since "HomeController" does not say much, let's make it more descriptive by changing its name to "CatalogController". This will
+also require us to rename the View/Home folder to View/Catalog:
 
 ![Home To Catalog](home_to_catalog.png)
 
-BaseController.cs
+And since the CatalogController also holds a generic action for displaying the Error view, it would be better to extract that
+action to a "superclass", that is a base class to be inherited by both the CatalogController and the BasketController:
+
+file BaseController.cs
 
 ```csharp
 public abstract class BaseController : Controller
@@ -541,7 +564,7 @@ public abstract class BaseController : Controller
 }
 ```
 
-*** HERDANDO DA SUPERCLASSE
+Now let's make both controllers inherit from the base class:
 
 ```csharp
 public class CatalogController : BaseController
@@ -561,7 +584,11 @@ public class BasketController : BaseController
 }
 ```
 
-*** MODIFICANDO A ROTA PADRÃO
+At this point, if you try to execute the application again, you notice how the application crashes, because it is still looking for
+an Index action located at a controller named HomeController. This is called the "default route" that is configured when we create the 
+a new project with the MVC project template.
+
+Now, we have to change the default route by renaming the default controller from "Home" to "Catalog":
 
 Startup.cs
 
