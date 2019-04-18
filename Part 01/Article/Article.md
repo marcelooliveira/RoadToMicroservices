@@ -596,7 +596,12 @@ Startup.cs
  template: "{controller=Catalog}/{action=Index}/{id?}");
 ```
 
-*** CRIANDO A VIEW PARA O CARRINHO
+As for the Basket view, we once again use the Bootstrap components to create the user interface. It's basically a Card component,
+comprising a card header containing multiple column headers for the basket item names, a card body for the basket item details,
+and a card footer for total / item count. 
+
+As we can see, the basket item data so far is just an array declared in the view itself. Later on, this data will be replaced
+with data coming from the controllers.
 
 Index.cshtml
 
@@ -712,7 +717,7 @@ Index.cshtml
 </div>
 ```
 
-*** ALINHANDO OS ÍTENS
+As a last touch, we can now align the basket items by adding a CSS rule:
 
 site.css
 
@@ -723,15 +728,15 @@ site.css
 }
 ```
 
-![Basket](basket.png)
+Notice how we used flexbox layout, exactly the same layout used in Bootstrap 4.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
+![Basket](basket.png)
 
 ### Basket partial views
 
-*** MOVENDO VIEW DE CARRINHO PARA VIEWS PARCIAIS
+Once again, we are breaking up the large Basket view by splitting it into partial views, just like we did with the Catalog markup.
 
-*** CRIANDO CLASSE PARA ITEM DO CARRINHO
+Before dealing with partial views, let's create a new class to hold the basket item data:
 
 BasketController.cs
 
@@ -746,9 +751,13 @@ public class BasketItem
 }
 ```
 
-*** VIEW PARCIAL PARA CONTROLES DO CARRINHO
+One of the advantages of partial views is reusability. Our basket item has two sections, one above and another one below the
+basket list card, and both of them have exactly the same control buttons:
 
-_BasketControls.cshtml
+* Add More Products
+* Fill in Registration
+
+The file _BasketControls.cshtml
 
 ```html
 ﻿<div class="row">
@@ -765,7 +774,10 @@ _BasketControls.cshtml
 </div>
 ```
 
-*** VIEW DE CARRINHO REFATORADA
+As we can see, these markup is duplicated. Fortunately, partial views allows us to avoid such duplication. 
+
+The main basket view now looks much simpler, with the _BasketControls partial view implemented both above and below the 
+basket list partial view.
 
 Index.cshtml
 
@@ -1547,7 +1559,6 @@ products.json
     "price": 4.90
   }
 ]
-
 ```
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
