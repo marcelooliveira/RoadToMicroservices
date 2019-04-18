@@ -802,9 +802,7 @@ Index.cshtml
 <partial name="_BasketControls" />
 ```
 
-_BasketList.cshtml
-
-*** LISTA DO CARRINHO PARTIAL VIEW
+Here is the basket list markup extracted to a new partial view (_BasketList.cshtml):
 
 ```html
 ﻿@using MVC.Controllers
@@ -857,6 +855,9 @@ _BasketList.cshtml
 </div>
 ```
 
+For the basket item details, we then create the last partial view as _BasketItem.cshtml file.
+Notice how the subtotal is calculated in place, by multiplying the quantity by the unit price:
+
 _BasketItem.cshtml
 
 ```html
@@ -898,8 +899,6 @@ _BasketItem.cshtml
 <br />
 ```
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
-
 ### Registration View
 
 After the user decides which products and quantities are to be included in the shopping cart, the user has the option to
@@ -927,8 +926,7 @@ namespace MVC.Controllers
 }
 ```
 
-
-Registration 
+Next, the registration view must hold all the fields needed for gathering personal information:
 
 Index.cshtml
 
@@ -999,14 +997,17 @@ Index.cshtml
 </form>
 ```
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
-
-*** CONTROLLER DE CHECKOUT
+Notice how we ommited the form action once again, because the database update functionality will be provided in the future. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
 
 ### Checkout View
 
-CheckoutController.cs
+Once the customer has filled in the personal information, let's assume everything is ok regarding the process, and then redirect him/her 
+to a new web page informing our customer that the order has been placed and asking for him/her to wait for further instructions 
+as soon as the order is processed and generated. 
 
+For now, the Checkout controller is also a quite simple class, like the others:
+
+CheckoutController.cs
 
 ```csharp
 public class CheckoutController : BaseController
@@ -1018,13 +1019,12 @@ public class CheckoutController : BaseController
 }
 ```
 
-*** A VIEW DE CHECKOUT
+The view is just a few lines of markup, with a static content with the post-basket instructions. The only dynamic information here
+is the customer e-mail address.
 
 Index.cshtml
 
 ```html
-﻿@model string
-
 @{ 
     ViewData["Title"] = "Checkout";
     var email = "alice@smith.com";
@@ -1040,7 +1040,7 @@ Index.cshtml
 
 ![Checkout](checkout.png)
 
-aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
+
 
 ### Notifications View
 

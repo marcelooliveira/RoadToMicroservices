@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVC", "MVC\MVC.csproj", "{6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Article", "Article", "{617C33E9-5E05-4227-8755-47679FE9AC0A}"
 	ProjectSection(SolutionItems) = preProject
-		Article.md = Article.md
+		Article\Article.md = Article\Article.md
 	EndProjectSection
 EndProject
 Global
