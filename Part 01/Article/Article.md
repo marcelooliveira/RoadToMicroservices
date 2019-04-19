@@ -1372,13 +1372,46 @@ Since we are working with different Bootstrap 4 Carousel component, they must be
 The productsInCategory local variable now hold the collection of products within each category, and we separate this products
 in groups so that each carousel can be populated appropriately.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
+### Application Navigation
 
-### Links
+So far, each view is still isolated, and there are no links to connect the views to each other. Let's provide navigation
+by using the AnchorTagHelper to generate the correct links.
 
-*** AJUSTANDO OS LINKS PARA CRIAR O FLUXO DE NAVEGAÇÃO DA APLICAÇÃO
+Although having the same appearance of the <a> HTML tag, the AnchorTagHelper in fact runs in the server side, where it
+calculates the anchor URL based on properties such as:
 
-VAMOS USAR TAG HELPERS PARA OS LINKS DE COMPRAR MAIS PRODUTOS E PREENCHER O REGISTRATION
+* asp-controller: the MVC controller name. When omitted, the current controller will be assumed.
+* asp-action: the path name. Whem ommited, the default action (Index) will be assumed.
+* asp-route-*: the action parameters. Each action parameters must be provided separately.
+
+The first link will be from the catalog view to the basket list. Everty time a customer selects a product, the shopping
+cart must be displayed, showing the selected item, with one quantity.
+
+How do we change an ordinary HTML anchor element into an AnchorTagHelper?
+
+First we take the current anchor element...
+
+_ProductCard.cshtml
+
+```html
+<a href="#" class="btn btn-success">
+```
+
+And replace the "href" attribute add a new "asp-controller" attribute: 
+
+```html
+<a asp-controller="basket" class="btn btn-success">
+```
+
+This little change in the source code produces a big impact: when ASP.NET Core uses the Razor SDK to compile the
+views, this will notice the "asp-controller" attribute, so the new link will not be dealt with as an HTML anchor element anymore. Instead, just like any other tag helper, 
+it is now a server-side component, which runs on the server and renders the actual HTML link:
+
+```html
+<a class="btn btn-success" href="/Basket">
+```
+
+Now let's keep applying AnchorTagHelpers in the rest of the links. First, in the basket controls partial view... 
 
 _BasketControls.cshtml
 
@@ -1396,23 +1429,7 @@ _BasketControls.cshtml
     </div>
 ```
 
-*** MODIFICANDO O CARD DE PRODUTO
-
-VAMOS USAR UM TAG HELPER PARA O LINK DE ADICONAR AO CARRINHO NO CARD DE PRODUTO
-
-_ProductCard.cshtml
-
-```html
-<a href="#" class="btn btn-success">
-```
-
-```html
-<a asp-controller="basket" class="btn btn-success">
-```
-
-*** MODIFICANDO A VIEW DE REGISTRATION
-
-VAMOS ADICIONAR A ACTION PARA O FORM DE REGISTRATION
+... and then in the registration view, where an ordinary HTML form element becomes a FormActionHelper:
 
 Registration\Index.cshtml
 
@@ -1420,5 +1437,26 @@ Registration\Index.cshtml
 <form method="post" action="checkout">
 ```
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
+*** Conclusion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
