@@ -17,7 +17,7 @@ Since this is only the first article of a whole series, I would like to enumerat
 
 * Part 1  : Building the Views
 * Part 2  : View Components
-* Part 3  : Unit Testing with XUnit
+* Part 3  : Unit Testing with xUnit
 * Part 4  : SQLite
 * Part 5  : Dapper
 * Part 6  : SignalR
@@ -1438,6 +1438,14 @@ Registration\Index.cshtml
 ```
 
 *** Conclusion
+
+And so ends the first part of the article series. If you reached this line, thank you very much for your patience. If you liked this article, or have any complaints or suggestions,
+please leave a comment below. I'll be pleased to have your feedback!
+
+We have seen how to create a new ASP.NET Core project with Visual Studio,
+develop the basic views with Razor engine, provide a basic model for the views, and link them together with anchor tag helpers.
+We will use the same project as a starting point for the next article, where we will deal with View Components.
+
 
 
 
