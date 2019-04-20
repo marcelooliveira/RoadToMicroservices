@@ -1,6 +1,9 @@
-﻿# ASP.NET Core Road to Microservices Part 01: Building the Views
+﻿
+# ASP.NET Core Road to Microservices Part 01: Building the Views
+### C#, .NET, .NET-Core, Dev, Beginner
+### The first of many articles featuring design patterns, architectural designs, frameworks and technologies leading to ASP.NET Core Microservices
 
-### Introduction
+## Introduction
 
 In this article I will show how to create a basic e-commerce application flow using ASP.NET Core, with the help of Visual Studio.
 
@@ -38,7 +41,7 @@ Since this is only the first article of a whole series, I would like to enumerat
 As we can see, there are many subjects to cover. Although the parts are numbered, that's just for counting purposes. In fact,
 the actual order can change as we advance.
 
-### Creating the Project
+## Creating the Project
 
 The project will be created using Visual Studio Community (this can be done via Visual Studio Code or even command-line tools),
 selecting the MVC project template.
@@ -190,7 +193,7 @@ cookie policy capabilities.
 cookie policy capabilities.
 * app.UseMvc: Adds MVC to the IApplicationBuilder request execution pipeline.
 
-### Index page
+## Index page
 
 We are going to work with a limited set of only 30 products in our store. For each one, we have an image, to be added to the
 /images/catalog folder inside the wwwroot project folder.
@@ -280,7 +283,7 @@ category products in groups of 4 products.
 }
 ```
 
-### Styling
+## Styling
 
 It's a small step, but since Bootstrap 4 doesn't come with icon fonts (gliphicon) anymore, it's up to us to
 install it ourselves.
@@ -315,7 +318,7 @@ Running again the application, we see how the shopping cart icon is rendered:
 
 ![Index Page](index_page.png)
 
-### Branding
+## Branding
 
 By opening the _Layout.cshtml file, we can change the brand with our company's name.
 
@@ -341,7 +344,7 @@ a.navbar-brand {
 }
 ```
 
-### Partial views
+## Partial views
 
 If you take a look at our catalog index razor file, you'll see that it became large and complex, and this may compromise the
 readability and understanding of its contents.
@@ -471,7 +474,7 @@ file Catalog/_ProductCard.cshtml
 
 Notice how the product image URL is being provided by the appropriate path, by concatenating the product code with the rest of the image path.
 
-### Search Products Partial View
+## Search Products Partial View
 
 The catalog index view will be used not only to display, but also to search products. The upper part will feature a form where the user 
 will enter and submit a search text, so that only the matching products or category names will be displayed in the catalog.
@@ -528,7 +531,7 @@ _SearchProducts.cshtml
 
 So far, the form doesn't do anything. But we are going to implement the search functionality in the next articles.
 
-### Basket view
+## Basket view
 
 After the user selects any product, he/she must be redirected to the "My Basket" view. This view is responsible for the
 shopping cart functionality, and will hold a list of order items information, such as:
@@ -732,7 +735,7 @@ Notice how we used flexbox layout, exactly the same layout used in Bootstrap 4.
 
 ![Basket](basket.png)
 
-### Basket partial views
+## Basket partial views
 
 Once again, we are breaking up the large Basket view by splitting it into partial views, just like we did with the Catalog markup.
 
@@ -899,7 +902,7 @@ _BasketItem.cshtml
 <br />
 ```
 
-### Registration View
+## Registration View
 
 After the user decides which products and quantities are to be included in the shopping cart, the user has the option to
 proceed to finish the order. But first, some personal information is needed, and this is usually required for typical
@@ -908,8 +911,6 @@ e-commerce procedures, such as billing, invoicing and shipping, and so on.
 ![Registration](Registration.png)
 
 RegistrationController.cs
-
-*** O CONTROLLER DE REGISTRATION
 
 ```csharp
 ﻿using Microsoft.AspNetCore.Mvc;
@@ -999,7 +1000,7 @@ Index.cshtml
 
 Notice how we ommited the form action once again, because the database update functionality will be provided in the future. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
 
-### Checkout View
+## Checkout View
 
 Once the customer has filled in the personal information, let's assume everything is ok regarding the process, and then redirect him/her 
 to a new web page informing our customer that the order has been placed and asking for him/her to wait for further instructions 
@@ -1043,7 +1044,7 @@ Index.cshtml
 Our application flow requires the order to be processed not immediately on the checkout of the shopping cart, 
 but asynchronously, at some point in the future.
 
-### Notifications View
+## Notifications View
 
 NotificationsController.cs
 
@@ -1128,7 +1129,7 @@ Index.cshtml
 
 ![Notifications](Notifications.png)
 
-### Json product load
+## Json product load
 
 So far, we had a catalog that does not display actual products, but mockup data instead. Let's start a new refactoring cycle
 so that we can inject more real data into our catalog view.
@@ -1176,8 +1177,6 @@ namespace MVC.Models
     }
 }
 ```
-
-*** CATEGORY MODEL
 
 ```csharp
 public class Category : BaseModel
@@ -1372,7 +1371,7 @@ Since we are working with different Bootstrap 4 Carousel component, they must be
 The productsInCategory local variable now hold the collection of products within each category, and we separate this products
 in groups so that each carousel can be populated appropriately.
 
-### Application Navigation
+## Application Navigation
 
 So far, each view is still isolated, and there are no links to connect the views to each other. Let's provide navigation
 by using the AnchorTagHelper to generate the correct links.
@@ -1437,7 +1436,7 @@ Registration\Index.cshtml
 <form method="post" action="checkout">
 ```
 
-*** Conclusion
+## Conclusion
 
 And so ends the first part of the article series. If you reached this line, thank you very much for your patience. If you liked this article, or have any complaints or suggestions,
 please leave a comment below. I'll be pleased to have your feedback!
