@@ -10,13 +10,17 @@ namespace MVC.ViewComponents
         {
         }
 
-        public IViewComponentResult Invoke(List<BasketItem> items)
+        public IViewComponentResult Invoke(List<BasketItem> items, bool isSummary)
         {
             if (items.Count == 0)
             {
                 return View("Empty");
             }
-            return View("Default", items);
+            return View("Default", new BasketItemList
+            {
+                List = items,
+                IsSummary = isSummary
+            });
         }
     }
 }

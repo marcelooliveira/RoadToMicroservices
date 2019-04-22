@@ -1,9 +1,18 @@
-﻿@model string
-
-@{ 
+﻿@using MVC.Models.ViewModels
+@model string
+@addTagHelper *, MVC
+@{
     ViewData["Title"] = "Checkout";
 
     var email = "alice@smith.com";
+
+
+    List<BasketItem> items = new List<BasketItem>
+    {
+        new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
+        new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
+        new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
+    };
 }
 <h3>Order Has Been Placed!</h3>
 
@@ -12,3 +21,8 @@
     <p>Soon you will receive an e-mail at <b>@email</b> including all order details.</p>
     <p><a href="/" class="btn btn-success">Back to product catalog</a></p>
 </div>
+
+<h4>Summary</h4>
+
+<vc:basket-list items="@items" is-summary="true"></vc:basket-list>
+

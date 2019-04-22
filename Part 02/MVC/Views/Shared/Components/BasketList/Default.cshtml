@@ -1,10 +1,6 @@
 ﻿@using MVC.Models.ViewModels
 @addTagHelper *, MVC
-@model List<BasketItem>;
-
-@{
-    var items = Model;
-}
+@model BasketItemList;
 
 <div class="card">
     <div class="card-header">
@@ -26,22 +22,22 @@
         </div>
     </div>
     <div class="card-body">
-        @foreach (var item in items)
+        @foreach (var item in Model.List)
         {
-            <vc:basket-item item="@item"></vc:basket-item>
+            <vc:basket-item item="@item" is-summary="Model.IsSummary"></vc:basket-item>
         }
     </div>
     <div class="card-footer">
         <div class="row">
             <div class="col-sm-10">
                 <span numero-items>
-                    Total: @items.Count
-                    item@(items.Count > 1 ? "s" : "")
+                    Total: @Model.List.Count
+                    item@(Model.List.Count > 1 ? "s" : "")
                 </span>
             </div>
             <div class="col-sm-2">
                 Total: <span class="pull-right" total>
-                    @(items.Sum(item => item.Quantity * item.UnitPrice).ToString("C"))
+                    @(Model.List.Sum(item => item.Quantity * item.UnitPrice).ToString("C"))
                 </span>
             </div>
         </div>

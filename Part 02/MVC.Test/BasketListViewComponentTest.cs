@@ -24,7 +24,7 @@ namespace MVC.Test
             };
 
             //act 
-            var result = vc.Invoke(items);
+            var result = vc.Invoke(items, false);
 
             //assert
             ViewViewComponentResult vvcResult = Assert.IsAssignableFrom<ViewViewComponentResult>(result);
@@ -36,8 +36,9 @@ namespace MVC.Test
         {
             //arrange 
             var vc = new BasketListViewComponent();
+
             //act 
-            var result = vc.Invoke(new List<BasketItem>());
+            var result = vc.Invoke(new List<BasketItem>(), false);
 
             //assert
             ViewViewComponentResult vvcResult = Assert.IsAssignableFrom<ViewViewComponentResult>(result);
