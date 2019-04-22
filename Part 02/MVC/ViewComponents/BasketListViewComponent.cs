@@ -1,17 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MVC.Models.ViewModels;
+using MVC.Services;
 using System.Collections.Generic;
 
 namespace MVC.ViewComponents
 {
     public class BasketListViewComponent : ViewComponent
     {
-        public BasketListViewComponent()
+        private readonly IBasketService basketService;
+
+        public BasketListViewComponent(IBasketService basketService)
         {
+            this.basketService = basketService;
         }
 
-        public IViewComponentResult Invoke(List<BasketItem> items, bool isSummary)
+        public IViewComponentResult Invoke(bool isSummary)
         {
+            List<BasketItem> items = basketService.GetBasketItems();
+
             if (items.Count == 0)
             {
                 return View("Empty");
