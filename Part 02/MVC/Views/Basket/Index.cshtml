@@ -1,4 +1,6 @@
 ﻿@using MVC.Controllers
+@addTagHelper *, MVC
+
 @{
     ViewData["Title"] = "My Basket";
 
@@ -15,6 +17,8 @@
 <h3>My Basket</h3>
 
 <partial name="_BasketList" for="@items" />
+
+<vc:basket-list items="@items"></vc:basket-list>
 
 <br />
 

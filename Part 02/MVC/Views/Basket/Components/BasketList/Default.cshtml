@@ -1,0 +1,8 @@
+﻿@using MVC.Controllers
+@model List<BasketItem>;
+
+@{
+    var items = Model;
+}
+
+<partial name="_BasketList" for="@items" />
