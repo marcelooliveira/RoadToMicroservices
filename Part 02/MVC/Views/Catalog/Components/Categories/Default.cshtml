@@ -1,5 +1,5 @@
-﻿@model List<Product>;
-
+﻿@addTagHelper *, MVC
+@model List<Product>;
 @{
     var products = Model;
     const int PageSize = 4;
@@ -30,9 +30,9 @@
                                         .Skip(pageIndex * PageSize)
                                         .Take(PageSize);
 
-                                    foreach (var productIndex in productsInPage)
+                                    foreach (var product in productsInPage)
                                     {
-                                        <partial name="_ProductCard" for="@productIndex" />
+                                        <vc:product-card product="@product"></vc:product-card>
                                     }
                                 }
                             </div>
