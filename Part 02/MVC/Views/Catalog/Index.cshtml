@@ -1,0 +1,8 @@
+﻿@model List<Product>;
+@{
+    ViewData["Title"] = "Catalog";
+}
+
+<partial name="_SearchProducts"/>
+
+<partial name="_Categories" for="@Model" />

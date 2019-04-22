@@ -1,0 +1,14 @@
+﻿@model string
+
+@{ 
+    ViewData["Title"] = "Checkout";
+
+    var email = "alice@smith.com";
+}
+<h3>Order Has Been Placed!</h3>
+
+<div class="panel-info">
+    <p>Your order has been placed.</p>
+    <p>Soon you will receive an e-mail at <b>@email</b> including all order details.</p>
+    <p><a href="/" class="btn btn-success">Back to product catalog</a></p>
+</div>
