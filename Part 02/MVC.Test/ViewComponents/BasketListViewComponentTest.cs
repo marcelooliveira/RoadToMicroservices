@@ -1,14 +1,12 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Moq;
 using MVC.Models.ViewModels;
 using MVC.Services;
 using MVC.ViewComponents;
-using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace MVC.Test
+namespace MVC.Test.ViewComponents
 {
     public class BasketListViewComponentTest
     {
@@ -36,6 +34,12 @@ namespace MVC.Test
             //assert
             ViewViewComponentResult vvcResult = Assert.IsAssignableFrom<ViewViewComponentResult>(result);
             Assert.Equal("Default", vvcResult.ViewName);
+            var model = Assert.IsAssignableFrom<BasketItemList>(vvcResult.ViewData.Model);
+            Assert.Collection<BasketItem>(model.List,
+                i => Assert.Equal(1, i.ProductId),
+                i => Assert.Equal(5, i.ProductId),
+                i => Assert.Equal(9, i.ProductId)
+            );
         }
 
         [Fact]

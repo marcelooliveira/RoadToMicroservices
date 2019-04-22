@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace MVC.Test
+namespace MVC.Test.ViewComponents
 {
     public class BasketItemViewComponentTest
     {
