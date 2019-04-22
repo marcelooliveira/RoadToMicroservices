@@ -12,6 +12,10 @@ namespace MVC.ViewComponents
 
         public IViewComponentResult Invoke(List<BasketItem> items)
         {
+            if (items.Count == 0)
+            {
+                return View("Empty");
+            }
             return View("Default", items);
         }
     }

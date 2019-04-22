@@ -30,5 +30,18 @@ namespace MVC.Test
             ViewViewComponentResult vvcResult = Assert.IsAssignableFrom<ViewViewComponentResult>(result);
             Assert.Equal("Default", vvcResult.ViewName);
         }
+
+        [Fact]
+        public void Invoke_With_Items_Should_Display_Empty_View()
+        {
+            //arrange 
+            var vc = new BasketListViewComponent();
+            //act 
+            var result = vc.Invoke(new List<BasketItem>());
+
+            //assert
+            ViewViewComponentResult vvcResult = Assert.IsAssignableFrom<ViewViewComponentResult>(result);
+            Assert.Equal("Empty", vvcResult.ViewName);
+        }
     }
 }
