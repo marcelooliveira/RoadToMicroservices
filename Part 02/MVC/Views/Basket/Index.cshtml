@@ -1,4 +1,4 @@
-﻿@using MVC.Controllers
+﻿@using MVC.Models.ViewModels
 @addTagHelper *, MVC
 
 @{
@@ -15,8 +15,6 @@
 <partial name="_BasketControls" />
 
 <h3>My Basket</h3>
-
-<partial name="_BasketList" for="@items" />
 
 <vc:basket-list items="@items"></vc:basket-list>
 

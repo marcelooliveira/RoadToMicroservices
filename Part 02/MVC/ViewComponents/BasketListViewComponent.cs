@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MVC.Controllers;
+using MVC.Models.ViewModels;
 using System.Collections.Generic;
 
 namespace MVC.ViewComponents
