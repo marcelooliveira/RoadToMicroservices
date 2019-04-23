@@ -112,3 +112,43 @@ body {
     display: flex;
     align-items: center;
 }
+
+.user-count {
+    display: inline-block;
+    position: relative;
+    padding: 0.08em;
+    font-size: 1.2em;
+}
+
+.user-count::before,
+.user-count::after {
+    color: #000;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.user-count::after {
+    font-family: Arial;
+    font-size: 0.7em;
+    font-weight: 700;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    padding: 4px 6px;
+    line-height: 100%;
+    border-radius: 60px;
+    background: #ffcc00;
+    opacity: 0;
+    content: attr(data-count);
+    opacity: 0;
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
+    transition: transform, opacity;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-out;
+}
+
+.user-count.show-count::after {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+}

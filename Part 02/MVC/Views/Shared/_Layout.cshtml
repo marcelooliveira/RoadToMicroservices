@@ -13,7 +13,7 @@
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
               crossorigin="anonymous"
-              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"/>
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
     </environment>
     <link href="~/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" />
@@ -27,6 +27,34 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                <div class="navbar-collapse collapse justify-content-end">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <div class="container-notification">
+                                <a asp-controller="notifications"
+                                   title="Notifications">
+                                    <div class="user-count notification show-count fa fa-bell" data-count="2">
+                                    </div>
+                                </a>
+                            </div>
+                        </li>
+                        <li>
+                            <span>
+                                &nbsp;
+                                &nbsp;
+                            </span>
+                        </li>
+                        <li>
+                            <div class="container-notification">
+                                <a asp-action="index" asp-controller="basket"
+                                   title="Basket">
+                                    <div class="user-count userbasket show-count fa fa-shopping-cart" data-count="3">
+                                    </div>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </nav>
     </header>
