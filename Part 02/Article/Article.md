@@ -8,7 +8,7 @@
 
 C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\ViewComponents\BasketListViewComponent.cs
 
-@@ -0,0 +1,18 @@
+```csharp
 ﻿using Microsoft.AspNetCore.Mvc;
 using MVC.Controllers;
 using System.Collections.Generic;
@@ -27,10 +27,12 @@ namespace MVC.ViewComponents
         }
     }
 }
+```
+**Listing** : ViewComponents\BasketListViewComponent.cs file
 
 Default.cshtml
 
-@@ -0,0 +1,8 @@
+```razor
 ﻿@using MVC.Controllers
 @model List<BasketItem>;
 
@@ -39,32 +41,33 @@ Default.cshtml
 }
 
 <partial name="_BasketList" for="@items" />
+```
+**Listing**: Components\BasketList\Default.cshtml file
 
 C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\Views\Basket\Index.cshtml
 
+
+```razor
+<!--<partial name="_BasketList" for="@items" />-->
+```
+**Listing**: removing PartialTagHelper for BasketList
+
+
+```razor
 ﻿@using MVC.Controllers
 @addTagHelper *, MVC
 .
 .
 .
 <vc:basket-list items="@items"></vc:basket-list>
+```
+**Listing**: Using the generated BasketListViewComponentTagHelper
 
 #### Moving BasketItem to ViewModels
 
 C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\Controllers\BasketController.cs
 
--     public class BasketItem
--     {
--         public int Id { get; set; }
--         public int ProductId { get; set; }
--         public string Name { get; set; }
--         public decimal UnitPrice { get; set; }
--         public int Quantity { get; set; }
--     }
-
-C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\Models\ViewModels\BasketItem.cs
-
-@@ -0,0 +1,11 @@
+```csharp
 ﻿namespace MVC.Models.ViewModels
 {
     public class BasketItem
@@ -76,33 +79,31 @@ C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\Models\ViewModel
         public int Quantity { get; set; }
     }
 }
+```
+**Listing**: Moving to BasketItem.cs to Models\ViewModels
 
 C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\ViewComponents\BasketListViewComponent.cs
 
--using MVC.Controllers;
-+using MVC.Models.ViewModels;
+```csharp
+using MVC.Models.ViewModels;
+```
 
 Default.cshtml
 
-﻿-@using MVC.Controllers
-﻿+@using MVC.Models.ViewModels
+```csharp
+@using MVC.Models.ViewModels
+```
 
-C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\Views\Basket\Index.cshtml
+/Views/Basket/Index.cshtml
 
-﻿-@using MVC.Controllers
-﻿+@using MVC.Models.ViewModels
-
--<partial name="_BasketList" for="@items" />
-
+```csharp
+@using MVC.Models.ViewModels
+```
 _BasketItem.cshtml
 
-﻿-@using MVC.Controllers
-﻿+@using MVC.Models.ViewModels
-
-_BasketItem.cshtml
-
-﻿-@using MVC.Controllers
-﻿+@using MVC.Models.ViewModels
+```csharp
+@using MVC.Models.ViewModels
+```
 
 #### Unit Testing Our View Component
 
