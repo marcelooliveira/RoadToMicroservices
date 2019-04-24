@@ -357,37 +357,51 @@ Last step: DELETE _BasketList.cshtml partial view file
 
 ADD BasketItemViewComponentTest.cs
 
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewComponents;
-using MVC.Models.ViewModels;
-using MVC.ViewComponents;
-using System;
-using System.Collections.Generic;
-using Xunit;
-
-namespace MVC.Test
+```csharp
+public class BasketItemViewComponentTest
 {
-    public class BasketItemViewComponentTest
+    [Fact]
+    public void Invoke_Should_Display_Default_View()
     {
-        [Fact]
-        public void Invoke_Should_Display_Default_View()
-        {
-            //arrange 
-            var vc = new BasketItemViewComponent();
-            BasketItem item =
-                new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 };
+        //arrange 
+        var vc = new BasketItemViewComponent();
+        BasketItem item =
+            new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 };
 
-            //act 
-            var result = vc.Invoke(item);
+        //act 
+        var result = vc.Invoke(item);
 
-            //assert
-            ViewViewComponentResult vvcResult = Assert.IsAssignableFrom<ViewViewComponentResult>(result);
-            Assert.Equal("Default", vvcResult.ViewName);
-        }
+        //assert
+        ViewViewComponentResult vvcResult = Assert.IsAssignableFrom<ViewViewComponentResult>(result);
+        Assert.Equal("Default", vvcResult.ViewName);
     }
 }
+```
+**Listing**: setting up the first BasketItemViewComponent unit testing 
 
 #### Moving Components to Views/Shared Folder
+
+Part 02/MVC/ViewComponents/BasketItemViewComponent.cs
+
+-public IViewComponentResult Invoke(BasketItem item)
++public IViewComponentResult Invoke(BasketItem item, bool isSummary)
+
++if (isSummary == true)
++{
++    return View("SummaryItem", item);
++}
+
+Part 02/MVC/ViewComponents/BasketListViewComponent.cs
+
+-public IViewComponentResult Invoke(List<BasketItem> items)
++public IViewComponentResult Invoke(List<BasketItem> items, bool isSummary)
+
+-return View("Default", items);
++return View("Default", new BasketItemList
++{
++    List = items,
++    IsSummary = isSummary
++});
 
 Part 02/MVC.Test/BasketItemViewComponentTest.cs
 
@@ -434,28 +448,6 @@ Part 02/MVC/Models/ViewModels/BasketItemList.cs
 +        public bool IsSummary { get; set; }
 +    }
 +}
-
-Part 02/MVC/ViewComponents/BasketItemViewComponent.cs
-
--public IViewComponentResult Invoke(BasketItem item)
-+public IViewComponentResult Invoke(BasketItem item, bool isSummary)
-
-+if (isSummary == true)
-+{
-+    return View("SummaryItem", item);
-+}
-
-Part 02/MVC/ViewComponents/BasketListViewComponent.cs
-
--public IViewComponentResult Invoke(List<BasketItem> items)
-+public IViewComponentResult Invoke(List<BasketItem> items, bool isSummary)
-
--return View("Default", items);
-+return View("Default", new BasketItemList
-+{
-+    List = items,
-+    IsSummary = isSummary
-+});
 
 Part 02/MVC/Views/Basket/Index.cshtml
 
