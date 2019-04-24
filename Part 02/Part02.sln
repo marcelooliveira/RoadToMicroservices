@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Article", "Article", "{617C
 		Article\Article.md = Article\Article.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC.Test", "MVC.Test\MVC.Test.csproj", "{79A50851-9596-44A7-A4A9-89321097E856}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVC.Test", "MVC.Test\MVC.Test.csproj", "{79A50851-9596-44A7-A4A9-89321097E856}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

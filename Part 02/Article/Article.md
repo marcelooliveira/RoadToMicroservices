@@ -383,50 +383,83 @@ public class BasketItemViewComponentTest
 
 Part 02/MVC/ViewComponents/BasketItemViewComponent.cs
 
--public IViewComponentResult Invoke(BasketItem item)
-+public IViewComponentResult Invoke(BasketItem item, bool isSummary)
+```csharp
+public IViewComponentResult Invoke(BasketItem item, bool isSummary)
+```
+**Listing**: adding a isSummary parameter to Invoke() method
 
-+if (isSummary == true)
-+{
-+    return View("SummaryItem", item);
-+}
+```csharp
+if (isSummary == true)
+{
+    return View("SummaryItem", item);
+}
+```
+**Listing**: returning a different view for summary presentation mode
+
 
 Part 02/MVC/ViewComponents/BasketListViewComponent.cs
 
--public IViewComponentResult Invoke(List<BasketItem> items)
-+public IViewComponentResult Invoke(List<BasketItem> items, bool isSummary)
+```csharp
+public IViewComponentResult Invoke(List<BasketItem> items, bool isSummary)
+```
+**Listing**: adding a isSummary parameter to Invoke() method
 
--return View("Default", items);
-+return View("Default", new BasketItemList
-+{
-+    List = items,
-+    IsSummary = isSummary
-+});
+
+```csharp
+return View("Default", items);
+```
+
+```csharp
+return View("Default", new BasketItemList
+{
+    List = items,
+    IsSummary = isSummary
+});
+```
+**Listing**: passing the new view model to View() method
+
 
 Part 02/MVC.Test/BasketItemViewComponentTest.cs
 
--var result = vc.Invoke(item);
-+var result = vc.Invoke(item, false);
+#### changes to Invoke_Should_Display_Default_View() method
 
-+BasketItem resultModel = Assert.IsAssignableFrom<BasketItem>(vvcResult.ViewData.Model);
-+Assert.Equal(item.ProductId, resultModel.ProductId);
+```csharp
+var result = vc.Invoke(item, false);
+```
+**Listing**: passing the new isSummary argument to Invoke() method
 
-+[Fact]
-+public void Invoke_Should_Display_SummaryItem_View()
-+{
-+    //arrange 
-+    var vc = new BasketItemViewComponent();
-+    BasketItem item =
-+        new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 };
-+
-+    //act 
-+    var result = vc.Invoke(item, true);
-+
-+    //assert
-+    ViewViewComponentResult vvcResult = Assert.IsAssignableFrom<ViewViewComponentResult>(result);
-+    Assert.Equal("SummaryItem", vvcResult.ViewName);
-+    BasketItem resultModel = Assert.IsAssignableFrom<BasketItem>(vvcResult.ViewData.Model);
-+    Assert.Equal(item.ProductId, resultModel.ProductId);
+```csharp
+BasketItem resultModel = Assert.IsAssignableFrom<BasketItem>(vvcResult.ViewData.Model);
+```
+**Listing**: verifying that the result model is of type BasketItem
+
+```csharp
+Assert.Equal(item.ProductId, resultModel.ProductId);
+```
+**Listing**: verifying that the producId is the same passed to the view
+
+#### implemening new test: Invoke_Should_Display_SummaryItem_View
+
+```csharp
+[Fact]
+public void Invoke_Should_Display_SummaryItem_View()
+{
+    //arrange 
+    var vc = new BasketItemViewComponent();
+    BasketItem item =
+        new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 };
+
+    //act 
+    var result = vc.Invoke(item, true);
+
+    //assert
+    ViewViewComponentResult vvcResult = Assert.IsAssignableFrom<ViewViewComponentResult>(result);
+    Assert.Equal("SummaryItem", vvcResult.ViewName);
+    BasketItem resultModel = Assert.IsAssignableFrom<BasketItem>(vvcResult.ViewData.Model);
+    Assert.Equal(item.ProductId, resultModel.ProductId);
+}
+```
+**Listing**: testing behavior when summary style of ViewComponent is invoked
 
 Part 02/MVC.Test/BasketListViewComponentTest.cs
 
