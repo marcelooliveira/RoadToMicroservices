@@ -82,136 +82,161 @@ C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\Controllers\Bask
 ```
 **Listing**: Moving to BasketItem.cs to Models\ViewModels
 
-C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\ViewComponents\BasketListViewComponent.cs
+- /ViewComponents/BasketListViewComponent.cs
+- Components/BasketList/Default.cshtml
+- /Views/Basket/Index.cshtml
+- _BasketItem.cshtml
 
 ```csharp
-using MVC.Models.ViewModels;
+using MVC.Models.ViewModels
 ```
 
-Default.cshtml
-
-```csharp
-@using MVC.Models.ViewModels
-```
-
-/Views/Basket/Index.cshtml
-
-```csharp
-@using MVC.Models.ViewModels
-```
-_BasketItem.cshtml
-
-```csharp
-@using MVC.Models.ViewModels
-```
 
 #### Unit Testing Our View Component
 
-C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC.Test\MVC.Test.csproj
-
-@@ -0,0 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-
-    <IsPackable>false</IsPackable>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
-    <PackageReference Include="xunit" Version="2.4.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\MVC\MVC.csproj" />
-  </ItemGroup>
-
-</Project>
-
-C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\Part02.sln
-
-+ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC.Test", "MVC.Test\MVC.Test.csproj", "{79A50851-9596-44A7-A4A9-89321097E856}"
-+ EndProject
-+ 
-+ {79A50851-9596-44A7-A4A9-89321097E856}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-+ {79A50851-9596-44A7-A4A9-89321097E856}.Debug|Any CPU.Build.0 = Debug|Any CPU
-+ {79A50851-9596-44A7-A4A9-89321097E856}.Release|Any CPU.ActiveCfg = Release|Any CPU
-+ {79A50851-9596-44A7-A4A9-89321097E856}.Release|Any CPU.Build.0 = Release|Any CPU
+##### Add a new MVC.Test.csproj xUnit project to the solution
 
 #### Basket Component With Items Should Display Default View
 
-BasketListViewComponentTest.cs
+##### Create a new BasketListViewComponentTest.cs test class
 
-@@ -0,0 +1,34 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewComponents;
-using MVC.Models.ViewModels;
-using MVC.ViewComponents;
-using System;
-using System.Collections.Generic;
-using Xunit;
-
-namespace MVC.Test
+```csharp
+public class BasketListViewComponentTest
 {
-    public class BasketListViewComponentTest
+    [Fact]
+    public void Invoke_With_Items_Should_Display_Default_View()
     {
-        [Fact]
-        public void Invoke_With_Items_Should_Display_Default_View()
-        {
-            //arrange 
-            var vc = new BasketListViewComponent();
-            List<BasketItem> items =
-            new List<BasketItem>
-            {
-                new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
-                new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
-                new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
-            };
 
-            //act 
-            var result = vc.Invoke(items);
-
-            //assert
-            ViewViewComponentResult vvcResult = Assert.IsAssignableFrom<ViewViewComponentResult>(result);
-            Assert.Equal("Default", vvcResult.ViewName);
-        }
     }
 }
+```
+**Listing**: creating our first unit test with xUnit
+
+
+```csharp
+public class BasketListViewComponentTest
+{
+    [Fact]
+    public void Invoke_With_Items_Should_Display_Default_View()
+    {
+        //arrange 
+
+        //act 
+
+        //assert
+    }
+}
+```
+**Listing**: the triple A of unit testing: Arrange, Act and Assert
+
+```csharp
+public class BasketListViewComponentTest
+{
+    [Fact]
+    public void Invoke_With_Items_Should_Display_Default_View()
+    {
+        //arrange 
+        var vc = new BasketListViewComponent();
+
+        //act 
+        var result = vc.Invoke();
+
+        //assert
+
+    }
+}
+```
+**Listing**: arranging for the test and calling the Invoke() method
+
+```csharp
+public class BasketListViewComponentTest
+{
+    [Fact]
+    public void Invoke_With_Items_Should_Display_Default_View()
+    {
+        //arrange 
+        var vc = new BasketListViewComponent();
+        List<BasketItem> items =
+        new List<BasketItem>
+        {
+            new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
+            new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
+            new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
+        };
+
+        //act 
+        var result = vc.Invoke(items);
+
+        //assert
+    }
+}
+```
+**Listing**: providing a parameter for the Invoke() method
+
+```csharp
+public class BasketListViewComponentTest
+{
+    [Fact]
+    public void Invoke_With_Items_Should_Display_Default_View()
+    {
+        //arrange 
+        var vc = new BasketListViewComponent();
+        List<BasketItem> items =
+        new List<BasketItem>
+        {
+            new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
+            new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
+            new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
+        };
+
+        //act 
+        var result = vc.Invoke(items);
+
+        //assert
+        ViewViewComponentResult vvcResult = Assert.IsAssignableFrom<ViewViewComponentResult>(result);
+        Assert.Equal("Default", vvcResult.ViewName);
+    }
+}
+```
+**Listing**: checking the result type and result view name
 
 #### Basket Component Without Items Should Display Empty View
 
 BasketListViewComponentTest.cs
 
-+[Fact]
-+public void Invoke_With_Items_Should_Display_Empty_View()
-+{
-+    //arrange 
-+    var vc = new BasketListViewComponent();
-+    //act 
-+    var result = vc.Invoke(new List<BasketItem>());
-+
-+    //assert
-+    ViewViewComponentResult vvcResult = Assert.IsAssignableFrom<ViewViewComponentResult>(result);
-+    Assert.Equal("Empty", vvcResult.ViewName);
-+}
+```csharp
+[Fact]
+public void Invoke_Without_Items_Should_Display_Empty_View()
+{
+    //arrange 
+    var vc = new BasketListViewComponent();
+    //act 
+    var result = vc.Invoke(new List<BasketItem>());
+
+    //assert
+    ViewViewComponentResult vvcResult = Assert.IsAssignableFrom<ViewViewComponentResult>(result);
+    Assert.Equal("Empty", vvcResult.ViewName);
+}
+```
+**Listing**: testing the basket list view component for an empty basket
 
 C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\ViewComponents\BasketListViewComponent.cs
 
+```csharp
 public IViewComponentResult Invoke(List<BasketItem> items)
 {
-    +if (items.Count == 0)
-    +{
-    +    return View("Empty");
-    +}
+    if (items.Count == 0)       // these 3 lines were added
+    {                           // so that we can return
+        return View("Empty");   // a different view in case
+    }                           // of empty basket
     return View("Default", items);
 }
+```
+**Listing**: returning a different view in case of empty basket
 
 Empty.cshtml
 
-@@ -0,0 +1,15 @@
+```razor
 ﻿@using MVC.Models.ViewModels
 @model List<BasketItem>;
 
@@ -227,106 +252,111 @@ Empty.cshtml
         </div>
     </div>
 </div>
+```
+**Listing**: the new Empty.cshtml view showing the Bootstrap 4 alert component
 
 C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\Views\Basket\Index.cshtml
 
--new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
--new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
--new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
-+//new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
-+//new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
-+//new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
-
+```csharp
+//new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
+//new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
+//new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
+```
+**Listing**: Commenting the items in order to check the alert while running the application
 
 #### Creating a ViewComponent for BasketList
 
 C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\ViewComponents\BasketItemViewComponent.cs
 
-@@ -0,0 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MVC.Models.ViewModels;
-
-namespace MVC.ViewComponents
+```csharp
+public class BasketItemViewComponent : ViewComponent
 {
-    public class BasketItemViewComponent : ViewComponent
+    public BasketItemViewComponent()
     {
-        public BasketItemViewComponent()
-        {
-        }
+    }
 
-        public IViewComponentResult Invoke(BasketItem item)
-        {
-            return View("Default", item);
-        }
+    public IViewComponentResult Invoke(BasketItem item)
+    {
+        return View("Default", item);
     }
 }
+```
+**Listing**: the new BasketItemViewComponent class
 
-_BasketItem.cshtml => Default.cshtml
+Move this file: _BasketItem.cshtml => Default.cshtml
 
 Default.cshtml
 
-+@addTagHelper *, MVC
+```csharp
+@addTagHelper *, MVC
+```
+**Listing**: adding the @addTagHelper directive
 
+```razor
+<partial name="_BasketList" for="@items" />
+```
+**Listing**: remove the Partial tag helper
 
--<partial name="_BasketList" for="@items" />
-+<div class="card">
-+    <div class="card-header">
-+        <div class="row">
-+            <div class="col-sm-6">
-+                Item
-+            </div>
-+            <div class="col-sm-2 text-center">
-+                Unit Price
-+            </div>
-+            <div class="col-sm-2 text-center">
-+                Quantity
-+            </div>
-+            <div class="col-sm-2">
-+                <span class="pull-right">
-+                    Subtotal
-+                </span>
-+            </div>
-+        </div>
-+    </div>
-+    <div class="card-body">
-+        @foreach (var item in items)
-+        {
-+            <vc:basket-item item="@item"></vc:basket-item>
-+        }
-+    </div>
-+    <div class="card-footer">
-+        <div class="row">
-+            <div class="col-sm-10">
-+                <span numero-items>
-+                    Total: @items.Count
-+                    item@(items.Count > 1 ? "s" : "")
-+                </span>
-+            </div>
-+            <div class="col-sm-2">
-+                Total: <span class="pull-right" total>
-+                    @(items.Sum(item => item.Quantity * item.UnitPrice).ToString("C"))
-+                </span>
-+            </div>
-+        </div>
-+    </div>
-+</div>
+```razor
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-sm-6">
+                Item
+            </div>
+            <div class="col-sm-2 text-center">
+                Unit Price
+            </div>
+            <div class="col-sm-2 text-center">
+                Quantity
+            </div>
+            <div class="col-sm-2">
+                <span class="pull-right">
+                    Subtotal
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        @foreach (var item in items)
+        {
+            <vc:basket-item item="@item"></vc:basket-item>
+        }
+    </div>
+    <div class="card-footer">
+        <div class="row">
+            <div class="col-sm-10">
+                <span numero-items>
+                    Total: @items.Count
+                    item@(items.Count > 1 ? "s" : "")
+                </span>
+            </div>
+            <div class="col-sm-2">
+                Total: <span class="pull-right" total>
+                    @(items.Sum(item => item.Quantity * item.UnitPrice).ToString("C"))
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+```
+**Listing**: the Components/BasketItem/Default.html file
 
 C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\Views\Basket\Index.cshtml
 
--//new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
--//new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
--//new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
-+new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
-+new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
-+new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
+```csharp
+new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
+new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
+new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
+```
+**Listing**: restoring the 3 basket items
 
-DELETE _BasketList.cshtml
+Last step: DELETE _BasketList.cshtml partial view file
 
 #### Unit Testing BasketItemViewComponent
 
 ADD BasketItemViewComponentTest.cs
 
-@@ -0,0 +1,29 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using MVC.Models.ViewModels;

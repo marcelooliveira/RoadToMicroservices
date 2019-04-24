@@ -43,7 +43,7 @@ namespace MVC.Test.ViewComponents
         }
 
         [Fact]
-        public void Invoke_With_Items_Should_Display_Empty_View()
+        public void Invoke_Without_Items_Should_Display_Empty_View()
         {
             //arrange 
             Mock<IBasketService> basketServiceMock =
