@@ -1,6 +1,10 @@
 ﻿#### Part02 - begin
 
-#### first view component
+#### Introduction
+
+#### Partial View vs. View Component
+
+#### Our First View Component: Refactoring the Basket View
 
 C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\ViewComponents\BasketListViewComponent.cs
 
@@ -45,7 +49,7 @@ C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\Views\Basket\Ind
 .
 <vc:basket-list items="@items"></vc:basket-list>
 
-#### BasketItem as ViewModel
+#### Moving BasketItem to ViewModels
 
 C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\Controllers\BasketController.cs
 
@@ -100,7 +104,43 @@ _BasketItem.cshtml
 ﻿-@using MVC.Controllers
 ﻿+@using MVC.Models.ViewModels
 
-#### Invoke_With_Items_Should_Display_Default_View
+#### Unit Testing Our View Component
+
+C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC.Test\MVC.Test.csproj
+
+@@ -0,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+    <PackageReference Include="xunit" Version="2.4.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MVC\MVC.csproj" />
+  </ItemGroup>
+
+</Project>
+
+C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\Part02.sln
+
++ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC.Test", "MVC.Test\MVC.Test.csproj", "{79A50851-9596-44A7-A4A9-89321097E856}"
++ EndProject
++ 
++ {79A50851-9596-44A7-A4A9-89321097E856}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
++ {79A50851-9596-44A7-A4A9-89321097E856}.Debug|Any CPU.Build.0 = Debug|Any CPU
++ {79A50851-9596-44A7-A4A9-89321097E856}.Release|Any CPU.ActiveCfg = Release|Any CPU
++ {79A50851-9596-44A7-A4A9-89321097E856}.Release|Any CPU.Build.0 = Release|Any CPU
+
+#### Basket Component With Items Should Display Default View
 
 BasketListViewComponentTest.cs
 
@@ -140,42 +180,7 @@ namespace MVC.Test
     }
 }
 
-C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC.Test\MVC.Test.csproj
-
-@@ -0,0 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-
-    <IsPackable>false</IsPackable>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
-    <PackageReference Include="xunit" Version="2.4.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\MVC\MVC.csproj" />
-  </ItemGroup>
-
-</Project>
-
-C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\Part02.sln
-
-+ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC.Test", "MVC.Test\MVC.Test.csproj", "{79A50851-9596-44A7-A4A9-89321097E856}"
-+ EndProject
-+ 
-+ {79A50851-9596-44A7-A4A9-89321097E856}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-+ {79A50851-9596-44A7-A4A9-89321097E856}.Debug|Any CPU.Build.0 = Debug|Any CPU
-+ {79A50851-9596-44A7-A4A9-89321097E856}.Release|Any CPU.ActiveCfg = Release|Any CPU
-+ {79A50851-9596-44A7-A4A9-89321097E856}.Release|Any CPU.Build.0 = Release|Any CPU
-
-
-#### Invoke_With_Items_Should_Display_Empty_View
+#### Basket Component Without Items Should Display Empty View
 
 BasketListViewComponentTest.cs
 
@@ -232,7 +237,7 @@ C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\Views\Basket\Ind
 +//new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
 
 
-#### BasketListViewComponent
+#### Creating a ViewComponent for BasketList
 
 C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\ViewComponents\BasketItemViewComponent.cs
 
@@ -316,7 +321,7 @@ C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\Views\Basket\Ind
 
 DELETE _BasketList.cshtml
 
-#### BasketItemViewComponentTest - Invoke_Should_Display_Default_View
+#### Unit Testing BasketItemViewComponent
 
 ADD BasketItemViewComponentTest.cs
 
@@ -351,8 +356,7 @@ namespace MVC.Test
     }
 }
 
-
-#### Components in Views/Shared folder
+#### Moving Components to Views/Shared Folder
 
 Part 02/MVC.Test/BasketItemViewComponentTest.cs
 
@@ -515,7 +519,7 @@ Part 02/MVC/Views/Shared/Components/BasketItem/SummaryItem.cshtml
 
 ...Basket/Components/BasketList/Empty.cshtml → ...Shared/Components/BasketList/Empty.cshtml
 
-#### all tests fixed for IBasketService
+#### Fixing All Tests for IBasketService
 
 Part 02/MVC.Test/BasketListViewComponentTest.cs
 
@@ -632,7 +636,7 @@ Part 02/MVC/Views/Checkout/Index.cshtml
 - <vc:basket-list items="@items" is-summary="true"></vc:basket-list>
 + <vc:basket-list is-summary="true"></vc:basket-list>
 
-#### Assert.Collection
+#### Asserting Collections
 
 ...2/MVC.Test/BasketItemViewComponentTest.cs → ...Components/BasketItemViewComponentTest.cs
 
@@ -652,7 +656,7 @@ Part 02/MVC/Views/Checkout/Index.cshtml
 +        i => Assert.Equal(9, i.ProductId)
 +    );
 
-#### CategoriesViewComponent
+#### Creating ViewComponent for Categories
 
 Part 02/MVC/ViewComponents/CategoriesViewComponent.cs
 
@@ -687,7 +691,7 @@ Part 02/MVC/Views/Catalog/Index.cshtml
 - <partial name="_Categories" for="@Model" />
 + <vc:categories products="@Model"></vc:categories>
 
-#### ProductCardViewComponent
+#### Creating ViewComponent for ProductCard
 
 Part 02/MVC/ViewComponents/ProductCardViewComponent.cs
 
@@ -730,7 +734,7 @@ Part 02/MVC/Views/Catalog/Components/Categories/Default.cshtml
 
 ... 02/MVC/Views/Catalog/_ProductCard.cshtml → ...log/Components/ProductCard/Default.cshtml
 
-#### Catalog View Components
+#### Creating ViewComponents for Catalog
 
 Part 02/MVC/Models/ViewModels/CarouselPageViewModel.cs
 
@@ -994,7 +998,7 @@ Part 02/MVC/Views/Catalog/Components/Categories/Default.cshtml
 
 + <vc:carousel category="@category" products="@Model.Products" page-size="@Model.PageSize"></vc:carousel>
 
-#### counter icons
+#### Creating Navigation Bar Notification Icons
 
 Part 02/MVC/Views/Shared/_Layout.cshtml
 
@@ -1072,7 +1076,7 @@ Part 02/MVC/wwwroot/css/site.css
 }
 
 
-#### UserCounterViewComponent
+#### Creating UserCounter ViewComponent
 
 Part 02/MVC/Models/ViewModels/UserCountViewModel.cs
 
@@ -1172,7 +1176,7 @@ Part 02/MVC/wwwroot/css/site.css
 -    content: attr(data-count);
 +    content: attr(count);
 
-#### UserCounterService
+#### Creating UserCounterService
 
 Part 02/MVC/Models/ViewModels/UserCountViewModel.cs
 
@@ -1260,7 +1264,7 @@ Part 02/MVC/Views/Shared/_Layout.cshtml
 -         count="3">
 +         user-counter-type="Basket">
 
-#### NotificationCounter, BasketCounter subclasses
+#### Creating NotificationCounter, BasketCounter Subclasses
 
 Part 02/MVC/ViewComponents/UserCounterViewComponent.cs
 
