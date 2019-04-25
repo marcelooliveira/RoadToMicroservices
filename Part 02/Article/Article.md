@@ -24,7 +24,42 @@ a specific controller action. View components, on the other hand, only depend on
 Although we are implementing the view components in an e-commerce application, which based on controllers and views, 
 it is also possible to develop view components for Razor Pages.
 
-#### Our First View Component: refactoring the Basket View
+#### Replacing Basket Partial Views with View Components
+
+In the previous article, we broke the Basket view into smaller partial views, as we can see in the folder structure below:
+
+![Basket Partial Views](basket_partial_views.png)
+
+**Picture**: basket-related partial views
+
+Each one of these markup files is responsible for rendering a different layer of elements inside the basket view:
+
+- Basket/Index (View)
+    - Basket Controls (Partial View)
+    - Basket List (Partial View)
+    - Basket Item (Partial View)
+
+```razor
+<partial name="_BasketControls" />
+
+<h3>My Basket</h3>
+
+<partial name="_BasketList" for="@items" />
+
+<br />
+
+<partial name="_BasketControls" />
+```
+**Listing**: an example of how to use partial views (\Views\Basket\Index.cshtml)
+
+But partial views are somehow limited, and don't allow some interesting features that
+we can find in View Components, such:
+
+- Behavior independent from the hosting view
+- Separation of concerns similar to controller/views
+- Parameters
+- Business logic
+- Testability
 
 C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\ViewComponents\BasketListViewComponent.cs
 
@@ -42,6 +77,12 @@ public class BasketListViewComponent : ViewComponent
 }
 ```
 **Listing** : ViewComponents\BasketListViewComponent.cs file
+
+
+
+
+
+
 
 Default.cshtml
 
