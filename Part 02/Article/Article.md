@@ -1,6 +1,6 @@
 ﻿#### Introduction
 
-Welcome to the second installment of this article series "**ASP.NET Core Roadmap to Microservices**".
+Welcome to the second installment of the "**ASP.NET Core Roadmap to Microservices**" article series.
 
 In the last article, we saw how to build the basic views of the e-commerce application, using views and Partial Views. Today we will explore the subject of **view components** in ASP.NET CORE.
 
@@ -24,27 +24,20 @@ a specific controller action. View components, on the other hand, only depend on
 Although we are implementing the view components in an e-commerce application, which based on controllers and views, 
 it is also possible to develop view components for Razor Pages.
 
-#### Our First View Component: the Basket View
+#### Our First View Component: refactoring the Basket View
 
 C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\ViewComponents\BasketListViewComponent.cs
 
 ```csharp
-﻿using Microsoft.AspNetCore.Mvc;
-using MVC.Controllers;
-using System.Collections.Generic;
-
-namespace MVC.ViewComponents
+public class BasketListViewComponent : ViewComponent
 {
-    public class BasketListViewComponent : ViewComponent
+    public BasketListViewComponent()
     {
-        public BasketListViewComponent()
-        {
-        }
+    }
 
-        public IViewComponentResult Invoke(List<BasketItem> items)
-        {
-            return View("Default", items);
-        }
+    public IViewComponentResult Invoke(List<BasketItem> items)
+    {
+        return View("Default", items);
     }
 }
 ```
@@ -88,16 +81,13 @@ C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\Views\Basket\Ind
 C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\Controllers\BasketController.cs
 
 ```csharp
-﻿namespace MVC.Models.ViewModels
+public class BasketItem
 {
-    public class BasketItem
-    {
-        public int Id { get; set; }
-        public int ProductId { get; set; }
-        public string Name { get; set; }
-        public decimal UnitPrice { get; set; }
-        public int Quantity { get; set; }
-    }
+    public int Id { get; set; }
+    public int ProductId { get; set; }
+    public string Name { get; set; }
+    public decimal UnitPrice { get; set; }
+    public int Quantity { get; set; }
 }
 ```
 **Listing**: Moving to BasketItem.cs to Models\ViewModels
@@ -493,15 +483,10 @@ var result = vc.Invoke(new List<BasketItem>(), false);
 
 
 ```csharp
-using System.Collections.Generic;
-
-namespace MVC.Models.ViewModels
+public class BasketItemList
 {
-    public class BasketItemList
-    {
-        public List<BasketItem> List { get; set; }
-        public bool IsSummary { get; set; }
-    }
+    public List<BasketItem> List { get; set; }
+    public bool IsSummary { get; set; }
 }
 ```
 **Listing**: the new BasketItemList class (ViewModels\BasketItemList.cs)
@@ -703,16 +688,10 @@ var result = vc.Invoke(false);
 Part 02/MVC/Services/IBasketService.cs
 
 ```csharp
-using System.Collections.Generic;
-using MVC.Models.ViewModels;
-
-namespace MVC.Services
+public interface IBasketService
 {
-    public interface IBasketService
-    {
-        List<BasketItem> GetBasketItems();
-    }
-} 
+    List<BasketItem> GetBasketItems();
+}
 ```
 **Listing**: the new IBasketService interface (/Services/IBasketService.cs)
 
@@ -721,22 +700,16 @@ namespace MVC.Services
 Part 02/MVC/Services/BasketService.cs
 
 ```csharp
-using MVC.Models.ViewModels;
-using System.Collections.Generic;
-
-namespace MVC.Services
+public class BasketService : IBasketService
 {
-    public class BasketService : IBasketService
+    public List<BasketItem> GetBasketItems()
     {
-        public List<BasketItem> GetBasketItems()
+        return new List<BasketItem>
         {
-            return new List<BasketItem>
-            {
-                new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
-                new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
-                new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
-            };
-        }
+            new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
+            new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
+            new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
+        };
     }
 }
 ```
@@ -856,18 +829,15 @@ Assert.Collection<BasketItem>(model.List,
 Part 02/MVC/ViewComponents/CategoriesViewComponent.cs
 
 ```csharp
-namespace MVC.ViewComponents
+public class CategoriesViewComponent : ViewComponent
 {
-    public class CategoriesViewComponent : ViewComponent
+    public CategoriesViewComponent()
     {
-        public CategoriesViewComponent()
-        {
-        }
+    }
 
-        public IViewComponentResult Invoke(List<Product> products)
-        {
-            return View("Default", products);
-        }
+    public IViewComponentResult Invoke(List<Product> products)
+    {
+        return View("Default", products);
     }
 }
 ```
@@ -1313,23 +1283,17 @@ Listing: the new UserCountViewModel class (/Models/ViewModels/UserCountViewModel
 Part 02/MVC/ViewComponents/UserCounterViewComponent.cs
 
 ```csharp
-using Microsoft.AspNetCore.Mvc;
-using MVC.Models.ViewModels;
-
-namespace MVC.ViewComponents
+public class UserCounterViewComponent : ViewComponent
 {
-    public class UserCounterViewComponent : ViewComponent
+    public UserCounterViewComponent()
     {
-        public UserCounterViewComponent()
-        {
 
-        }
+    }
 
-        public IViewComponentResult Invoke(string title, string controllerName, string cssClass, string icon, string count)
-        {
-            var model = new UserCountViewModel(title, controllerName, cssClass, icon, count);
-            return View("Default", model);
-        }
+    public IViewComponentResult Invoke(string title, string controllerName, string cssClass, string icon, string count)
+    {
+        var model = new UserCountViewModel(title, controllerName, cssClass, icon, count);
+        return View("Default", model);
     }
 }
 ```
