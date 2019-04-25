@@ -461,69 +461,75 @@ public void Invoke_Should_Display_SummaryItem_View()
 ```
 **Listing**: testing behavior when summary style of ViewComponent is invoked
 
-Part 02/MVC.Test/BasketListViewComponentTest.cs
-
--var result = vc.Invoke(items);
-+var result = vc.Invoke(items, false);
-
--var result = vc.Invoke(new List<BasketItem>());
-+var result = vc.Invoke(new List<BasketItem>(), false);
-
-Part 02/MVC/Models/ViewModels/BasketItemList.cs
-
-+using System.Collections.Generic;
-+
-+namespace MVC.Models.ViewModels
-+{
-+    public class BasketItemList
-+    {
-+        public List<BasketItem> List { get; set; }
-+        public bool IsSummary { get; set; }
-+    }
-+}
-
-Part 02/MVC/Views/Basket/Index.cshtml
-
--{
--    new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
--    new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
--    new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
--};
-+{
-+    new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
-+    new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
-+    new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
-+};
-
--<vc:basket-list items="@items"></vc:basket-list>
-+<vc:basket-list items="@items" is-summary="false"></vc:basket-list>
-
-Part 02/MVC/Views/Checkout/Index.cshtml
-
-- @model string
-- 
-- @{ 
-+ @using MVC.Models.ViewModels
-+ @model string
-+ @addTagHelper *, MVC
-+ @{
-
-+    List<BasketItem> items = new List<BasketItem>
-+    {
-+        new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
-+        new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
-+        new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
-+    };
+```csharp
+...
+var result = vc.Invoke(items, false);
+...
+var result = vc.Invoke(new List<BasketItem>(), false);
+...
+```
+**Listing**: updating tests class with the isSummary argument (BasketListViewComponentTest.cs)
 
 
-+<h4>Summary</h4>
-+
-+<vc:basket-list items="@items" is-summary="true"></vc:basket-list>
 
-...sket/Components/BasketItem/Default.cshtml → ...ared/Components/BasketItem/Default.cshtml
+```csharp
+using System.Collections.Generic;
 
-Part 02/MVC/Views/Shared/Components/BasketItem/SummaryItem.cshtml
+namespace MVC.Models.ViewModels
+{
+    public class BasketItemList
+    {
+        public List<BasketItem> List { get; set; }
+        public bool IsSummary { get; set; }
+    }
+}
+```
+**Listing**: the new BasketItemList class (ViewModels\BasketItemList.cs)
 
+
+```razor
+<vc:basket-list items="@items" is-summary="false"></vc:basket-list>
+```
+**Listing**: adding the new is-summary argument to the view component tag helper (/Views/Basket/Index.cshtml)
+
+
+
+```razor
+ @using MVC.Models.ViewModels
+ @model string
+ @addTagHelper *, MVC
+ @{
+
+    List<BasketItem> items = new List<BasketItem>
+    {
+        new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
+        new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
+        new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
+    };
+```
+**Listing**: adding the summary data checkout view (/Views/Checkout/Index.cshtml)
+
+
+```razor
+<h4>Summary</h4>
+
+<vc:basket-list items="@items" is-summary="true"></vc:basket-list>
+```
+**Listing**: adding the summary basket view component to the checkout view (/Views/Checkout/Index.cshtml)
+
+
+
+
+MOVE
+...Basket/Components/BasketItem/Default.cshtml
+TO
+...Shared/Components/BasketItem/Default.cshtml
+
+
+
+
+
+```razor
 @using MVC.Models.ViewModels
 
 @model BasketItem
@@ -547,33 +553,75 @@ Part 02/MVC/Views/Shared/Components/BasketItem/SummaryItem.cshtml
     </div>
 </div>
 <br />
+```
+**Listing**: the new summary item view component (Views/Shared/Components/BasketItem/SummaryItem.cshtml)
 
-...sket/Components/BasketList/Default.cshtml → ...ared/Components/BasketList/Default.cshtml
 
-- @model List<BasketItem>;
-- 
-- @{
--     var items = Model;
-- }
 
-+ @model BasketItemList;
+MOVE
+...Basket/Components/BasketList/Default.cshtml
+TO
+...Shared/Components/BasketList/Default.cshtml
 
--  @foreach (var item in items)
-+  @foreach (var item in Model.List)
-   {
--      <vc:basket-item item="@item"></vc:basket-item>
-+      <vc:basket-item item="@item" is-summary="Model.IsSummary"></vc:basket-item>
-   }
 
-- Total: @items.Count
-- item@(items.Count > 1 ? "s" : "")
-+ Total: @Model.List.Count
-+ item@(Model.List.Count > 1 ? "s" : "")
 
-- @(items.Sum(item => item.Quantity * item.UnitPrice).ToString("C"))
-+ @(Model.List.Sum(item => item.Quantity * item.UnitPrice).ToString("C"))
 
-...Basket/Components/BasketList/Empty.cshtml → ...Shared/Components/BasketList/Empty.cshtml
+
+Remove this lines from BasketList/Default.cshtml...
+```razor
+@model List<BasketItem>;
+
+@{
+    var items = Model;
+}
+```
+... and replace them with...
+```razor
+@model BasketItemList;
+```
+
+
+REPLACE:
+```razor
+@foreach (var item in items)
+{
+    <vc:basket-item item="@item"></vc:basket-item>
+}
+```
+WITH:
+```razor
+@foreach (var item in Model.List)
+{
+    <vc:basket-item item="@item" is-summary="Model.IsSummary"></vc:basket-item>
+}
+```
+
+REPLACE:
+```razor
+Total: @items.Count
+item@(items.Count > 1 ? "s" : "")
+```
+WITH:
+```razor
+Total: @Model.List.Count
+item@(Model.List.Count > 1 ? "s" : "")
+```
+
+
+REPLACE:
+```razor
+@(items.Sum(item => item.Quantity * item.UnitPrice).ToString("C"))
+```
+WITH:
+```razor
+@(Model.List.Sum(item => item.Quantity * item.UnitPrice).ToString("C"))
+```
+
+MOVE
+...Basket/Components/BasketList/Empty.cshtml
+TO
+...Shared/Components/BasketList/Empty.cshtml
+
 
 #### Fixing All Tests for IBasketService
 
