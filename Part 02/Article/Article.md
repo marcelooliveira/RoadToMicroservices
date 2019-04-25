@@ -61,61 +61,193 @@ we can find in View Components, such:
 - Business logic
 - Testability
 
+But these nice features also means we have a little more work to do in order to create view components.
+Besides the markup file, we also have to create a dedicated class for the view component.
+But this must reside in a **ViewComponents** folder, which we must create first.
+
+Now let's create a class named BasketListViewComponent inside the **ViewComponents** folder.
+
+This class just need to have an Invoke() method calling and returning the "Default" view:
+
+```csharp
+public class BasketListViewComponent : ViewComponent
+{
+    public IViewComponentResult Invoke()
+    {
+        return View("Default");
+    }
+}
+```
+**Listing** : the ViewComponents\BasketListViewComponent.cs file
+
+But notice how our previous Basket List partial view had an attribute for the model:
+
+```razor
+<partial name="_BasketList" for="@items" />
+```
+
+This @items attribute will now be passed to the new BasketListViewComponent through an items parameter
+in the Invoke method of the BasketListViewComponent class, and it is then passed as a model
+for the Default markup file:
+
 C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\ViewComponents\BasketListViewComponent.cs
 
 ```csharp
 public class BasketListViewComponent : ViewComponent
 {
-    public BasketListViewComponent()
-    {
-    }
-
     public IViewComponentResult Invoke(List<BasketItem> items)
     {
         return View("Default", items);
     }
 }
 ```
-**Listing** : ViewComponents\BasketListViewComponent.cs file
+**Listing** : the ViewComponents\BasketListViewComponent.cs file
 
 
+By default, view component class names must have the -ViewComponent. But you can override this rule
+by using the ViewComponentAttribute and setting the name of the component
+(Notice that this allows you to use any class name you want).
 
+```csharp
+[ViewComponent(Name = "BasketList")]
+public class BasketList : ViewComponent
+{
+    public IViewComponentResult Invoke(List<BasketItem> items)
+    {
+        return View("Default", items);
+    }
+}
+```
+**Listing** : using attribute to set the view component name
 
+Now let's create the markup (view) file for the component. First, we have to create
+a \Components folder under the \Views\Basket folder, and then 
+a \BasketList folder under the \Components folder. Then we create the Default.cshtml file
+(which is by the way the default name for any component), which looks exactly like a regular
+view file. Add a new MVC view (scaffolding) with no template, no model and no layout:
 
+![New Mvc View](new_mvc_view.png)
 
-
-Default.cshtml
+**Picture**: Adding a new view component view
 
 ```razor
-﻿@using MVC.Controllers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Default</title>
+</head>
+<body>
+</body>
+</html>
+```
+**Listing**: \Views\Components\BasketList\Default.cshtml file
+
+Notice that the new BasketList View Component is meant to replace the current BasketList partial view.
+Therefore, we will overwrite the contents of the former with the contents of the latter:
+
+```razor
+@using MVC.Controllers
 @model List<BasketItem>;
 
 @{
     var items = Model;
 }
 
-<partial name="_BasketList" for="@items" />
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-sm-6">
+                Item
+            </div>
+            <div class="col-sm-2 text-center">
+                Unit Price
+            </div>
+            <div class="col-sm-2 text-center">
+                Quantity
+            </div>
+            <div class="col-sm-2">
+                <span class="pull-right">
+                    Subtotal
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        @foreach (var item in items)
+        {
+            <partial name="_BasketItem" for="@item" />
+        }
+    </div>
+    <div class="card-footer">
+        <div class="row">
+            <div class="col-sm-10">
+                <span numero-items>
+                    Total: @items.Count
+                    item@(items.Count > 1 ? "s" : "")
+                </span>
+            </div>
+            <div class="col-sm-2">
+                Total: <span class="pull-right" total>
+                    @(items.Sum(item => item.Quantity * item.UnitPrice).ToString("C"))
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
 ```
-**Listing**: Components\BasketList\Default.cshtml file
+**Listing**: BasketList View Component with the contents of the BasketList partial view (\Views\Components\BasketList\Default.cshtml)
 
 C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\Views\Basket\Index.cshtml
 
+Now let's update the basket view to replace the partial view tag helper with the view component tag helper.
+
+Open the \Views\Basket\Index.cshtml file. We now must make the Tag Helpers available for this file.
+So, add the following directive:
 
 ```razor
-<!--<partial name="_BasketList" for="@items" />-->
-```
-**Listing**: removing PartialTagHelper for BasketList
-
-
-```razor
-﻿@using MVC.Controllers
 @addTagHelper *, MVC
-.
-.
-.
+```
+
+The @addTagHelper directive will allow us to use view component tag helpers. The "*" parameter
+means all tag helpers will be available, and the "MVC" part means all view components found in the
+MVC namespace will be available.
+
+Now comment this line:
+
+```razor
+<!--THIS LINE WILL BE COMMENTED OUT-->
+@*<partial name="_BasketList" for="@items" />*@
+```
+**Listing**: removing PartialTagHelper for BasketList (\Views\Basket\Index.cshtml)
+
+Now, let's reference our view component tag helper. View components will be available when
+you type the "<vc:" prefix:
+
+![Replacing Partial View Tag Helper](replacing_partial_view_tag_helper.png)
+
+Notice how the BasketList view component is displayed as "basket-list". This is the called
+"Kebab-Case" style (because it looks like, you know, a kebab stick).
+
+Another thing you may have noticed is the @_Generated_BasketListViewComponentTagHelper name,
+which is the name of the class automatically generated into the assembly when you compile the view component.
+
+Now let's also provide the items parameter for the view component:
+
+```razor
+@*<partial name="_BasketList" for="@items" />*@
 <vc:basket-list items="@items"></vc:basket-list>
 ```
-**Listing**: Using the generated BasketListViewComponentTagHelper
+**Listing**: the view component tag helper for BasketList (\Views\Basket\Index.cshtml)
+
+At this point, we can run the application, and verify that our view component is now working exactly as the replaced partial view:
+
+![Running Webapp](running_webapp.png)
 
 #### Moving BasketItem to ViewModels
 
