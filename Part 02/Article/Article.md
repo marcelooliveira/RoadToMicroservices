@@ -809,46 +809,49 @@ Change this line to remove the `items` attribute...
 
 #### Asserting Collections
 
-...2/MVC.Test/BasketItemViewComponentTest.cs → ...Components/BasketItemViewComponentTest.cs
+MOVE
+...2/MVC.Test/BasketItemViewComponentTest.cs
+TO
+...Components/BasketItemViewComponentTest.cs
 
-- namespace MVC.Test
-+ namespace MVC.Test.ViewComponents
 
-...2/MVC.Test/BasketListViewComponentTest.cs → ...Components/BasketListViewComponentTest.cs
+MOVE
+...2/MVC.Test/BasketListViewComponentTest.cs
+TO
+...Components/BasketListViewComponentTest.cs
 
-- using Microsoft.AspNetCore.Mvc;
-- namespace MVC.Test
-+ namespace MVC.Test.ViewComponents
 
-+    var model = Assert.IsAssignableFrom<BasketItemList>(vvcResult.ViewData.Model);
-+    Assert.Collection<BasketItem>(model.List,
-+        i => Assert.Equal(1, i.ProductId),
-+        i => Assert.Equal(5, i.ProductId),
-+        i => Assert.Equal(9, i.ProductId)
-+    );
+```csharp
+var model = Assert.IsAssignableFrom<BasketItemList>(vvcResult.ViewData.Model);
+Assert.Collection<BasketItem>(model.List,
+    i => Assert.Equal(1, i.ProductId),
+    i => Assert.Equal(5, i.ProductId),
+    i => Assert.Equal(9, i.ProductId)
+);
+```
+**Listing**: asserting validity of the collection type and contents
 
 #### Creating ViewComponent for Categories
 
 Part 02/MVC/ViewComponents/CategoriesViewComponent.cs
 
-+ using Microsoft.AspNetCore.Mvc;
-+ using MVC.Models;
-+ using System.Collections.Generic;
-+ 
-+ namespace MVC.ViewComponents
-+ {
-+     public class CategoriesViewComponent : ViewComponent
-+     {
-+         public CategoriesViewComponent()
-+         {
-+         }
-+ 
-+         public IViewComponentResult Invoke(List<Product> products)
-+         {
-+             return View("Default", products);
-+         }
-+     }
-+ }
+```csharp
+namespace MVC.ViewComponents
+{
+    public class CategoriesViewComponent : ViewComponent
+    {
+        public CategoriesViewComponent()
+        {
+        }
+
+        public IViewComponentResult Invoke(List<Product> products)
+        {
+            return View("Default", products);
+        }
+    }
+}
+```
+**Listing**: the new CategoriesViewComponent class (/ViewComponents/CategoriesViewComponent.cs)
 
 Part 02/MVC/Views/Catalog/_Categories.cshtml → ...alog/Components/Categories/Default.cshtml
 
