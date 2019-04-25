@@ -1,10 +1,30 @@
-﻿#### Part02 - begin
+﻿#### Introduction
 
-#### Introduction
+Welcome to the second installment of this article series "**ASP.NET Core Roadmap to Microservices**".
+
+In the last article, we saw how to build the basic views of the e-commerce application, using views and Partial Views. Today we will explore the subject of **view components** in ASP.NET CORE.
+
+What are view components? How they compare to **partial views**? And how they apply in our e-commerce project?
 
 #### Partial View vs. View Component
+ 
+The partial views we introduced in the previous article are capable enough to perform the
+role of view composition for the e-commerce application.
 
-#### Our First View Component: Refactoring the Basket View
+We have seen how partial views allow us to break up large markup files into smaller components,
+and reduce the duplication of common markup content across markup files.
+
+View Component is a concept introduced by ASP.NET Core, and is similar to a partial view.
+While view components are as capable as partial views in decomposing large views and reducing duplication,
+but they're also built differently, and are much more powerful.
+
+Partial views, just like regular views, use model binding, that is, the model data which is provided by
+a specific controller action. View components, on the other hand, only depend on the data provided to them as real parameters.
+
+Although we are implementing the view components in an e-commerce application, which based on controllers and views, 
+it is also possible to develop view components for Razor Pages.
+
+#### Our First View Component: the Basket View
 
 C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\ViewComponents\BasketListViewComponent.cs
 
