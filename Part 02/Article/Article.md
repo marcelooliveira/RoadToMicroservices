@@ -934,160 +934,172 @@ TO
 
 Part 02/MVC/Models/ViewModels/CarouselPageViewModel.cs
 
-using System.Collections.Generic;
 
-namespace MVC.Models.ViewModels
+```csharp
+public class CarouselPageViewModel
 {
-    public class CarouselPageViewModel
+    public CarouselPageViewModel()
     {
-        public CarouselPageViewModel()
-        {
 
-        }
-
-        public CarouselPageViewModel(List<Product> products, int pageIndex)
-        {
-            Products = products;
-            PageIndex = pageIndex;
-        }
-
-        public List<Product> Products { get; set; }
-        public int PageIndex { get; set; }
     }
+
+    public CarouselPageViewModel(List<Product> products, int pageIndex)
+    {
+        Products = products;
+        PageIndex = pageIndex;
+    }
+
+    public List<Product> Products { get; set; }
+    public int PageIndex { get; set; }
 }
+```
+**Listing**: the new CarouselPageViewModel class (/Models/ViewModels/CarouselPageViewModel.cs)
+
+
+
 
 Part 02/MVC/Models/ViewModels/CarouselViewModel.cs
 
-using System.Collections.Generic;
-
-namespace MVC.Models.ViewModels
+```csharp
+public class CarouselViewModel
 {
-    public class CarouselViewModel
+    public CarouselViewModel()
     {
-        public CarouselViewModel()
-        {
 
-        }
-
-        public CarouselViewModel(Category category, List<Product> products, int pageCount, int pageSize)
-        {
-            Category = category;
-            Products = products;
-            PageCount = pageCount;
-            PageSize = pageSize;
-        }
-
-        public Category Category { get; set; }
-        public List<Product> Products { get; set; }
-        public int PageCount { get; set; }
-        public int PageSize { get; set; }
     }
+
+    public CarouselViewModel(Category category, List<Product> products, int pageCount, int pageSize)
+    {
+        Category = category;
+        Products = products;
+        PageCount = pageCount;
+        PageSize = pageSize;
+    }
+
+    public Category Category { get; set; }
+    public List<Product> Products { get; set; }
+    public int PageCount { get; set; }
+    public int PageSize { get; set; }
 }
+```
+**Listing**: the new CarouselViewModel class (/Models/ViewModels/CarouselViewModel.cs)
+
+
+
 
 Part 02/MVC/Models/ViewModels/CategoriesViewModel.cs
 
-using System.Collections.Generic;
-
-namespace MVC.Models.ViewModels
+```csharp
+public class CategoriesViewModel
 {
-    public class CategoriesViewModel
+    public CategoriesViewModel()
     {
-        public CategoriesViewModel()
-        {
 
-        }
-
-        public CategoriesViewModel(List<Category> categories, List<Product> products, int pageSize)
-        {
-            Categories = categories;
-            Products = products;
-            PageSize = pageSize;
-        }
-
-        public List<Category> Categories { get; set; }
-        public List<Product> Products { get; set; }
-        public int PageSize { get; set; }
     }
+
+    public CategoriesViewModel(List<Category> categories, List<Product> products, int pageSize)
+    {
+        Categories = categories;
+        Products = products;
+        PageSize = pageSize;
+    }
+
+    public List<Category> Categories { get; set; }
+    public List<Product> Products { get; set; }
+    public int PageSize { get; set; }
 }
+```
+**Listing**: the new CategoriesViewModel class (/Models/ViewModels/CategoriesViewModel.cs)
+
+
+
 
 Part 02/MVC/ViewComponents/CarouselPageViewComponent.cs
 
-using Microsoft.AspNetCore.Mvc;
-using MVC.Models;
-using MVC.Models.ViewModels;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace MVC.ViewComponents
+```csharp
+public class CarouselPageViewComponent : ViewComponent
 {
-    public class CarouselPageViewComponent : ViewComponent
+    public CarouselPageViewComponent()
     {
-        public CarouselPageViewComponent()
-        {
 
-        }
+    }
 
-        public IViewComponentResult Invoke(List<Product> productsInCategory, int pageIndex, int pageSize)
-        {
-            var productsInPage =
-                productsInCategory
-                .Skip(pageIndex * pageSize)
-                .Take(pageSize)
-                .ToList();
+    public IViewComponentResult Invoke(List<Product> productsInCategory, int pageIndex, int pageSize)
+    {
+        var productsInPage =
+            productsInCategory
+            .Skip(pageIndex * pageSize)
+            .Take(pageSize)
+            .ToList();
 
-            return View("Default", 
-                new CarouselPageViewModel(productsInPage, pageIndex));
-        }
+        return View("Default", 
+            new CarouselPageViewModel(productsInPage, pageIndex));
     }
 }
+```
+**Listing**: the new CarouselPageViewComponent class (/ViewComponents/CarouselPageViewComponent.cs)
+
+
+
 
 Part 02/MVC/ViewComponents/CarouselViewComponent.cs
 
-using Microsoft.AspNetCore.Mvc;
-using MVC.Models;
-using MVC.Models.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace MVC.ViewComponents
+```csharp
+public class CarouselViewComponent : ViewComponent
 {
-    public class CarouselViewComponent : ViewComponent
+    public CarouselViewComponent()
     {
-        public CarouselViewComponent()
-        {
 
-        }
+    }
 
-        public IViewComponentResult Invoke(Category category, List<Product> products, int pageSize)
-        {
-            var productsInCategory = products
-                .Where(p => p.Category.Id == category.Id)
-                .ToList();
-            int pageCount = (int)Math.Ceiling((double)productsInCategory.Count() / pageSize);
+    public IViewComponentResult Invoke(Category category, List<Product> products, int pageSize)
+    {
+        var productsInCategory = products
+            .Where(p => p.Category.Id == category.Id)
+            .ToList();
+        int pageCount = (int)Math.Ceiling((double)productsInCategory.Count() / pageSize);
 
-            return View("Default", 
-                new CarouselViewModel(category, productsInCategory, pageCount, pageSize));
-        }
+        return View("Default", 
+            new CarouselViewModel(category, productsInCategory, pageCount, pageSize));
     }
 }
+```
+
+**Listing**: the new CarouselViewComponent class (/ViewComponents/CarouselViewComponent.cs)
 
 Part 02/MVC/ViewComponents/CategoriesViewComponent.cs
 
-+ using MVC.Models.ViewModels;
-+ using System.Linq;
 
-+         const int PageSize = 4;   
 
--             return View("Default", products);
-+             var categories = products
-+                 .Select(p => p.Category)
-+                 .Distinct()
-+                 .ToList();
-+             return View("Default", new CategoriesViewModel(categories, products, PageSize));
+```csharp
+using MVC.Models.ViewModels;
+using System.Linq;
+.
+.
+.
+
+        const int PageSize = 4;   
+.
+.
+.
+
+            var categories = products
+                .Select(p => p.Category)
+                .Distinct()
+                .ToList();
+            return View("Default", new CategoriesViewModel(categories, products, PageSize));
+.
+.
+.
+```
+**Listing**: the CategoriesViewComponent class updated (/ViewComponents/CategoriesViewComponent.cs)
+
+
+
 
 Part 02/MVC/Views/Catalog/Components/Carousel/Default.cshtml
 
+```razor
 @using MVC.Models.ViewModels
 @addTagHelper *, MVC
 @model CarouselViewModel
@@ -1115,9 +1127,14 @@ Part 02/MVC/Views/Catalog/Components/Carousel/Default.cshtml
         <span class="sr-only">Next</span>
     </a>
 </div>
+```
+**Listing**: the new Carousel/Default view (/Views/Catalog/Components/Carousel/Default.cshtml)
+
+
 
 Part 02/MVC/Views/Catalog/Components/CarouselPage/Default.cshtml
 
+```razor
 @using MVC.Models.ViewModels
 @addTagHelper *, MVC
 @model CarouselPageViewModel
@@ -1134,65 +1151,32 @@ Part 02/MVC/Views/Catalog/Components/CarouselPage/Default.cshtml
         </div>
     </div>
 </div> 
+```
+**Listing**: the new CarouselPage/Default view (/Views/Catalog/Components/CarouselPage/Default.cshtml)
+
+
 
 Part 02/MVC/Views/Catalog/Components/Categories/Default.cshtml
 
-- @addTagHelper *, MVC
-- @model List<Product>;
-- @{
--     var products = Model;
--     const int PageSize = 4;
--     var categories = products.Select(p => p.Category).Distinct();
-- }
-+ @using MVC.Models.ViewModels
-+ @addTagHelper *, MVC
-+ @model CategoriesViewModel
+REMOVE these lines:
 
-- @foreach (var category in categories)
-+ @foreach (var category in Model.Categories)
-
--    <h3>@category.Name</h3>
--
--    <div id="carouselExampleIndicators-@category.Id" class="carousel slide" data-ride="carousel">
--        <div class="carousel-inner">
--            @{
--                var productsInCategory = products
--                    .Where(p => p.Category.Id == category.Id);
--                int pageCount = (int)Math.Ceiling((double)productsInCategory.Count() / PageSize);
--
--                for (int pageIndex = 0; pageIndex < pageCount; pageIndex++)
--                {
--                    <div class="carousel-item @(pageIndex == 0 ? "active" : "")">
--                        <div class="container">
--                            <div class="row">
--                                @{
--                                    var productsInPage =
--                                        productsInCategory
--                                        .Skip(pageIndex * PageSize)
--                                        .Take(PageSize);
--
--                                    foreach (var product in productsInPage)
--                                    {
--                                        <vc:product-card product="@product"></vc:product-card>
--                                    }
--                                }
--                            </div>
--                        </div>
--                    </div>
--                }
--            }
--        </div>
--        <a class="carousel-control-prev" href="#carouselExampleIndicators-@category.Id" role="button" data-slide="prev">
--            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
--            <span class="sr-only">Previous</span>
--        </a>
--        <a class="carousel-control-next" href="#carouselExampleIndicators-@category.Id" role="button" data-slide="next">
--            <span class="carousel-control-next-icon" aria-hidden="true"></span>
--            <span class="sr-only">Next</span>
--        </a>
--    </div>
-
-+ <vc:carousel category="@category" products="@Model.Products" page-size="@Model.PageSize"></vc:carousel>
+```razor
+@using MVC.Models.ViewModels
+@addTagHelper *, MVC
+@model CategoriesViewModel
+.
+.
+.
+@foreach (var category in Model.Categories)
+.
+.
+.
+<vc:carousel category="@category" products="@Model.Products" page-size="@Model.PageSize"></vc:carousel>
+.
+.
+.
+```
+**Listing**: the updated Categories/Default markup file (/Views/Catalog/Components/Categories/Default.cshtml)
 
 #### Creating Navigation Bar Notification Icons
 
