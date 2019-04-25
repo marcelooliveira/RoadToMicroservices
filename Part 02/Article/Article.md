@@ -1158,8 +1158,6 @@ Part 02/MVC/Views/Catalog/Components/CarouselPage/Default.cshtml
 
 Part 02/MVC/Views/Catalog/Components/Categories/Default.cshtml
 
-REMOVE these lines:
-
 ```razor
 @using MVC.Models.ViewModels
 @addTagHelper *, MVC
@@ -1178,43 +1176,48 @@ REMOVE these lines:
 ```
 **Listing**: the updated Categories/Default markup file (/Views/Catalog/Components/Categories/Default.cshtml)
 
+
+
+
 #### Creating Navigation Bar Notification Icons
 
 Part 02/MVC/Views/Shared/_Layout.cshtml
 
-+    <div class="navbar-collapse collapse justify-content-end">
-+        <ul class="nav navbar-nav">
-+            <li>
-+                <div class="container-notification">
-+                    <a asp-controller="notifications"
-+                        title="Notifications">
-+                        <div class="user-count notification show-count fa fa-bell" data-count="2">
-+                        </div>
-+                    </a>
-+                </div>
-+            </li>
-+            <li>
-+                <span>
-+                    &nbsp;
-+                    &nbsp;
-+                </span>
-+            </li>
-+            <li>
-+                <div class="container-notification">
-+                    <a asp-action="index" asp-controller="basket"
-+                        title="Basket">
-+                        <div class="user-count userbasket show-count fa fa-shopping-cart" data-count="3">
-+                        </div>
-+                    </a>
-+                </div>
-+            </li>
-+        </ul>
-+    </div>
+```razor
+<div class="navbar-collapse collapse justify-content-end">
+    <ul class="nav navbar-nav">
+        <li>
+            <div class="container-notification">
+                <a asp-controller="notifications"
+                    title="Notifications">
+                    <div class="user-count notification show-count fa fa-bell" data-count="2">
+                    </div>
+                </a>
+            </div>
+        </li>
+        <li>
+            <span>
+                &nbsp;
+                &nbsp;
+            </span>
+        </li>
+        <li>
+            <div class="container-notification">
+                <a asp-action="index" asp-controller="basket"
+                    title="Basket">
+                    <div class="user-count userbasket show-count fa fa-shopping-cart" data-count="3">
+                    </div>
+                </a>
+            </div>
+        </li>
+    </ul>
+</div>
+```
+**Listing**: the notification elements at the notification bar (/Views/Shared/_Layout.cshtml)
 
 Part 02/MVC/wwwroot/css/site.css
 
-}
-
+```css
 .user-count {
     display: inline-block;
     position: relative;
@@ -1254,35 +1257,42 @@ Part 02/MVC/wwwroot/css/site.css
     transform: scale(1);
     opacity: 1;
 }
+```
+**Listing**: the cascade style sheet with styling for the user count controls (/wwwroot/css/site.css)
+
 
 
 #### Creating UserCounter ViewComponent
 
 Part 02/MVC/Models/ViewModels/UserCountViewModel.cs
 
-+ namespace MVC.Models.ViewModels
-+ {
-+     public class UserCountViewModel
-+     {   
-+         public UserCountViewModel(string title, string controllerName, string cssClass, string icon, string count)
-+         {
-+             Title = title;
-+             ControllerName = controllerName;
-+             CssClass = cssClass;
-+             Icon = icon;
-+             Count = count;
-+         }
-+ 
-+         public string ControllerName { get; set; }
-+         public string Title { get; set; }
-+         public string CssClass { get; set; }
-+         public string Icon { get; set; }
-+         public string Count { get; set; }
-+     }
-+ }
+```csharp
+public class UserCountViewModel
+{   
+    public UserCountViewModel(string title, string controllerName, string cssClass, string icon, string count)
+    {
+        Title = title;
+        ControllerName = controllerName;
+        CssClass = cssClass;
+        Icon = icon;
+        Count = count;
+    }
+
+    public string ControllerName { get; set; }
+    public string Title { get; set; }
+    public string CssClass { get; set; }
+    public string Icon { get; set; }
+    public string Count { get; set; }
+}
+```
+Listing: the new UserCountViewModel class (/Models/ViewModels/UserCountViewModel.cs)
+
+
+
 
 Part 02/MVC/ViewComponents/UserCounterViewComponent.cs
 
+```csharp
 using Microsoft.AspNetCore.Mvc;
 using MVC.Models.ViewModels;
 
@@ -1302,9 +1312,13 @@ namespace MVC.ViewComponents
         }
     }
 }
+```
+**Listing**: the new UserCounterViewComponent class (/ViewComponents/UserCounterViewComponent.cs)
+
 
 Part 02/MVC/Views/Shared/Components/UserCounter/Default.cshtml
 
+```razor
 @using MVC.Models.ViewModels
 @addTagHelper *, MVC
 @model UserCountViewModel;
@@ -1316,214 +1330,278 @@ Part 02/MVC/Views/Shared/Components/UserCounter/Default.cshtml
         </div>
     </a>
 </div> 
+```
+**Listing**: the new UserCounter/Default markup file (/Views/Shared/Components/UserCounter/Default.cshtml)
 
 Part 02/MVC/Views/Shared/_Layout.cshtml
 
-+ @addTagHelper *, MVC
+Remove these lines:
+```razor
+<div class="container-notification">
+    <a asp-controller="notifications"
+        title="Notifications">
+        <div class="user-count notification show-count fa fa-bell" data-count="2">
+        </div>
+    </a>
+</div>
+.
+.
+.
+<div class="container-notification">
+    <a asp-action="index" asp-controller="basket"
+        title="Basket">
+        <div class="user-count userbasket show-count fa fa-shopping-cart" data-count="3">
+        </div>
+    </a>
+</div>
+```
 
--        <div class="container-notification">
--            <a asp-controller="notifications"
--                title="Notifications">
--                <div class="user-count notification show-count fa fa-bell" data-count="2">
--                </div>
--            </a>
--        </div>
-+        <vc:user-counter 
-+            title="Notifications"
-+            controller-name="notifications"
-+            css-class="notification"
-+            icon="bell"
-+            count="2">
-+        </vc:user-counter>
+And add these lines:
 
--         <div class="container-notification">
--             <a asp-action="index" asp-controller="basket"
--                 title="Basket">
--                 <div class="user-count userbasket show-count fa fa-shopping-cart" data-count="3">
--                 </div>
--             </a>
--         </div>
-+        <vc:user-counter 
-+            title="Basket"
-+            controller-name="basket"
-+            css-class="basket"
-+            icon="shopping-cart"
-+            count="3">
-+        </vc:user-counter>
+```razor
+@addTagHelper *, MVC
+.
+.
+.
+<vc:user-counter 
+    title="Notifications"
+    controller-name="notifications"
+    css-class="notification"
+    icon="bell"
+    count="2">
+</vc:user-counter>
+.
+.
+.
+<vc:user-counter 
+    title="Basket"
+    controller-name="basket"
+    css-class="basket"
+    icon="shopping-cart"
+    count="3">
+</vc:user-counter>
+.
+.
+.
+```
+**Listing**: UserCounter Tag Helpers added to the layout file (/Views/Shared/_Layout.cshtml)
+
 
 Part 02/MVC/wwwroot/css/site.css
 
--    content: attr(data-count);
-+    content: attr(count);
+Replace this line...
+```css
+content: attr(data-count);
+```
+...whith this one:
+```css
+content: attr(count);
+```
 
 #### Creating UserCounterService
 
 Part 02/MVC/Models/ViewModels/UserCountViewModel.cs
 
-- public UserCountViewModel(string title, string controllerName, string cssClass, string icon, string count)
-+ public UserCountViewModel(string title, string controllerName, string cssClass, string icon, int count)
+Replace the string count with int count
+```csharp
+public UserCountViewModel(string title, string controllerName, string cssClass, string icon, string count)
+.
+.
+.
+public string Count { get; set; }
+```
 
-- public string Count { get; set; }
-+ public int Count { get; set; }
+
+```csharp
+public UserCountViewModel(string title, string controllerName, string cssClass, string icon, int count)
+.
+.
+.
+public int Count { get; set; }
+```
+**Listing**: Count parameter as integer (/Models/ViewModels/UserCountViewModel.cs)
 
 
 Part 02/MVC/Services/IUserCounterService.cs
 
-namespace MVC.Services
+```csharp
+public interface IUserCounterService
 {
-    public interface IUserCounterService
-    {
-        int GetBasketCount();
-        int GetNotificationCount();
-    }
+    int GetBasketCount();
+    int GetNotificationCount();
 }
+```
+**Listing**: the new IUserCounterService interface (/Services/IUserCounterService.cs)
+
 
 Part 02/MVC/Services/UserCounterService.cs
 
-namespace MVC.Services
+```csharp
+public class UserCounterService : IUserCounterService
 {
-    public class UserCounterService : IUserCounterService
+    public int GetNotificationCount()
     {
-        public int GetNotificationCount()
-        {
-            return 7;
-        }
+        return 7;
+    }
 
-        public int GetBasketCount()
-        {
-            return 9;
-        }
+    public int GetBasketCount()
+    {
+        return 9;
     }
 }
+```
+**Listing**: the new UserCounterService class (/Services/UserCounterService.cs)
+
 
 Part 02/MVC/Startup.cs
 
-+    var userCounterServiceInstance = new UserCounterService();
-+    services.AddSingleton<IUserCounterService>(userCounterServiceInstance);
+```csharp
+var userCounterServiceInstance = new UserCounterService();
+services.AddSingleton<IUserCounterService>(userCounterServiceInstance);
+```
+**Listing**: new dependency injection instructions (/Startup.cs)
+
+
 
 Part 02/MVC/ViewComponents/UserCounterViewComponent.cs
 
-+ using MVC.Services;
-
-namespace MVC.ViewComponents
+```csharp
+public enum UserCounterType
 {
-+    public enum UserCounterType
-+    {
-+        Notification = 1,
-+        Basket = 2
-+    }
+    Notification = 1,
+    Basket = 2
+}
+```
+**Listing**: the new UserCounterType enum (/ViewComponents/UserCounterViewComponent.cs)
 
--         public UserCounterViewComponent()
--         {
-+         protected readonly IUserCounterService userCounterService;
-+ 
-+         public UserCounterViewComponent(IUserCounterService userCounterService)
-+         {
-+             this.userCounterService = userCounterService;
-+         }
 
--        public IViewComponentResult Invoke(string title, string controllerName, string cssClass, string icon, string count)
-+        public IViewComponentResult Invoke(string title, string controllerName, string cssClass, string icon, UserCounterType userCounterType)
-+        {
-+            int count = 0;
-+
-+            if (userCounterType == UserCounterType.Notification)
-+            {
-+                count = userCounterService.GetNotificationCount();
-+            }
-+            else if (userCounterType == UserCounterType.Basket)
-+            {
-+                count = userCounterService.GetBasketCount();
-+            }
+
+
+
+```csharp
+protected readonly IUserCounterService userCounterService;
+ 
+public UserCounterViewComponent(IUserCounterService userCounterService)
+{
+    this.userCounterService = userCounterService;
+}
+.
+.
+.
+public IViewComponentResult Invoke(string title, string controllerName, string cssClass, string icon, UserCounterType userCounterType)
+{
+    int count = 0;
+
+    if (userCounterType == UserCounterType.Notification)
+    {
+        count = userCounterService.GetNotificationCount();
+    }
+    else if (userCounterType == UserCounterType.Basket)
+    {
+        count = userCounterService.GetBasketCount();
+    }
+```
+**Listing**: modifying the UserCounterViewComponent class to use enum (/ViewComponents/UserCounterViewComponent.cs)
+
+
 
 Part 02/MVC/Views/Shared/_Layout.cshtml
 
--         count="2">
-+         user-counter-type="Notification">
+```razor
+user-counter-type="Notification">
+.
+.
+.
+user-counter-type="Basket">
+```
+**Listing**: the user counter tag helpers with the appropriate UserCounterType enum (/Views/Shared/_Layout.cshtml)
 
--         count="3">
-+         user-counter-type="Basket">
 
 #### Creating NotificationCounter, BasketCounter Subclasses
 
 Part 02/MVC/ViewComponents/UserCounterViewComponent.cs
 
 
--    public enum UserCounterType
--    {
--        Notification = 1,
--        Basket = 2
--    }
--
--    public class UserCounterViewComponent : ViewComponent
-+    public abstract class UserCounterViewComponent : ViewComponent
-+    {
-+        protected enum UserCounterType
-+        {
-+            Notification = 1,
-+            Basket = 2
-+        }
 
--        public IViewComponentResult Invoke(string title, string controllerName, string cssClass, string icon, UserCounterType userCounterType)
-+        protected IViewComponentResult Invoke(string title, string controllerName, string cssClass, string icon, int count, UserCounterType userCounterType)
-+        {
--            int count = 0;
-+            var model = new UserCountViewModel(title, controllerName, cssClass, icon, count);
-+            return View("~/Views/Shared/Components/UserCounter/Default.cshtml", model);
-+        }
-+    }
+```csharp
+public abstract class UserCounterViewComponent : ViewComponent
+{
+    protected enum UserCounterType
+    {
+        Notification = 1,
+        Basket = 2
+    }
 
--    if (userCounterType == UserCounterType.Notification)
--    {
--        count = userCounterService.GetNotificationCount();
--    }
--    else if (userCounterType == UserCounterType.Basket)
--    {
--        count = userCounterService.GetBasketCount();
--    }
-+    public class NotificationCounterViewComponent : UserCounterViewComponent
-+    {
-+        public NotificationCounterViewComponent(IUserCounterService userCounterService) : base(userCounterService) { }
+    protected IViewComponentResult Invoke(string title, string controllerName, string cssClass, string icon, int count, UserCounterType userCounterType)
+    {
+        var model = new UserCountViewModel(title, controllerName, cssClass, icon, count);
+        return View("~/Views/Shared/Components/UserCounter/Default.cshtml", model);
+    }
+}
+```
+**Listing**: the UserCounterViewComponent class became superclass (/ViewComponents/UserCounterViewComponent.cs)
 
--            var model = new UserCountViewModel(title, controllerName, cssClass, icon, count);
--            return View("Default", model);
-+        public IViewComponentResult Invoke(string title, string controllerName, string cssClass, string icon)
-+        {
-+            int count = userCounterService.GetNotificationCount();
-+            return Invoke(title, controllerName, cssClass, icon, count, UserCounterType.Notification);
-+        }
-+    }
-+
-+    public class BasketCounterViewComponent : UserCounterViewComponent
-+    {
-+        public BasketCounterViewComponent(IUserCounterService userCounterService) : base(userCounterService) { }
-+
-+        public IViewComponentResult Invoke(string title, string controllerName, string cssClass, string icon)
-+        {
-+            int count = userCounterService.GetBasketCount();
-+            return Invoke(title, controllerName, cssClass, icon, count, UserCounterType.Basket);
+
+```csharp
+if (userCounterType == UserCounterType.Notification)
+{
+    count = userCounterService.GetNotificationCount();
+}
+else if (userCounterType == UserCounterType.Basket)
+{
+    count = userCounterService.GetBasketCount();
+}
+```
+**Listing**: now each count receives the result of the appropriate service method
+
+    
+```csharp
+public class NotificationCounterViewComponent : UserCounterViewComponent
+{
+    public NotificationCounterViewComponent(IUserCounterService userCounterService) : base(userCounterService) { }
+ 
+    public IViewComponentResult Invoke(string title, string controllerName, string cssClass, string icon)
+    {
+        int count = userCounterService.GetNotificationCount();
+        return Invoke(title, controllerName, cssClass, icon, count, UserCounterType.Notification);
+    }
+}
+```
+**Listing**: updates needed so that the NotificationCounterViewComponent class becomes a subclass
+
+
+
+```csharp
+public class BasketCounterViewComponent : UserCounterViewComponent
+{
+    public BasketCounterViewComponent(IUserCounterService userCounterService) : base(userCounterService) { }
+
+    public IViewComponentResult Invoke(string title, string controllerName, string cssClass, string icon)
+    {
+        int count = userCounterService.GetBasketCount();
+        return Invoke(title, controllerName, cssClass, icon, count, UserCounterType.Basket);
+    }
+}
+```
+**Listing**: updates needed so that the BasketCounterViewComponent class becomes a subclass
+
 
 Part 02/MVC/Views/Shared/_Layout.cshtml
 
-- <vc:user-counter 
-+ <vc:notification-counter 
+```razor
+<vc:notification-counter 
+.
+.
+.
+</vc:notification-counter>
 
--        icon="bell"
--        user-counter-type="Notification">
--    </vc:user-counter>
-+        icon="bell">
-+    </vc:notification-counter>
-
--    <vc:user-counter 
-+    <vc:basket-counter 
-        title="Basket"
-        controller-name="basket"
-        css-class="basket"
--        icon="shopping-cart"
--        user-counter-type="Basket">
--    </vc:user-counter>
-+        icon="shopping-cart">
-+    </vc:basket-counter>    
+<vc:basket-counter 
+.
+.
+.
+</vc:basket-counter>    
+```
+**Listing**: replacing the old UserCounter tag helper with specialized counter tag helpers (/Views/Shared/_Layout.cshtml)
 
 
 
