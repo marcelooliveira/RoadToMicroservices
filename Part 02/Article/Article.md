@@ -853,60 +853,82 @@ namespace MVC.ViewComponents
 ```
 **Listing**: the new CategoriesViewComponent class (/ViewComponents/CategoriesViewComponent.cs)
 
-Part 02/MVC/Views/Catalog/_Categories.cshtml → ...alog/Components/Categories/Default.cshtml
+
+MOVE
+Part 02/MVC/Views/Catalog/_Categories.cshtml
+TO
+...alog/Components/Categories/Default.cshtml
 
 
 Part 02/MVC/Views/Catalog/Index.cshtml
 
-- @model List<Product>;
-+ @addTagHelper *, MVC
-+ @model List<Product>;
+Add the addTagHelper directive
 
-- <partial name="_Categories" for="@Model" />
-+ <vc:categories products="@Model"></vc:categories>
+```csharp
+@addTagHelper *, MVC
+@model List<Product>;
+```
+
+Remove the partial tag helper
+```csharp
+<partial name="_Categories" for="@Model" />
+```
+
+and replace it with the Categories view component tag helper
+```csharp
+<vc:categories products="@Model"></vc:categories>
+```
 
 #### Creating ViewComponent for ProductCard
 
 Part 02/MVC/ViewComponents/ProductCardViewComponent.cs
 
-+ using Microsoft.AspNetCore.Mvc;
-+ using MVC.Models;
-+ using System;
-+ using System.Collections.Generic;
-+ using System.Linq;
-+ using System.Threading.Tasks;
-+ 
-+ namespace MVC.ViewComponents
-+ {
-+     public class ProductCardViewComponent : ViewComponent
-+     {
-+         public ProductCardViewComponent()
-+         {
-+ 
-+         }
-+ 
-+         public IViewComponentResult Invoke(Product product)
-+         {
-+             return View("Default", product);
-+         }
-+     }
-+ }
+```csharp
+public class ProductCardViewComponent : ViewComponent
+{
+    public ProductCardViewComponent()
+    {
+
+    }
+
+    public IViewComponentResult Invoke(Product product)
+    {
+        return View("Default", product);
+    }
+}
+```
+**Listing**: the new ProductCardViewComponent class (/ViewComponents/ProductCardViewComponent.cs)
 
 Part 02/MVC/Views/Catalog/Components/Categories/Default.cshtml
 
-- @model List<Product>;
+Add the addTagHelper directive
 
-+ @addTagHelper *, MVC
-+ @model List<Product>;
+```csharp
+@addTagHelper *, MVC
+@model List<Product>;
+```
 
--             foreach (var productIndex in productsInPage)
-+             foreach (var product in productsInPage)
-            {
--                 <partial name="_ProductCard" for="@productIndex" />
-+                 <vc:product-card product="@product"></vc:product-card>
-            }
 
-... 02/MVC/Views/Catalog/_ProductCard.cshtml → ...log/Components/ProductCard/Default.cshtml
+Remove the foreach instruction with partial tag helper
+```razor
+foreach (var productIndex in productsInPage)
+{
+      <partial name="_ProductCard" for="@productIndex" />
+}
+```
+
+...with the foreach instruction with ProductCard view component
+```razor
+foreach (var product in productsInPage)
+{
+      <vc:product-card product="@product"></vc:product-card>
+}
+```
+
+MOVE
+... 02/MVC/Views/Catalog/_ProductCard.cshtml 
+TO
+...log/Components/ProductCard/Default.cshtml
 
 #### Creating ViewComponents for Catalog
 
