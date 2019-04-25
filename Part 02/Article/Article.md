@@ -625,41 +625,82 @@ TO
 
 #### Fixing All Tests for IBasketService
 
+ADD Moq library to MVC.Test project:
+Part 02/MVC.Test/MVC.Test.csproj
++ <PackageReference Include="Moq" Version="4.10.1" />
+
+
 Part 02/MVC.Test/BasketListViewComponentTest.cs
 
-+ using Moq;
-+ using MVC.Services;
+add these lines:
+```csharp
+using Moq;
+using MVC.Services;
+```
 
-- //arrange 
-- var vc = new BasketListViewComponent();
-+ //arrange
-+ Mock<IBasketService> basketServiceMock =
-+     new Mock<IBasketService>();
+REPLACE:
+```csharp
+//arrange 
+var vc = new BasketListViewComponent();
+```
+WITH
+```csharp
+//arrange
+Mock<IBasketService> basketServiceMock =
+    new Mock<IBasketService>();
+```
 
-+ basketServiceMock.Setup(m => m.GetBasketItems())
-+     .Returns(items);
-+ var vc = new BasketListViewComponent(basketServiceMock.Object);
+ADD:
+```csharp
+basketServiceMock.Setup(m => m.GetBasketItems())
+    .Returns(items);
+var vc = new BasketListViewComponent(basketServiceMock.Object);
+```
 
-- var result = vc.Invoke(items, false);
-+ var result = vc.Invoke(false);
+REMOVE THE Products ARGUMENT
+```csharp
+var result = vc.Invoke(false);
+```
 
-- var vc = new BasketListViewComponent();
-+ Mock<IBasketService> basketServiceMock =
-+     new Mock<IBasketService>();
-+ 
-+ basketServiceMock.Setup(m => m.GetBasketItems())
-+     .Returns(new List<BasketItem>());
-+ var vc = new BasketListViewComponent(basketServiceMock.Object);
 
-- var result = vc.Invoke(new List<BasketItem>(), false);
-+ var result = vc.Invoke(false);
+```csharp
+Mock<IBasketService> basketServiceMock =
+    new Mock<IBasketService>();
 
-Part 02/MVC.Test/MVC.Test.csproj
+basketServiceMock.Setup(m => m.GetBasketItems())
+    .Returns(new List<BasketItem>());
+var vc = new BasketListViewComponent(basketServiceMock.Object);
+```
+**Listing**: acting against BasketListViewComponent with a mock object
 
-+ <PackageReference Include="Moq" Version="4.10.1" />
+
+
+REPLACE:
+var result = vc.Invoke(new List<BasketItem>(), false);
+WITH:
+var result = vc.Invoke(false);
+
+Part 02/MVC/Services/IBasketService.cs
+
+```csharp
+using System.Collections.Generic;
+using MVC.Models.ViewModels;
+
+namespace MVC.Services
+{
+    public interface IBasketService
+    {
+        List<BasketItem> GetBasketItems();
+    }
+} 
+```
+**Listing**: the new IBasketService interface (/Services/IBasketService.cs)
+
+
 
 Part 02/MVC/Services/BasketService.cs
 
+```csharp
 using MVC.Models.ViewModels;
 using System.Collections.Generic;
 
@@ -678,67 +719,93 @@ namespace MVC.Services
         }
     }
 }
+```
+**Listing**: the new BasketService class (/Services/BasketService.cs)
 
-Part 02/MVC/Services/IBasketService.cs
 
-using System.Collections.Generic;
-using MVC.Models.ViewModels;
 
-namespace MVC.Services
-{
-    public interface IBasketService
-    {
-        List<BasketItem> GetBasketItems();
-    }
-} 
 
 Part 02/MVC/Startup.cs
 
-+ using MVC.Services; 
+```csharp
+...
+using MVC.Services; 
+...
+services.AddTransient<IBasketService, BasketService>();
+...
+```
+**Listing**: new lines added to Startup class (MVC/Startup.cs)
 
-+ services.AddTransient<IBasketService, BasketService>();
+
 
 Part 02/MVC/ViewComponents/BasketListViewComponent.cs
 
-+ using MVC.Services;
+Adding services namespace
+```csharp
+using MVC.Services;
+```
 
-- public BasketListViewComponent()
 
-+    private readonly IBasketService basketService;
-+
-+    public BasketListViewComponent(IBasketService basketService)
-+    {
-+        this.basketService = basketService;
-+    }
-+
-+    public IViewComponentResult Invoke(List<BasketItem> items, bool isSummary)
-+    public IViewComponentResult Invoke(bool isSummary)
-+    {
-+        List<BasketItem> items = basketService.GetBasketItems();
+```csharp
+private readonly IBasketService basketService;
+
+public BasketListViewComponent(IBasketService basketService)
+{
+    this.basketService = basketService;
+}
+
+public IViewComponentResult Invoke(bool isSummary)
+{
+    List<BasketItem> items = basketService.GetBasketItems();
+```
+**Listing**: consuming IBasketService via dependency injection
+
+
 
 Part 02/MVC/Views/Basket/Index.cshtml
 
-+ List<BasketItem> items = new List<BasketItem>
-+ {
-+     new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
-+     new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
-+     new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
-+ };
+Remove this lines from the index view:
 
-- <vc:basket-list items="@items" is-summary="false"></vc:basket-list>
-+ <vc:basket-list is-summary="false"></vc:basket-list>
+```csharp
+//List<BasketItem> items = new List<BasketItem>
+//{
+//    new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
+//    new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
+//    new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
+//};
+```
+
+Change this line to remove the `items` attribute... 
+```csharp
+<vc:basket-list items="@items" is-summary="false"></vc:basket-list>
+```
+
+```csharp
+<vc:basket-list is-summary="false"></vc:basket-list>
+```
+**Listing**: the view component tag helper without the `items` attribute
 
 Part 02/MVC/Views/Checkout/Index.cshtml
 
--    List<BasketItem> items = new List<BasketItem>
--    {
--        new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
--        new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
--        new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
--    };
+Remove this lines from the checkout view:
+```csharp
+//List<BasketItem> items = new List<BasketItem>
+//{
+//    new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
+//    new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
+//    new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
+//};
+```
 
-- <vc:basket-list items="@items" is-summary="true"></vc:basket-list>
-+ <vc:basket-list is-summary="true"></vc:basket-list>
+Change this line to remove the `items` attribute... 
+```csharp
+<vc:basket-list items="@items" is-summary="true"></vc:basket-list>
+```
+
+```csharp
+<vc:basket-list is-summary="true"></vc:basket-list>
+```
+**Listing**: the view component tag helper without the `items` attribute
 
 #### Asserting Collections
 
