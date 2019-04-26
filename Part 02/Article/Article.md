@@ -280,14 +280,60 @@ using MVC.Models.ViewModels
 - _BasketItem.cshtml
 
 
+#### Defining Logic For the View Component Class
+
+Currently, the BasketList View Component class is pretty dumb. But now we have a new task to implement
+a new business logic for the class:
+
+- If the list parameter is empty, the component must display an empty view
+- If the list parameter contains basket items, the component must display the default view
 
 #### Unit Testing Our View Component
 
-##### Add a new MVC.Test.csproj xUnit project to the solution
+Differently from partial views, view components allow testability. Just like any regular class,
+view component classes can be unit-tested. Let's add a new unit testing project to our solution:
 
-#### Basket Component With Items Should Display Default View
+Go to the File menu and select: New > Project > Test > xUnit Test Project (.NET Core)
 
-##### Create a new BasketListViewComponentTest.cs test class
+![Add New Project Xunit](add_new_project_xunit.png)
+
+**Figure**: Adding a new xUnit project
+
+The new xUnit test project always contains an empty test class (UnitTest1):
+
+```csharp
+public class UnitTest1
+{
+    [Fact]
+    public void Test1()
+    {
+
+    }
+}
+```
+
+The xUnit is one of the unit testing project templates that come with Visual Studio.
+
+The [Fact] attribute tells the xUnit framework that a test method must run by the Test Runner. 
+(We are going to see the Test Runner in the next section).
+
+Since we desire to test the BasketListViewComponent class, we will rename the test class to
+BasketListViewComponentTest:
+
+```csharp
+public class BasketListViewComponentTest
+{
+    [Fact]
+    public void Test1()
+    {
+
+    }
+}
+```
+**Listing**: renaming the test class to BasketListViewComponentTest
+
+Let's also rename the Test1() method to something expressive, something that describes
+the behavior we are verifying: "calls to the Invoke() method with items should display default view"
 
 ```csharp
 public class BasketListViewComponentTest
@@ -301,6 +347,13 @@ public class BasketListViewComponentTest
 ```
 **Listing**: creating our first unit test with xUnit
 
+As a good practice, each unit test method must be split in 3 sections, called "Arrange-Act-Assert":
+
+- The Arrange section of a unit test method initializes objects and sets the value of the data that is passed to the method under test.
+- The Act section invokes the method under test with the arranged parameters.
+- The Assert section verifies that the action of the method under test behaves as expected.
+
+Let's explicitly introduce this sections in the code:
 
 ```csharp
 public class BasketListViewComponentTest
@@ -317,6 +370,9 @@ public class BasketListViewComponentTest
 }
 ```
 **Listing**: the triple A of unit testing: Arrange, Act and Assert
+
+
+
 
 ```csharp
 public class BasketListViewComponentTest
