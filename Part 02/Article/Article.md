@@ -371,26 +371,42 @@ public class BasketListViewComponentTest
 ```
 **Listing**: the triple A of unit testing: Arrange, Act and Assert
 
-
-
+In the arrange section, we must initialize the object:
 
 ```csharp
-public class BasketListViewComponentTest
+[Fact]
+public void Invoke_With_Items_Should_Display_Default_View()
 {
-    [Fact]
-    public void Invoke_With_Items_Should_Display_Default_View()
-    {
-        //arrange 
-        var vc = new BasketListViewComponent();
+    //arrange 
+    var vc = new BasketListViewComponent();
 
-        //act 
-        var result = vc.Invoke();
+    //act 
 
-        //assert
+    //assert
 
-    }
 }
 ```
+
+- In the act section, we invoke the method under test with the arranged parameters:
+ 
+```csharp
+[Fact]
+public void Invoke_With_Items_Should_Display_Default_View()
+{
+    //arrange 
+    var vc = new BasketListViewComponent();
+
+    //act 
+    var result = vc.Invoke();
+
+    //assert
+
+}
+
+But remember that the BasketListViewComponent.Invoke() method requires an items parameter,
+so let's use the arrange section to declare an items variable and populate it with some
+basket items:
+
 **Listing**: arranging for the test and calling the Invoke() method
 
 ```csharp
@@ -417,6 +433,8 @@ public class BasketListViewComponentTest
 }
 ```
 **Listing**: providing a parameter for the Invoke() method
+
+
 
 ```csharp
 public class BasketListViewComponentTest
