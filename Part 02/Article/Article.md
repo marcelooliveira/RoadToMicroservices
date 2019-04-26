@@ -251,6 +251,9 @@ At this point, we can run the application, and verify that our view component is
 
 #### Moving BasketItem to ViewModels
 
+In the above section we are using BasketItem as a view model. So, as a refactoring step, 
+let's move it to the Models\ViewModels folder:
+
 C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\Controllers\BasketController.cs
 
 ```csharp
@@ -263,16 +266,19 @@ public class BasketItem
     public int Quantity { get; set; }
 }
 ```
-**Listing**: Moving to BasketItem.cs to Models\ViewModels
+**Listing**: Moving BasketItem.cs to Models\ViewModels
+
+As this has a side effect, we also have to fix the namespace in the folowing files: 
+
+```csharp
+using MVC.Models.ViewModels
+```
 
 - /ViewComponents/BasketListViewComponent.cs
 - Components/BasketList/Default.cshtml
 - /Views/Basket/Index.cshtml
 - _BasketItem.cshtml
 
-```csharp
-using MVC.Models.ViewModels
-```
 
 
 #### Unit Testing Our View Component
