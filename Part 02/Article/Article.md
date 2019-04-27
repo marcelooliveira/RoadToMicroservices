@@ -511,16 +511,22 @@ the test executes. If you want to debug the execution of the test, you should:
 
 ![Debug Selected Test](debug_selected_test.png)
 
-```csharp
-//assert
-ViewViewComponentResult vvcResult = Assert.IsAssignableFrom<ViewViewComponentResult>(result);
-```
-
 3) Now you can debug the executing code just like you would do with a regular application:
 
 ![Breakpoint Act Hit](breakpoint_act_hit.png)
 
+At this point our test is doing a simple test, which is just checking whether the result variable contains a view. But this is not
+enough: we must also check if the view in the result is actually the Default view.
+We can do this by comparing the ViewName property of the ViewViewComponentResult object
+with the "Default" string. In unit testing methods, we do this by calling the Assert.Equal(expected, actual):
 
+```csharp
+//assert
+ViewViewComponentResult vvcResult = Assert.IsAssignableFrom<ViewViewComponentResult>(result);
+Assert.Equal("Default", vvcResult.ViewName);
+```
+
+And here we have the complete test implementation:
 
 ```csharp
 public class BasketListViewComponentTest
@@ -549,9 +555,18 @@ public class BasketListViewComponentTest
 ```
 **Listing**: checking the result type and result view name
 
+Any time you change the test method like that, you must run it again.
+Running the test again, we can see it's still passing:
+
+![One Test Passed](one_test_passed.png)
+
+Now, the test implementagion can be considered complete, and should not be changed again, 
+unless there are changes in the method under test, or in the objects it depends upon.
 
 But be careful not to test more than you should per test. Here, always apply the KISS Principle:
-(Keep It Simple, Stupid). That is, don't 
+(Keep It Simple, Stupid). Each test must do one thing and one thing only. If a single test method is
+accumulating multiple responsibilities, refactor it and split it into multiple test methods
+with single responsibilities.
 
 
 #### Basket Component Without Items Should Display Empty View
