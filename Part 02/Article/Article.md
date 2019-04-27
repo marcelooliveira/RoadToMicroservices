@@ -387,7 +387,7 @@ public void Invoke_With_Items_Should_Display_Default_View()
 }
 ```
 
-- In the act section, we invoke the method under test with the arranged parameters:
+In the act section, we invoke the method under test with the arranged parameters:
  
 ```csharp
 [Fact]
@@ -402,9 +402,24 @@ public void Invoke_With_Items_Should_Display_Default_View()
     //assert
 
 }
+```
 
-But remember that the BasketListViewComponent.Invoke() method requires an items parameter,
-so let's use the arrange section to declare an items variable and populate it with some
+But the Invoke() method produces an compilation error:
+
+```
+error CS0012: The type 'ViewComponent' is defined in an assembly that is not referenced. You must add a reference to assembly 'Microsoft.AspNetCore.Mvc.ViewFeatures, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60'.
+```
+
+Press CTRL + DOT to open the context menu and and select: Install package 'Microsoft.AspNetCore.Mvc.ViewFeatures'.
+
+But remember that the BasketListViewComponent.Invoke() method requires an items parameter:
+
+```
+Invoke With Items => Display Default View
+      ACTION      =>       ASSERT
+```
+
+So let's use the arrange section to declare an items variable and populate it with some
 basket items:
 
 **Listing**: arranging for the test and calling the Invoke() method
@@ -434,7 +449,30 @@ public class BasketListViewComponentTest
 ```
 **Listing**: providing a parameter for the Invoke() method
 
+Now it's time to implement the assert section of our unit test. The assert section is where
+all verifications occur, to make sure the method under test behaves as expected:
 
+```
+       CAUSE      =>       EFFECT
+=========================================
+Invoke With Items => Display Default View
+      ACTION      =>       ASSERT
+```
+
+The BasketListViewComponent.Invoke() returns a IViewComponentResult 
+
+```csharp
+//act
+var result = vc.Invoke(items);
+//assert
+Assert.IsAssignableFrom<ViewViewComponentResult>(result);
+```
+
+
+```csharp
+//assert
+ViewViewComponentResult vvcResult = Assert.IsAssignableFrom<ViewViewComponentResult>(result);
+```
 
 ```csharp
 public class BasketListViewComponentTest
@@ -462,6 +500,11 @@ public class BasketListViewComponentTest
 }
 ```
 **Listing**: checking the result type and result view name
+
+
+But be careful not to test more than you should per test. Here, always apply the KISS Principle:
+(Keep It Simple, Stupid). That is, don't 
+
 
 #### Basket Component Without Items Should Display Empty View
 
