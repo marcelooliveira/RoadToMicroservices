@@ -459,7 +459,11 @@ Invoke With Items => Display Default View
       ACTION      =>       ASSERT
 ```
 
-The BasketListViewComponent.Invoke() returns a IViewComponentResult 
+The BasketListViewComponent.Invoke() returns a IViewComponentResult, which is an interface. But we must make sure the object returned by the method is
+a view, or more specifically, an instance of ViewViewComponentResult.
+
+When using xUnit testing framework, we can verify that a variable is of a certain type by using the method
+Assert.IsAssignableFrom<T>(object):
 
 ```csharp
 //act
@@ -468,11 +472,55 @@ var result = vc.Invoke(items);
 Assert.IsAssignableFrom<ViewViewComponentResult>(result);
 ```
 
+Now we have our first testable arrange-act-assert method. Let's use the Test Explorer to execute it:
+
+Test > Windows > Test Explorer
+
+OR
+
+Ctrl+E, T
+
+![Test Explorer Menu](test_explorer_menu.png)
+
+When you open the Test Explorer for the first time, you see the test structure for the application:
+
+- MVC.Test (Assembly)
+  - MVC.Test.ViewComponents (Namespace)
+    - BasketListViewComponentTest (Test class)
+      - Invoke_With_Items_Should_Display_Default_View (Test method - Fact)
+
+![Test Explorer](test_explorer.png)
+
+This structure is quite helpful in keeping the Test Explorer organized, while we 
+implement more and more tests. Otherwise, the Test Explorer might be cluttered by the
+increasing volume of a plain list.
+
+When we click the Run All menu, the application will be recompiled if needed,
+then the xUnit testing framework will execute the only existing test so far:
+
+![One Test Passed](one_test_passed.png)
+
+As we can see, the test passed successfully. This kind of execution doesn't allow inspecting objects, parameters, variables, etc. while
+the test executes. If you want to debug the execution of the test, you should:
+
+1) Place breakpoints in the testable method (and possibly in the rest of the affected code) as you wish:
+
+![Breakpoint Act](breakpoint_act.png)
+
+2) Righ-click the test name and choose Debug Selected Test menu:
+
+![Debug Selected Test](debug_selected_test.png)
 
 ```csharp
 //assert
 ViewViewComponentResult vvcResult = Assert.IsAssignableFrom<ViewViewComponentResult>(result);
 ```
+
+3) Now you can debug the executing code just like you would do with a regular application:
+
+![Breakpoint Act Hit](breakpoint_act_hit.png)
+
+
 
 ```csharp
 public class BasketListViewComponentTest
