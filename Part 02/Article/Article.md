@@ -314,7 +314,7 @@ public class UnitTest1
 
 The xUnit is one of the unit testing project templates that come with Visual Studio.
 
-The [Fact] attribute tells the xUnit framework that a test method must run by the Test Runner. 
+The [Fact] attribute tells the xUnit framework that a parameterless test method must be run by the Test Runner. 
 (We are going to see the Test Runner in the next section).
 
 Since we desire to test the BasketListViewComponent class, we will rename the test class to
@@ -563,7 +563,7 @@ Running the test again, we can see it's still passing:
 Now, the test implementagion can be considered complete, and should not be changed again, 
 unless there are changes in the method under test, or in the objects it depends upon.
 
-But be careful not to test more than you should per test. Here, always apply the KISS Principle:
+But be careful not to test more than you should per unit test. Here, always apply the KISS Principle:
 (Keep It Simple, Stupid). Each test must do one thing and one thing only. If a single test method is
 accumulating multiple responsibilities, refactor it and split it into multiple test methods
 with single responsibilities.
@@ -571,7 +571,43 @@ with single responsibilities.
 
 #### Basket Component Without Items Should Display Empty View
 
-BasketListViewComponentTest.cs
+It's time to implement the second rule regarding the basket list view component:
+
+- If the list parameter contains basket items, the component must display the default view
+
+In the same BasketListViewComponentTest class, let's implement a second unit test method for this rule:
+
+```csharp
+[Fact]
+public void Invoke_Without_Items_Should_Display_Empty_View()
+{
+    //arrange 
+
+    //act 
+
+    //assert
+}
+```
+Listing: the new Invoke_Without_Items_Should_Display_Empty_View test method
+
+In this case, the BasketListViewComponent.Invoke() method will be called with an empty list:
+
+```csharp
+[Fact]
+public void Invoke_Without_Items_Should_Display_Empty_View()
+{
+    //arrange 
+    var vc = new BasketListViewComponent();
+    //act 
+    var result = vc.Invoke(new List<BasketItem>());
+
+    //assert
+}
+```
+**Listing**: calling the Invoke() method with an empty list
+
+The rest of the test is much like the first test we wrote, with the difference that we
+are now checking whether the view named "Empty" is being returned.
 
 ```csharp
 [Fact]
@@ -589,7 +625,24 @@ public void Invoke_Without_Items_Should_Display_Empty_View()
 ```
 **Listing**: testing the basket list view component for an empty basket
 
-C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\ViewComponents\BasketListViewComponent.cs
+Now, let's compile and see the new test being displayed in the Test Explorer:
+
+![Second Test](second_test.png)
+
+And then we run all the tests, or we run only the specified test:
+
+![Run Selected Tests](run_selected_tests.png)
+
+Notice how the entire structure is marked with the fail icon, except the first
+unit test we created, which remains green:
+
+![Test Fail](test_fail.png)
+
+Whenever possible, create a test first, then implement the rules in the business classes until the test passes.
+Let's do it now. Let's make the test pass.
+
+We should modify the BasketListViewComponent class to include a condition verifying the 
+number of items in the basket. If there are no items, we should return an Empty view:
 
 ```csharp
 public IViewComponentResult Invoke(List<BasketItem> items)
@@ -603,16 +656,14 @@ public IViewComponentResult Invoke(List<BasketItem> items)
 ```
 **Listing**: returning a different view in case of empty basket
 
-Empty.cshtml
+Running the tests again, we can notice that everything passes:
+
+![Two Tests Passing](two_tests_passing.png)
+
+But while the second test is passing, we still don't have an Empty view for this basket list condition.
+We can solve that by adding a new Empty.cshtml markup file in the \MVC\Views\Basket\ project folder:
 
 ```razor
-﻿@using MVC.Models.ViewModels
-@model List<BasketItem>;
-
-@{
-    var items = Model;
-}
-
 <div class="card">
     <div class="card-body">
         <!--https://getbootstrap.com/docs/4.0/components/alerts/-->
@@ -624,14 +675,29 @@ Empty.cshtml
 ```
 **Listing**: the new Empty.cshtml view showing the Bootstrap 4 alert component
 
-C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\Views\Basket\Index.cshtml
+We can now stop doing unit tests for a while and start a manual test, where
+we try to simulate an empty basket list.
+
+The first step here is to comment out the BasketItem instances in
+\MVC\Views\Basket\Index.cshtml file, so that the basket list is empty:
+
+C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\Views\Basket\Empty.cshtml
 
 ```csharp
-//new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
-//new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
-//new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
+    List<BasketItem> items = new List<BasketItem>
+    {
+        @*new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
+        new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
+        new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }*@
+    };
 ```
 **Listing**: Commenting the items in order to check the alert while running the application
+
+Running the application again, we can notice the Bootrap Alert component, displaying the alert
+message: "There are no items in your basket yet! Click here to start shopping!"
+
+![Alert Empty Items](alert_empty_items.png)
+
 
 #### Creating a ViewComponent for BasketList
 
