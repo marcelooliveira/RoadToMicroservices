@@ -816,9 +816,16 @@ This conversion to view components produce exactly the same result as with parti
 #### Unit Testing BasketItemViewComponent
 
 Now that we have a view component for BasketItem... let's implement the unit tests for 
-the new BasketItemViewComponent. And these are the rules we should implement:
+the new BasketItemViewComponent. And these are the new business rules we should implement:
 
+1. By default, the Invoke() method should display the default view
+2. When explicit asked, the the Invoke() method should display the summary view
 
+##### Implementing the Test For the First Rule
+
+Let's create first the class BasketItemViewComponentTest in the MVC.Test class.
+Then we implement the Invoke_Should_Display_Default_View() to add the arrange-act-assert
+cycle. This method is very similar to the first unit test we implemented earlier:
 
 ```csharp
 public class BasketItemViewComponentTest
@@ -826,21 +833,32 @@ public class BasketItemViewComponentTest
     [Fact]
     public void Invoke_Should_Display_Default_View()
     {
-        //arrange 
+        //arrange
         var vc = new BasketItemViewComponent();
         BasketItem item =
             new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 };
 
-        //act 
+        //act
         var result = vc.Invoke(item);
 
         //assert
         ViewViewComponentResult vvcResult = Assert.IsAssignableFrom<ViewViewComponentResult>(result);
         Assert.Equal("Default", vvcResult.ViewName);
+        BasketItem resultModel = Assert.IsAssignableFrom<BasketItem>(vvcResult.ViewData.Model);
+        Assert.Equal(item.ProductId, resultModel.ProductId);
     }
 }
 ```
 **Listing**: setting up the first BasketItemViewComponent unit testing 
+
+You can notice in the above snippet that the most striking difference between 
+this and the first unit test we implemented is that now we don't just check the 
+view's name. We also verify the view's model content, to make sure that it is of BasketItem type,
+and also that the object contains the same product Id as passed as a model.
+
+Running the tests, we obtain the result:
+
+![Three Tests Passing](three_tests_passing.png)
 
 #### Moving Components to Views/Shared Folder
 
