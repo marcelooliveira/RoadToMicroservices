@@ -807,6 +807,12 @@ new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Qua
 
 10) Last step: delete the _BasketList.cshtml partial view file.
 
+This conversion to view components produce exactly the same result as with partial views:
+
+![Basket Item View Component Screenshot](basket_item_view_component_screenshot.png)
+
+**Picture**: The Basket Item View Component Screenshot
+
 #### Unit Testing BasketItemViewComponent
 
 ADD BasketItemViewComponentTest.cs
