@@ -856,10 +856,41 @@ this and the first unit test we implemented is that now we don't just check the
 view's name. We also verify the view's model content, to make sure that it is of BasketItem type,
 and also that the object contains the same product Id as passed as a model.
 
-Running the tests, we obtain the result:
+Please always keep each unit test as small and tidy as possible.
+
+Running the tests, we obtain the results: all 3 tests are passing.
 
 ![Three Tests Passing](three_tests_passing.png)
 
+#### The Red / Green / Refactor Cycle
+
+As you implement your unit tests, you can internalize the good habit of applying
+the Red/Green/Refactor cycle for each unit test. 
+
+Red/Green/Refactor is a well-known Agile pattern for testing, and consists of
+3 steps:
+
+![Red Green Refactor](red-green-refactor.png)
+
+1. Red: each unit test fails initially. This is good news, because the method under test
+still has no implementation, and the test is working and correctly detecting the missing/broken rule.
+At this point, you must implement or fix the funcionality under test. After the implementation,
+you will run thet test and, if it fails again, this means your implementation is wrong, or
+the test itself is wrong. Consider the unit test as a safety net, or as an watchdog
+guarding your business rules against possible developing mistakes.
+2. Green: As soon as the implementation is correct, the test should pass. This means
+the purpose of the unit test method has been achieved.  
+3. Refactor: changing code can always be dangerous if you don't have a safety net of unit tests to 
+protect you against mistakes. That's why it is done after the each test go green: Now you have
+a good oportunity to refactor your code, that is, make your code more readable, by renaming
+classes/methods/variables, removing unnecessary comments, splitting large methods and classes,
+eliminating duplicated code, and enhancements that add quality to your code.
+After you refactor your code, you must run tests once again to ensure everything
+is still perfectly working.
+
+Only after the refactor step you would go to the next unit test business rule and start 
+the "Red" step for the new unit test.
+ 
 #### Moving Components to Views/Shared Folder
 
 Part 02/MVC/ViewComponents/BasketItemViewComponent.cs
