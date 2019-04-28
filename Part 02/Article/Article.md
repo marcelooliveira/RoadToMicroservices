@@ -699,9 +699,13 @@ message: "There are no items in your basket yet! Click here to start shopping!"
 ![Alert Empty Items](alert_empty_items.png)
 
 
-#### Creating a ViewComponent for BasketList
+#### Creating a ViewComponent for BasketItem
 
-C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\ViewComponents\BasketItemViewComponent.cs
+Not only the basket list, but also the basket item partial view can be converted into a view component.
+
+This require some steps, similar to what we have seen a little earlier:
+
+1) Create a new BasketItemViewComponent class under ViewComponents\ folder
 
 ```csharp
 public class BasketItemViewComponent : ViewComponent
@@ -716,21 +720,35 @@ public class BasketItemViewComponent : ViewComponent
     }
 }
 ```
-**Listing**: the new BasketItemViewComponent class
+**Listing**: the new BasketItemViewComponent class (\ViewComponents\BasketItemViewComponent.cs)
 
-Move this file: _BasketItem.cshtml => Default.cshtml
 
-Default.cshtml
+2) Create a new BasketItem folder under Components
+
+3) Move the partial view file: _BasketItem.cshtml into the folder: Components/BasketItem/
+
+4) Rename this file to Default.cshtml
+
+5) Change the \Views\Basket\Components\BasketList\Default.cshtml file to add the @addTagHelper directive:
 
 ```csharp
 @addTagHelper *, MVC
 ```
 **Listing**: adding the @addTagHelper directive
 
+6) Remove the reference to the _BasketItem partial view tag helper:
+
 ```razor
-<partial name="_BasketList" for="@items" />
+<partial name="_BasketItem" for="@item" />
 ```
-**Listing**: remove the Partial tag helper
+
+7) Replace it with the new view component tag helper
+
+```razor
+<vc:basket-item item="@item"></vc:basket-item>
+```
+
+8) This will give us the following markup:
 
 ```razor
 <div class="card">
@@ -775,18 +793,19 @@ Default.cshtml
     </div>
 </div>
 ```
-**Listing**: the Components/BasketItem/Default.html file
+**Listing**: the Components/BasketItem/Default.cshtml file
 
-C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\Views\Basket\Index.cshtml
+9) Now, reactivate the code lines containing the BasketItem instances, which we previously
+commented out to test the basket list:
 
 ```csharp
 new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
 new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
 new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
 ```
-**Listing**: restoring the 3 basket items
+**Listing**: restoring the 3 basket items (\MVC\Views\Basket\Index.cshtml)
 
-Last step: DELETE _BasketList.cshtml partial view file
+10) Last step: delete the _BasketList.cshtml partial view file.
 
 #### Unit Testing BasketItemViewComponent
 
