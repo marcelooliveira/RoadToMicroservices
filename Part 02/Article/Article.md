@@ -893,6 +893,9 @@ the "Red" step for the new unit test.
  
 #### Moving Components to Views/Shared Folder
 
+Now that we know the meaning of Red/Green/Refactor cycle, let's apply it in our test development.
+We that we passed the Red and Green steps, we are going to refactor our code.
+
 Part 02/MVC/ViewComponents/BasketItemViewComponent.cs
 
 ```csharp
