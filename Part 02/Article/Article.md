@@ -815,7 +815,10 @@ This conversion to view components produce exactly the same result as with parti
 
 #### Unit Testing BasketItemViewComponent
 
-ADD BasketItemViewComponentTest.cs
+Now that we have a view component for BasketItem... let's implement the unit tests for 
+the new BasketItemViewComponent. And these are the rules we should implement:
+
+
 
 ```csharp
 public class BasketItemViewComponentTest
