@@ -19,7 +19,7 @@ namespace MVC.Test.ViewComponents
                 new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 };
 
             //act 
-            var result = vc.Invoke(item, false);
+            var result = vc.Invoke(item);
 
             //assert
             ViewViewComponentResult vvcResult = Assert.IsAssignableFrom<ViewViewComponentResult>(result);

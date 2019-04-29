@@ -890,70 +890,25 @@ is still perfectly working.
 
 Only after the refactor step you would go to the next unit test business rule and start 
 the "Red" step for the new unit test.
- 
-#### Moving Components to Views/Shared Folder
 
-Now that we know the meaning of Red/Green/Refactor cycle, let's apply it in our test development.
-We that we passed the Red and Green steps, we are going to refactor our code.
+#### Enabling the Summary Mode
 
-Part 02/MVC/ViewComponents/BasketItemViewComponent.cs
+Currently, our BasketItem view component only displays the Default markup, which means, the
+item contains the Add / Remove buttons and the input box that allows updating the quantity directly.
 
-```csharp
-public IViewComponentResult Invoke(BasketItem item, bool isSummary)
-```
-**Listing**: adding a isSummary parameter to Invoke() method
+However, the new business rules require that the BasketItem view component should be prepared to display 
+information in a read-only style. We are listing here the changes needed for this new feature.
 
-```csharp
-if (isSummary == true)
-{
-    return View("SummaryItem", item);
-}
-```
-**Listing**: returning a different view for summary presentation mode
-
-
-Part 02/MVC/ViewComponents/BasketListViewComponent.cs
+1. Add a new boolean isSummary parameter to the Invoke() method. This parameter just indicates whether
+the component style is summary (read-only) or not (quantities enabled, full mode)
 
 ```csharp
-public IViewComponentResult Invoke(List<BasketItem> items, bool isSummary)
+public IViewComponentResult Invoke(BasketItem item, bool isSummary = false)
 ```
-**Listing**: adding a isSummary parameter to Invoke() method
+**Listing**: adding a isSummary parameter to Invoke() method (ViewComponents/BasketItemViewComponent.cs)
 
-
-```csharp
-return View("Default", items);
-```
-
-```csharp
-return View("Default", new BasketItemList
-{
-    List = items,
-    IsSummary = isSummary
-});
-```
-**Listing**: passing the new view model to View() method
-
-
-Part 02/MVC.Test/BasketItemViewComponentTest.cs
-
-#### changes to Invoke_Should_Display_Default_View() method
-
-```csharp
-var result = vc.Invoke(item, false);
-```
-**Listing**: passing the new isSummary argument to Invoke() method
-
-```csharp
-BasketItem resultModel = Assert.IsAssignableFrom<BasketItem>(vvcResult.ViewData.Model);
-```
-**Listing**: verifying that the result model is of type BasketItem
-
-```csharp
-Assert.Equal(item.ProductId, resultModel.ProductId);
-```
-**Listing**: verifying that the producId is the same passed to the view
-
-#### implemening new test: Invoke_Should_Display_SummaryItem_View
+2. Implement a new test: Invoke_Should_Display_SummaryItem_View. Now, we pass a the parameter
+(isSummary) as an argument for the Invoke() method call:
 
 ```csharp
 [Fact]
@@ -976,71 +931,30 @@ public void Invoke_Should_Display_SummaryItem_View()
 ```
 **Listing**: testing behavior when summary style of ViewComponent is invoked
 
-```csharp
-...
-var result = vc.Invoke(items, false);
-...
-var result = vc.Invoke(new List<BasketItem>(), false);
-...
-```
-**Listing**: updating tests class with the isSummary argument (BasketListViewComponentTest.cs)
+3. Running the tests again, the new test will fail, as expected:
 
+![Summary Test Fail](summary_test_fail.png)
 
+4. Now, implement the required rule in the Invoke() of the BasketItemViewComponent class.
+You can do it by including a condition in order to verify the new parameter and return the SummaryItem view (which is still not implemented):
 
 ```csharp
-public class BasketItemList
+if (isSummary == true)
 {
-    public List<BasketItem> List { get; set; }
-    public bool IsSummary { get; set; }
+    return View("SummaryItem", item);
 }
 ```
-**Listing**: the new BasketItemList class (ViewModels\BasketItemList.cs)
+**Listing**: returning a different view for summary presentation mode (ViewComponents/BasketItemViewComponent.cs)
 
+5. Running the tests again, the test will pass:
 
-```razor
-<vc:basket-list items="@items" is-summary="false"></vc:basket-list>
-```
-**Listing**: adding the new is-summary argument to the view component tag helper (/Views/Basket/Index.cshtml)
+![Summary Test Pass](summary_test_pass.png)
 
-
-
-```razor
- @using MVC.Models.ViewModels
- @model string
- @addTagHelper *, MVC
- @{
-
-    List<BasketItem> items = new List<BasketItem>
-    {
-        new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
-        new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
-        new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
-    };
-```
-**Listing**: adding the summary data checkout view (/Views/Checkout/Index.cshtml)
-
+6. Create the new view for the SummaryItem mode (SummaryItem.cshtml file), under the 
+Views/Basket/Components/BasketItem/ folder:
 
 ```razor
-<h4>Summary</h4>
-
-<vc:basket-list items="@items" is-summary="true"></vc:basket-list>
-```
-**Listing**: adding the summary basket view component to the checkout view (/Views/Checkout/Index.cshtml)
-
-
-
-
-MOVE
-...Basket/Components/BasketItem/Default.cshtml
-TO
-...Shared/Components/BasketItem/Default.cshtml
-
-
-
-
-
-```razor
-@using MVC.Models.ViewModels
+@using MVC.Controllers
 
 @model BasketItem
 
@@ -1064,7 +978,166 @@ TO
 </div>
 <br />
 ```
-**Listing**: the new summary item view component (Views/Shared/Components/BasketItem/SummaryItem.cshtml)
+**Listing**: the new summary item view component (Views/Basket/Components/BasketItem/SummaryItem.cshtml)
+
+7. We must pass the isSummary information to the basket item component. How do we do it?
+We must provide it via the container, which is the Basket List view component. But
+the Basket List (still) does not have the isSummary information. We should provide it as well.
+So let's create a new class, that serves as a new model for the basket list component,
+that is, such class will be a "view model". This class will be created in a new folder
+named ViewModels.
+
+```csharp
+public class BasketItemList
+{
+    public List<BasketItem> List { get; set; }
+    public bool IsSummary { get; set; }
+}
+```
+**Listing**: the new BasketItemList class (ViewModels\BasketItemList.cs)
+
+
+8. In the code above, we introduced a new isSummary parameter, which has a side effect in other parts
+of the application, e.g., in the Basket List. We also have to introduce the same parameter in the Invoke() 
+method of BasketListViewComponent class:
+
+```csharp
+public IViewComponentResult Invoke(List<BasketItem> items, bool isSummary)
+```
+**Listing**: adding a isSummary parameter to Invoke() method (/ViewComponents/BasketListViewComponent.cs)
+
+
+9. Also, the Invoke() method BasketList component should pass the new view model 
+(BasketItemList class) as an argument for the View() method:
+
+```csharp
+return View("Default", new BasketItemList
+{
+    List = items,
+    IsSummary = isSummary
+});
+```
+**Listing**: passing the new view model to the View() method
+
+10. Modify the Basket view to provide the new isSummary parameter.
+
+```razor
+<vc:basket-list items="@items" is-summary="false"></vc:basket-list>
+```
+**Listing**: adding the new is-summary argument to the view component tag helper (/Views/Basket/Index.cshtml)
+
+Notice that we are hard-coding the isSummary here, because the Basket view must 
+always display the BasketList view component in its full mode, not summary mode.
+
+11. Modify the BasketList Default view to use the BasketItemList class as Model
+
+```razor
+@using MVC.Models.ViewModels
+@addTagHelper *, MVC
+@model BasketItemList;
+```
+**Listing**: the BasketList Default view  (Views\Basket\Components\BasketList\Default.cshtml)
+
+12. Modify the BasketList view component tag helper to provide the new isSummary parameter.
+
+```razor
+<vc:basket-item item="@item" is-summary="Model.IsSummary"></vc:basket-item>
+```
+
+...and modify the rest of the same file to reflect the new Model:
+
+```razor
+<div class="card-body">
+    @foreach (var item in Model.List)
+    {
+        <vc:basket-item item="@item" is-summary="@Model.IsSummary"></vc:basket-item>
+    }
+</div>
+<div class="card-footer">
+    <div class="row">
+        <div class="col-sm-10">
+            <span numero-items>
+                Total: @Model.List.Count
+                item@(Model.List.Count > 1 ? "s" : "")
+            </span>
+        </div>
+        <div class="col-sm-2">
+            Total: <span class="pull-right" total>
+                @Model.List.Sum(item => item.Quantity * item.UnitPrice).ToString("C"))
+            </span>
+        </div>
+    </div>
+</div>
+```
+
+**Listing**: adding the new is-summary argument to the view component tag helper (/Views/BasketItem/Index.cshtml)
+
+13. Run the application and make sure the basket view is displaying the data correctly:
+
+![Basket List Issummary False](basket_list_issummary_false.png)
+
+14. Now, let's use reutilize the BasketList view component in the checkout view.
+First, let's modify that checkout view to provide some dummy data for the basket list:
+
+```razor
+﻿@using MVC.Controllers
+@addTagHelper *, MVC
+@model string
+
+@{
+    ViewData["Title"] = "Checkout";
+    var email = "alice@smith.com";
+
+    List<BasketItem> items = new List<BasketItem>
+    {
+        new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
+        new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
+        new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
+    };
+}
+```
+**Listing**: adding the summary data checkout view (/Views/Checkout/Index.cshtml)
+
+Now let's append the following markup code to implement the BasketList view component
+with the Summary mode turned on:
+
+```razor
+<h4>Summary</h4>
+
+<vc:basket-list items="@items" is-summary="true"></vc:basket-list>
+```
+**Listing**: adding the summary basket view component to the checkout view (/Views/Checkout/Index.cshtml)
+
+15. Run the application again, fill in the registration form and verify the Checkout view.
+Unfortunately, this will produce an exception:
+
+```
+An unhandled exception occurred while processing the request.
+InvalidOperationException: The view 'Components/BasketList/Default' was not found. The following locations were searched:
+/Views/Checkout/Components/BasketList/Default.cshtml
+/Views/Shared/Components/BasketList/Default.cshtml
+/Pages/Shared/Components/BasketList/Default.cshtml
+```
+
+Why did this exception happened? The problem is that the calling view is inside the Checkout
+folder, which does not contain a file in the /Components/BasketList/Default.cshtml path.
+We can solve that by refactoring our application and moving each basket-related
+view component to under the /Views/Shared project folder:
+
+![Checkout Summary](checkout_summary.png)
+**Picture**: The Summary mode of Basket List View Component displayed in Checkout view
+
+ 
+#### Moving Components to Views/Shared Folder
+
+MOVE
+...Basket/Components/BasketItem/Default.cshtml
+TO
+...Shared/Components/BasketItem/Default.cshtml
+
+
+
+
 
 
 

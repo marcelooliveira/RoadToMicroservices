@@ -14,7 +14,7 @@ namespace MVC.ViewComponents
             this.basketService = basketService;
         }
 
-        public IViewComponentResult Invoke(bool isSummary)
+        public IViewComponentResult Invoke(bool isSummary = false)
         {
             List<BasketItem> items = basketService.GetBasketItems();
 

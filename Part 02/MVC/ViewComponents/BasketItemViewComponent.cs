@@ -9,7 +9,7 @@ namespace MVC.ViewComponents
         {
         }
 
-        public IViewComponentResult Invoke(BasketItem item, bool isSummary)
+        public IViewComponentResult Invoke(BasketItem item, bool isSummary = false)
         {
             if (isSummary == true)
             {
