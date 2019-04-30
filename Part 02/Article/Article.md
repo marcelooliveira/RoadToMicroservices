@@ -1127,63 +1127,15 @@ view component to under the /Views/Shared project folder:
 ![Checkout Summary](checkout_summary.png)
 **Picture**: The Summary mode of Basket List View Component displayed in Checkout view
 
- 
 #### Fixing All Tests for IBasketService
 
-ADD Moq library to MVC.Test project:
-Part 02/MVC.Test/MVC.Test.csproj
-+ <PackageReference Include="Moq" Version="4.10.1" />
+So far, we have been working with dummy data, declaring and initializing variables
+that will eventually used by the views to render and display the user interface, e.g. in
+Catalog, Basket and Checkout views.
 
-
-Part 02/MVC.Test/BasketListViewComponentTest.cs
-
-add these lines:
-```csharp
-using Moq;
-using MVC.Services;
-```
-
-REPLACE:
-```csharp
-//arrange 
-var vc = new BasketListViewComponent();
-```
-WITH
-```csharp
-//arrange
-Mock<IBasketService> basketServiceMock =
-    new Mock<IBasketService>();
-```
-
-ADD:
-```csharp
-basketServiceMock.Setup(m => m.GetBasketItems())
-    .Returns(items);
-var vc = new BasketListViewComponent(basketServiceMock.Object);
-```
-
-REMOVE THE Products ARGUMENT
-```csharp
-var result = vc.Invoke(false);
-```
-
-
-```csharp
-Mock<IBasketService> basketServiceMock =
-    new Mock<IBasketService>();
-
-basketServiceMock.Setup(m => m.GetBasketItems())
-    .Returns(new List<BasketItem>());
-var vc = new BasketListViewComponent(basketServiceMock.Object);
-```
-**Listing**: acting against BasketListViewComponent with a mock object
-
-
-
-REPLACE:
-var result = vc.Invoke(new List<BasketItem>(), false);
-WITH:
-var result = vc.Invoke(false);
+However, as we progress in this article series, we will take steps to a more
+realistic scenario, where these data are provided by a set of services, that 
+may retrieve data from some sort of database or web service.
 
 Part 02/MVC/Services/IBasketService.cs
 
@@ -1300,6 +1252,68 @@ Change this line to remove the `items` attribute...
 ```
 **Listing**: the view component tag helper without the `items` attribute
 
+
+
+
+
+
+ADD Moq library to MVC.Test project:
+Part 02/MVC.Test/MVC.Test.csproj
++ <PackageReference Include="Moq" Version="4.10.1" />
+
+
+Part 02/MVC.Test/BasketListViewComponentTest.cs
+
+add these lines:
+```csharp
+using Moq;
+using MVC.Services;
+```
+
+REPLACE:
+```csharp
+//arrange 
+var vc = new BasketListViewComponent();
+```
+WITH
+```csharp
+//arrange
+Mock<IBasketService> basketServiceMock =
+    new Mock<IBasketService>();
+```
+
+ADD:
+```csharp
+basketServiceMock.Setup(m => m.GetBasketItems())
+    .Returns(items);
+var vc = new BasketListViewComponent(basketServiceMock.Object);
+```
+
+REMOVE THE Products ARGUMENT
+```csharp
+var result = vc.Invoke(false);
+```
+
+
+```csharp
+Mock<IBasketService> basketServiceMock =
+    new Mock<IBasketService>();
+
+basketServiceMock.Setup(m => m.GetBasketItems())
+    .Returns(new List<BasketItem>());
+var vc = new BasketListViewComponent(basketServiceMock.Object);
+```
+**Listing**: acting against BasketListViewComponent with a mock object
+
+
+
+REPLACE:
+var result = vc.Invoke(new List<BasketItem>(), false);
+WITH:
+var result = vc.Invoke(false);
+
+
+
 #### Asserting Collections
 
 MOVE
@@ -1359,12 +1373,12 @@ Add the addTagHelper directive
 @model List<Product>;
 ```
 
-Remove the partial tag helper
+Remove the partial tag helper...
 ```csharp
 <partial name="_Categories" for="@Model" />
 ```
 
-and replace it with the Categories view component tag helper
+...and replace it with the Categories view component tag helper
 ```csharp
 <vc:categories products="@Model"></vc:categories>
 ```
