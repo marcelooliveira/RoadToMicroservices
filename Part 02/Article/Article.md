@@ -1137,7 +1137,14 @@ However, as we progress in this article series, we will take steps to a more
 realistic scenario, where these data are provided by a set of services, that 
 may retrieve data from some sort of database or web service.
 
-Part 02/MVC/Services/IBasketService.cs
+So, from now on we will remove these lines where we declare/initialize dummy data, 
+and replace them with requests to specialized services.
+
+First, we create a /Services folder. Here, we will put the interfaces and concrete
+implementation for our service classes.
+
+Second, we create a a new interace named IBasketService. This interface provides
+the "contract" for a method that returns a collection of basket items:
 
 ```csharp
 public interface IBasketService
@@ -1147,9 +1154,8 @@ public interface IBasketService
 ```
 **Listing**: the new IBasketService interface (/Services/IBasketService.cs)
 
-
-
-Part 02/MVC/Services/BasketService.cs
+And then we implement the concrete class inheriting from IBasketService, but
+returning the dummy data from the GetBasketItems() method.
 
 ```csharp
 public class BasketService : IBasketService
@@ -1167,49 +1173,75 @@ public class BasketService : IBasketService
 ```
 **Listing**: the new BasketService class (/Services/BasketService.cs)
 
+You may be thinking "but where is the database?". We are still not working with persistence/database logic.
+That would require a lot of work and obscure the focus of this article. But in the following articles
+there will be plenty of time to implement data retrieval/persistence for our needs.
 
+In order to use this service in our application, we could create instances of our services
+class inside of our controllers/view components and then consume them, therefore
+creating a dependency between these controllers/components and our services. But instead 
+of creating instances directly, we will be resorting to the Dependency Injection (DI)
+design pattern. Dependency Injection means that a component explicitly describes which services
+it depends on via constructor parameters, but each instance of any service is created
+outside of the component that uses it, that is, each instance is created in the Dependency
+Injection Container, which is a built-in component of ASP.NET Core. Thus, we avoid
+the instance creation through the new operator, and rely on the Dependency Injection Container
+to crete the instances for us.
 
-
-Part 02/MVC/Startup.cs
+Let's configure the dependency injection for the BasketService class, adding a transient
+service. By "transient", we mean that a new instance should be create every time
+a component requires it. That is, no service instances will be ever reutilized.
 
 ```csharp
 ...
 using MVC.Services; 
 ...
-services.AddTransient<IBasketService, BasketService>();
+public void ConfigureServices(IServiceCollection services)
+{
+    ...
+    services.AddTransient<IBasketService, BasketService>();
+    ...
+}
 ...
 ```
 **Listing**: new lines added to Startup class (MVC/Startup.cs)
 
+Now, we modify the BasketListViewComponent to make it dependent on the IBasketService
+instance.
 
-
-Part 02/MVC/ViewComponents/BasketListViewComponent.cs
-
-Adding services namespace
 ```csharp
 using MVC.Services;
-```
-
-
-```csharp
+.
+.
+.
 private readonly IBasketService basketService;
 
 public BasketListViewComponent(IBasketService basketService)
 {
     this.basketService = basketService;
 }
+```
 
+And we also remove the List<BasketItem> items parameter, since these data will come now
+from the basketService object:
+
+```csharp
 public IViewComponentResult Invoke(bool isSummary)
 {
     List<BasketItem> items = basketService.GetBasketItems();
+.
+.
+.
 ```
 **Listing**: consuming IBasketService via dependency injection
 
+Notice that the `public BasketListViewComponent(IBasketService basketService)` constructor
+requires a parameter of an interface type, not a concrete class type. This is desirable,
+because we should "program to an interface" whenever possible. It's up to the Dependency Injection Container
+to use the application configuration we defined previously, in order to discover which concrete
+class should be instantiated according to the given interface.
 
-
-Part 02/MVC/Views/Basket/Index.cshtml
-
-Remove this lines from the index view:
+Now we remove this lines from the Catalog index view:
 
 ```csharp
 //List<BasketItem> items = new List<BasketItem>
@@ -1220,19 +1252,18 @@ Remove this lines from the index view:
 //};
 ```
 
-Change this line to remove the `items` attribute... 
-```csharp
-<vc:basket-list items="@items" is-summary="false"></vc:basket-list>
-```
+And then change this line to remove the `items` attribute... 
+
 
 ```csharp
+<!--REMOVE OR COMMENT OUT THIS LINE-->
+<!--<vc:basket-list items="@items" is-summary="false"></vc:basket-list>-->
+
 <vc:basket-list is-summary="false"></vc:basket-list>
 ```
 **Listing**: the view component tag helper without the `items` attribute
 
-Part 02/MVC/Views/Checkout/Index.cshtml
-
-Remove this lines from the checkout view:
+Also, remove this lines from the checkout view:
 ```csharp
 //List<BasketItem> items = new List<BasketItem>
 //{
@@ -1242,19 +1273,16 @@ Remove this lines from the checkout view:
 //};
 ```
 
-Change this line to remove the `items` attribute... 
+And change this line to remove the `items` attribute... 
 ```csharp
-<vc:basket-list items="@items" is-summary="true"></vc:basket-list>
-```
+<!--REMOVE OR COMMENT OUT THIS LINE-->
+<!--<vc:basket-list items="@items" is-summary="true"></vc:basket-list>-->
 
-```csharp
 <vc:basket-list is-summary="true"></vc:basket-list>
 ```
 **Listing**: the view component tag helper without the `items` attribute
 
-
-
-
+#### Mocking in Unit Tests
 
 
 ADD Moq library to MVC.Test project:
