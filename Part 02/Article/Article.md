@@ -1282,63 +1282,152 @@ And change this line to remove the `items` attribute...
 ```
 **Listing**: the view component tag helper without the `items` attribute
 
+At this point, we would usually just run the application to check if everything
+went fine, but unfortunately the compiler is accusing some errors that we must correct first.
+
 #### Mocking in Unit Tests
 
+Currently, our tests are calling the Invoke() method and passing an items collection as an argument:
 
-ADD Moq library to MVC.Test project:
-Part 02/MVC.Test/MVC.Test.csproj
-+ <PackageReference Include="Moq" Version="4.10.1" />
+```csharp
+var result = vc.Invoke(items);
+.
+.
+.
+var result = vc.Invoke(new List<BasketItem>());
+```
 
+However, we have previously removed the items parameter from the Invoke() method. So let's remothe it 
+also from the method call:
 
-Part 02/MVC.Test/BasketListViewComponentTest.cs
+```csharp
+var result = vc.Invoke();
+.
+.
+.
+var result = vc.Invoke();
+```
+
+But now the BasketListViewComponent class has a new IBasketService constructor parameter, which the tests don't provide yet.
+We could simply provide a new instance of BasketService class and pass it as an argument for the constructor, 
+but using concrete class instances in the arrange section of a unit test is a bad practice. We
+should provide this kind of dependence through a technique called "mocking". A mock is
+an object that substitutes some of the dependencies of the object under test inside a unit
+test. This allows the testing conditions to be more controlled and self-contained.
+
+We will introduce mock objects to provide a substitute for the IBasketService interface
+wherever needed. 
+
+There are a number of .NET-compatible Mock frameworks out there, and we are
+working with the Moq Library, which is a popular Mock framework for .NET Core.
+
+Via Tools > Nuget Package Manager > Package Manager Console, install the Moq library
+through the command line:
+
+```csharp
+Install-Package Moq -Version 4.10.1
+```
+
+Now we add the namespace references in the BasketListViewComponentTest class:
 
 add these lines:
 ```csharp
 using Moq;
 using MVC.Services;
 ```
+Listing: BasketListViewComponentTest.cs file
 
-REPLACE:
+Currently, the arrange section looks like:
+
 ```csharp
 //arrange 
 var vc = new BasketListViewComponent();
+List<BasketItem> items =
+new List<BasketItem>
+{
+    new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
+    new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
+    new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
+};
 ```
-WITH
+Listing: BasketListViewComponentTest.cs file
+
+But with Moq, we introduce a new mock object called basketServiceMock, using
+the generic Mock<T> class:
+
+```csharp
+//arrange 
+Mock<IBasketService> basketServiceMock =
+    new Mock<IBasketService>();
+var vc = new BasketListViewComponent();
+List<BasketItem> items =
+new List<BasketItem>
+{
+    new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
+    new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
+    new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
+};
+```
+
+Now, we can have a great deal of control over this mock object. This is quite
+useful, because we no longer depend on the concrete implementation of the BasketService class 
+to provide us with data. Instead, we configure the GetBasketItems() method to
+return exactly the items object we had initialized earlier in the unit test. We configure
+the return of a method through the .Setup() method:
+
+```csharp
+basketServiceMock.Setup(m => m.GetBasketItems())
+    .Returns(items);
+```
+
+Now we can easily pass the mock object as an argument to the constructor of the class
+under test:
+
+```csharp
+var vc = new BasketListViewComponent(basketServiceMock.Object);
+```
+
+And here is the complete arrange section:
+
 ```csharp
 //arrange
 Mock<IBasketService> basketServiceMock =
     new Mock<IBasketService>();
-```
-
-ADD:
-```csharp
+List<BasketItem> items =
+new List<BasketItem>
+{
+    new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 },
+    new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 },
+    new BasketItem { Id = 3, ProductId = 9, Name = "Tomato", UnitPrice = 59.90m, Quantity = 4 }
+};
 basketServiceMock.Setup(m => m.GetBasketItems())
     .Returns(items);
 var vc = new BasketListViewComponent(basketServiceMock.Object);
 ```
+**Listing**: the arrange section of the BasketListViewComponentTest's Invoke_With_Items_Should_Display_Default_View method
 
-REMOVE THE Products ARGUMENT
-```csharp
-var result = vc.Invoke(false);
-```
-
+Similarly, we also implement the mock object for the the other method (Invoke_Without_Items_Should_Display_Empty_View):
 
 ```csharp
+//arrange 
 Mock<IBasketService> basketServiceMock =
     new Mock<IBasketService>();
-
 basketServiceMock.Setup(m => m.GetBasketItems())
     .Returns(new List<BasketItem>());
 var vc = new BasketListViewComponent(basketServiceMock.Object);
 ```
 **Listing**: acting against BasketListViewComponent with a mock object
 
+Running the tests again, all tests will pass without problem:
 
+![Summary Test Pass](summary_test_pass.png)
 
-REPLACE:
-var result = vc.Invoke(new List<BasketItem>(), false);
-WITH:
-var result = vc.Invoke(false);
+This means our Moq objects were well implemented, configured and used.
+
+And running the application, we see the basket list data which is provided by the
+new BasketService class:
+
+![Basket List Issummary False](basket_list_issummary_false.png)
 
 
 
