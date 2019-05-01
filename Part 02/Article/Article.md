@@ -1883,6 +1883,12 @@ the following snippet to the site.css:
 ```
 **Listing**: the cascade style sheet with styling for the user count controls (/wwwroot/css/site.css)
 
+Now we can see the notification numbers inserted in a yellow circle,
+according to the new css style we added:
+
+![Notification Icons Style](notification_icons_style.png)
+**Picture**: Notification Icons with style applied
+
 #### Creating UserCounter ViewComponent
 
 Part 02/MVC/Models/ViewModels/UserCountViewModel.cs
