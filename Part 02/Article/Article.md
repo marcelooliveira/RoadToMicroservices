@@ -1778,6 +1778,21 @@ much cleaner and readable, as we can see:
 
 ### User Notifications Counters
 
+View Components are typically invoked from a layout page. This is so because
+the layout page allows components to be displayed across the many views of the application. That is, 
+with a view component your web application can have reusable rendering logic that would otherwise
+clutter your controllers, views or partial views. Typical cases for view components are:
+- navigation menus
+- login panel
+- shopping cart
+- sidebar content/menu
+Unlike partial views, the view components can provide a self-contained black box, which business logic is 
+independent and isolated from the view it is inserted into.
+
+In the following sections, we will use view components to render navigation bar icons displaying: 
+- user notification count
+- basket item count
+
 #### Creating Navigation Bar Notification Icons
 
 Part 02/MVC/Views/Shared/_Layout.cshtml
