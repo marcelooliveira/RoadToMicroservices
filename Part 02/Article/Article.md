@@ -2227,18 +2227,22 @@ the specialized view component tag helpers:
 
 ```razor
 <vc:notification-counter 
-.
-.
-.
+    title="Notifications"
+    controller-name="notifications"
+    css-class="notification"
+    icon="bell">
 </vc:notification-counter>
-
+.
+.
+.
 <vc:basket-counter 
-.
-.
-.
+    title="Basket"
+    controller-name="basket"
+    css-class="basket"
+    icon="shopping-cart">
 </vc:basket-counter>    
 ```
-**Listing**: replacing the old UserCounter tag helper with specialized counter tag helpers (/Views/Shared/_Layout.cshtml)
+**Listing**: replacing the old UserCounter tag helpers with specialized counter tag helpers (/Views/Shared/_Layout.cshtml)
 
 Finally, we just run the application again to check if the new view components are rendered correctly:
 
