@@ -1,4 +1,4 @@
-﻿#### Introduction
+﻿### Introduction
 
 Welcome to the second installment of the "**ASP.NET Core Roadmap to Microservices**" article series.
 
@@ -6,7 +6,7 @@ In the last article, we saw how to build the basic views of the e-commerce appli
 
 What are view components? How they compare to **partial views**? And how they apply in our e-commerce project?
 
-#### Partial View vs. View Component
+### Partial View vs. View Component
  
 The partial views we introduced in the previous article are capable enough to perform the
 role of view composition for the e-commerce application.
@@ -24,7 +24,7 @@ a specific controller action. View components, on the other hand, only depend on
 Although we are implementing the view components in an e-commerce application, which based on controllers and views, 
 it is also possible to develop view components for Razor Pages.
 
-#### Replacing Basket Partial Views with View Components
+### Replacing Basket Partial Views with View Components
 
 In the previous article, we broke the Basket view into smaller partial views, as we can see in the folder structure below:
 
@@ -288,10 +288,12 @@ a new business logic for the class:
 - If the list parameter is empty, the component must display an empty view
 - If the list parameter contains basket items, the component must display the default view
 
-#### Unit Testing Our View Component
+#### Unit Testing View Components
 
 Differently from partial views, view components allow testability. Just like any regular class,
-view component classes can be unit-tested. Let's add a new unit testing project to our solution:
+view component classes can be unit-tested. Let's add a new unit testing project to our solution.
+
+##### Adding a New Unit Testing Project
 
 Go to the File menu and select: New > Project > Test > xUnit Test Project (.NET Core)
 
@@ -569,7 +571,7 @@ accumulating multiple responsibilities, refactor it and split it into multiple t
 with single responsibilities.
 
 
-#### Basket Component Without Items Should Display Empty View
+##### Basket Component Without Items Should Display Empty View
 
 It's time to implement the second rule regarding the basket list view component:
 
@@ -862,7 +864,7 @@ Running the tests, we obtain the results: all 3 tests are passing.
 
 ![Three Tests Passing](three_tests_passing.png)
 
-#### The Red / Green / Refactor Cycle
+##### The Red / Green / Refactor Cycle
 
 As you implement your unit tests, you can internalize the good habit of applying
 the Red/Green/Refactor cycle for each unit test. 
@@ -1406,7 +1408,8 @@ var vc = new BasketListViewComponent(basketServiceMock.Object);
 ```
 **Listing**: the arrange section of the BasketListViewComponentTest's Invoke_With_Items_Should_Display_Default_View method
 
-Similarly, we also implement the mock object for the the other method (Invoke_Without_Items_Should_Display_Empty_View):
+Similarly, we also implement the mock object for the the other method (Invoke_Without_Items_Should_Display_Empty_View()),
+but this time we make the Setup() method return an empty list:
 
 ```csharp
 //arrange 
@@ -1429,31 +1432,7 @@ new BasketService class:
 
 ![Basket List Issummary False](basket_list_issummary_false.png)
 
-
-
-#### Asserting Collections
-
-MOVE
-...2/MVC.Test/BasketItemViewComponentTest.cs
-TO
-...Components/BasketItemViewComponentTest.cs
-
-
-MOVE
-...2/MVC.Test/BasketListViewComponentTest.cs
-TO
-...Components/BasketListViewComponentTest.cs
-
-
-```csharp
-var model = Assert.IsAssignableFrom<BasketItemList>(vvcResult.ViewData.Model);
-Assert.Collection<BasketItem>(model.List,
-    i => Assert.Equal(1, i.ProductId),
-    i => Assert.Equal(5, i.ProductId),
-    i => Assert.Equal(9, i.ProductId)
-);
-```
-**Listing**: asserting validity of the collection type and contents
+### Replacing Catalog Partial Views with View Components
 
 #### Creating ViewComponent for Categories
 
@@ -1798,7 +1777,7 @@ Part 02/MVC/Views/Catalog/Components/Categories/Default.cshtml
 **Listing**: the updated Categories/Default markup file (/Views/Catalog/Components/Categories/Default.cshtml)
 
 
-
+### User Notifications Counters
 
 #### Creating Navigation Bar Notification Icons
 
