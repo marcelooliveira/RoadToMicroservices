@@ -2147,20 +2147,39 @@ removing the count attribute and providing the new user-counter-type attribute:
 
 #### Creating NotificationCounter, BasketCounter Subclasses
 
-Part 02/MVC/ViewComponents/UserCounterViewComponent.cs
+In the previous section, we learned how to create a single view component with dual
+behavior: it could be used as a User Notification counter or a Basket counter.
 
+However, using coded types often requires the intense use of conditional structures, such
+as if and switch, which is considered a "code smell", in other words, a bad programming practice,
+because it defeats the purpose of object-oriented programming. Even if there aren't many
+if/switch instructions in the code, it can be considered as a case of OOP
+subutilization, because this is a situation where the code is screaming for refactoring and
+polymorphism.  
 
+There is a known technique called Replace Type Code with Subclasses, which we will 
+be applying here:
+
+https://refactoring.guru/replace-type-code-with-subclasses
+
+It consists of creating diferent subclasses for each group of distinct behaviors and thus
+we can eliminate the use of coded types and if/switch statements.
+
+Let's first create make the UserCounterViewComponent an abstract class. This way, we can
+avoid the direct instantiation, forcing developers to create objects from the classes inheriting
+from the UserCounterViewComponent superclass:
 
 ```csharp
 public abstract class UserCounterViewComponent : ViewComponent
 {
-    protected enum UserCounterType
+    protected readonly IUserCounterService userCounterService;
+
+    public UserCounterViewComponent(IUserCounterService userCounterService)
     {
-        Notification = 1,
-        Basket = 2
+        this.userCounterService = userCounterService;
     }
 
-    protected IViewComponentResult Invoke(string title, string controllerName, string cssClass, string icon, int count, UserCounterType userCounterType)
+    protected IViewComponentResult Invoke(string title, string controllerName, string cssClass, string icon, int count)
     {
         var model = new UserCountViewModel(title, controllerName, cssClass, icon, count);
         return View("~/Views/Shared/Components/UserCounter/Default.cshtml", model);
@@ -2170,34 +2189,24 @@ public abstract class UserCounterViewComponent : ViewComponent
 **Listing**: the UserCounterViewComponent class became superclass (/ViewComponents/UserCounterViewComponent.cs)
 
 
-```csharp
-if (userCounterType == UserCounterType.Notification)
-{
-    count = userCounterService.GetNotificationCount();
-}
-else if (userCounterType == UserCounterType.Basket)
-{
-    count = userCounterService.GetBasketCount();
-}
-```
-**Listing**: now each count receives the result of the appropriate service method
+Now we create a new NotificationCounterViewComponent class inheriting from UserCounterViewComponent.
+You can see how we eliminated the use of coded types and if statements:
 
-    
 ```csharp
 public class NotificationCounterViewComponent : UserCounterViewComponent
 {
     public NotificationCounterViewComponent(IUserCounterService userCounterService) : base(userCounterService) { }
- 
+
     public IViewComponentResult Invoke(string title, string controllerName, string cssClass, string icon)
     {
         int count = userCounterService.GetNotificationCount();
-        return Invoke(title, controllerName, cssClass, icon, count, UserCounterType.Notification);
+        return Invoke(title, controllerName, cssClass, icon, count);
     }
 }
 ```
 **Listing**: updates needed so that the NotificationCounterViewComponent class becomes a subclass
 
-
+Also, the BasketCounterViewComponent class must inherit from the base class:
 
 ```csharp
 public class BasketCounterViewComponent : UserCounterViewComponent
@@ -2207,14 +2216,14 @@ public class BasketCounterViewComponent : UserCounterViewComponent
     public IViewComponentResult Invoke(string title, string controllerName, string cssClass, string icon)
     {
         int count = userCounterService.GetBasketCount();
-        return Invoke(title, controllerName, cssClass, icon, count, UserCounterType.Basket);
+        return Invoke(title, controllerName, cssClass, icon, count);
     }
 }
 ```
 **Listing**: updates needed so that the BasketCounterViewComponent class becomes a subclass
 
-
-Part 02/MVC/Views/Shared/_Layout.cshtml
+Now it's time to recompile the project and replace the <vc:user-counter> tag helper with
+the specialized view component tag helpers:
 
 ```razor
 <vc:notification-counter 
@@ -2231,9 +2240,7 @@ Part 02/MVC/Views/Shared/_Layout.cshtml
 ```
 **Listing**: replacing the old UserCounter tag helper with specialized counter tag helpers (/Views/Shared/_Layout.cshtml)
 
+Finally, we just run the application again to check if the new view components are rendered correctly:
 
-
-
-
-
-
+![Notification Icons Style](notification_icons_style.png)
+**Picture**: Notification Icons rendered by subclass view components
