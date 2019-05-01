@@ -223,7 +223,7 @@ Now comment this line:
 **Listing**: removing PartialTagHelper for BasketList (\Views\Basket\Index.cshtml)
 
 Now, let's reference our view component tag helper. View components will be available when
-you type the **"<vc:"** prefix:
+you type the **"vc:"** prefix:
 
 ![Replacing Partial View Tag Helper](replacing_partial_view_tag_helper.png)
 
