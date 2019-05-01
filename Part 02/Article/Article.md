@@ -2247,4 +2247,32 @@ the specialized view component tag helpers:
 Finally, we just run the application again to check if the new view components are rendered correctly:
 
 ![Notification Icons Style](notification_icons_style.png)
+
 **Picture**: Notification Icons rendered by subclass view components
+
+### Conclusion
+
+We have seen in this article how to use view components with ASP.NET Core 2.2+.
+We started by comparing our previous approach against the advantage of the view components, discussing
+how we could benefit from a series of refactoring and upgrades to view components.
+
+The article goes on and provide business logic for the view components, and these component rules
+are verified thanks to the use of unit tests. We have used xUnit testing framework to create
+a simple testing project, using the arrange/act/assert approach, along with mock objects
+provided by the Moq framework. 
+
+We've learned how view components have a dedicated C# class, which can receive parameters, benefit from dependency injection 
+techniques. Services can be provided for the component constructor, thanks to the built-in
+ASP.NET Core dependency injection mechanism. We have seen how view components can be nested so that
+different layers of a same view can be displayed by different components.
+
+At the end, we saw how view components can be used to create self-contained, view-independent
+components that are hosted in the application layout page to be displayed across multiple views
+of the application. Also, we explored polymorphism and inheritance with view components, showing
+that this technology can be helpful in enforcing good programming practices, even in the application
+view layer.
+
+That's it! And so we finish the second part of the article series. 
+If you reached this line, thank you very much for your patience. 
+If you liked this article, or have any complaints or suggestions, 
+please leave a comment below. I'll be pleased to have your feedback!
