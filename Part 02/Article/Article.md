@@ -1434,9 +1434,20 @@ new BasketService class:
 
 ### Replacing Catalog Partial Views with View Components
 
+Now let's refactor yet another batch of our partial views, in order to
+replace them with view components. This time, since we already know the motivation
+and did it already once in the case of the basket partial views, we are going to show the
+sequence of steps more quickly and without much detail.
+
+The motivation for this changes is to keep the Razor markup files (.cshtml) 
+cleaner, smaller and more testable.
+
 #### Creating ViewComponent for Categories
 
-Part 02/MVC/ViewComponents/CategoriesViewComponent.cs
+In this section, we replace the outermost layer of the Catalog 
+markup file (Views/Catalog/_Categories.cshtml) with a view component.
+
+1. First, let's create the CategoriesViewComponent class:
 
 ```csharp
 public class CategoriesViewComponent : ViewComponent
@@ -1453,35 +1464,33 @@ public class CategoriesViewComponent : ViewComponent
 ```
 **Listing**: the new CategoriesViewComponent class (/ViewComponents/CategoriesViewComponent.cs)
 
+2. Then we move the Views/Catalog/_Categories.cshtml file to
+the /Catalog/Components/Categories/ location, renaming it to Default.cshtml
+after that. 
 
-MOVE
-Part 02/MVC/Views/Catalog/_Categories.cshtml
-TO
-...alog/Components/Categories/Default.cshtml
-
-
-Part 02/MVC/Views/Catalog/Index.cshtml
-
-Add the addTagHelper directive
+3. Next, we add the addTagHelper directive to the /Views/Catalog/Index.cshtml file.
 
 ```csharp
 @addTagHelper *, MVC
 @model List<Product>;
 ```
 
-Remove the partial tag helper...
+4. Also, we replace the partial tag helper...
 ```csharp
 <partial name="_Categories" for="@Model" />
 ```
 
-...and replace it with the Categories view component tag helper
+...with the Categories view component tag helper:
 ```csharp
 <vc:categories products="@Model"></vc:categories>
 ```
 
 #### Creating ViewComponent for ProductCard
 
-Part 02/MVC/ViewComponents/ProductCardViewComponent.cs
+In this section, we replace the innermost layer of the Catalog markup
+with a view component for displaying the Product Card.
+
+1. We start by creating a new class at /MVC/ViewComponents/ProductCardViewComponent.cs file.
 
 ```csharp
 public class ProductCardViewComponent : ViewComponent
@@ -1499,17 +1508,15 @@ public class ProductCardViewComponent : ViewComponent
 ```
 **Listing**: the new ProductCardViewComponent class (/ViewComponents/ProductCardViewComponent.cs)
 
+2. Then we add the addTagHelper directive to
 Part 02/MVC/Views/Catalog/Components/Categories/Default.cshtml
-
-Add the addTagHelper directive
 
 ```csharp
 @addTagHelper *, MVC
 @model List<Product>;
 ```
 
-
-Remove the foreach instruction with partial tag helper
+3. Next, re replace this foreach instruction...
 ```razor
 foreach (var productIndex in productsInPage)
 {
@@ -1517,7 +1524,7 @@ foreach (var productIndex in productsInPage)
 }
 ```
 
-...with the foreach instruction with ProductCard view component
+...with the foreach instruction with ProductCard view component:
 ```razor
 foreach (var product in productsInPage)
 {
@@ -1525,15 +1532,17 @@ foreach (var product in productsInPage)
 }
 ```
 
-MOVE
-... 02/MVC/Views/Catalog/_ProductCard.cshtml 
-TO
-...log/Components/ProductCard/Default.cshtml
+4. And then we move the file 
+/MVC/Views/Catalog/_ProductCard.cshtml to the 
+Catalog/Components/ProductCard/ location, renaming it to Default.cshtml after that.
 
-#### Creating ViewComponents for Catalog
+#### Creating ViewComponent for CaouselPage
 
-Part 02/MVC/Models/ViewModels/CarouselPageViewModel.cs
+Each category is displayed in a different carousel control, in groups of 4 products
+at a time, which we call "Carousel pages". Here we show how to create a view component
+for the carousel page.
 
+1. first, we create the file /Models/ViewModels/CarouselPageViewModel.cs
 
 ```csharp
 public class CarouselPageViewModel
@@ -1555,10 +1564,8 @@ public class CarouselPageViewModel
 ```
 **Listing**: the new CarouselPageViewModel class (/Models/ViewModels/CarouselPageViewModel.cs)
 
-
-
-
-Part 02/MVC/Models/ViewModels/CarouselViewModel.cs
+2. Then we Create the view model file at 
+/MVC/Models/ViewModels/CarouselViewModel.cs
 
 ```csharp
 public class CarouselViewModel
@@ -1584,10 +1591,8 @@ public class CarouselViewModel
 ```
 **Listing**: the new CarouselViewModel class (/Models/ViewModels/CarouselViewModel.cs)
 
-
-
-
-Part 02/MVC/Models/ViewModels/CategoriesViewModel.cs
+3. Next, we create another view model at
+/MVC/Models/ViewModels/CategoriesViewModel.cs
 
 ```csharp
 public class CategoriesViewModel
@@ -1611,10 +1616,8 @@ public class CategoriesViewModel
 ```
 **Listing**: the new CategoriesViewModel class (/Models/ViewModels/CategoriesViewModel.cs)
 
-
-
-
-Part 02/MVC/ViewComponents/CarouselPageViewComponent.cs
+4. Only then we create the view component class, at
+/ViewComponents/CarouselPageViewComponent.cs
 
 ```csharp
 public class CarouselPageViewComponent : ViewComponent
@@ -1639,10 +1642,9 @@ public class CarouselPageViewComponent : ViewComponent
 ```
 **Listing**: the new CarouselPageViewComponent class (/ViewComponents/CarouselPageViewComponent.cs)
 
-
-
-
-Part 02/MVC/ViewComponents/CarouselViewComponent.cs
+5. and we create yet another view component class at
+/MVC/ViewComponents/CarouselViewComponent.cs. This component
+is responsible for grouping all the carousel pages:
 
 ```csharp
 public class CarouselViewComponent : ViewComponent
@@ -1664,40 +1666,41 @@ public class CarouselViewComponent : ViewComponent
     }
 }
 ```
-
 **Listing**: the new CarouselViewComponent class (/ViewComponents/CarouselViewComponent.cs)
 
-Part 02/MVC/ViewComponents/CategoriesViewComponent.cs
+Notice in the snippet above how we moved the C# code from the razor catalog view
+to the view component. This allows us to keep the markup cleaner and smaller.
 
-
+6. Now we modify the 
+/ViewComponents/CategoriesViewComponent.cs to include the C#
+code regarding the pagination logic that was in the view Razor markup:
 
 ```csharp
-using MVC.Models.ViewModels;
-using System.Linq;
-.
-.
-.
+    public class CategoriesViewComponent : ViewComponent
+    {
+        const int PageSize = 4;
+        public CategoriesViewComponent()
+        {
+        }
 
-        const int PageSize = 4;   
-.
-.
-.
-
+        public IViewComponentResult Invoke(List<Product> products)
+        {
             var categories = products
                 .Select(p => p.Category)
                 .Distinct()
                 .ToList();
             return View("Default", new CategoriesViewModel(categories, products, PageSize));
-.
-.
-.
+        }
+    }
 ```
 **Listing**: the CategoriesViewComponent class updated (/ViewComponents/CategoriesViewComponent.cs)
 
+7. Now it's time to implement the view component-related markup files.
 
-
-
-Part 02/MVC/Views/Catalog/Components/Carousel/Default.cshtml
+8. The first one we create at:
+/Views/Catalog/Components/Carousel/Default.cshtml. This view component
+markup contains a single Bootstrap Carousel component, which corresponds to
+a single category.
 
 ```razor
 @using MVC.Models.ViewModels
@@ -1730,9 +1733,9 @@ Part 02/MVC/Views/Catalog/Components/Carousel/Default.cshtml
 ```
 **Listing**: the new Carousel/Default view (/Views/Catalog/Components/Carousel/Default.cshtml)
 
+9. Then we create a new markup file at /Catalog/Components/CarouselPage/Default.cshtml
 
-
-Part 02/MVC/Views/Catalog/Components/CarouselPage/Default.cshtml
+10. which correspons to a Carousel page, that is, a group of 4 products.
 
 ```razor
 @using MVC.Models.ViewModels
@@ -1754,28 +1757,24 @@ Part 02/MVC/Views/Catalog/Components/CarouselPage/Default.cshtml
 ```
 **Listing**: the new CarouselPage/Default view (/Views/Catalog/Components/CarouselPage/Default.cshtml)
 
-
-
-Part 02/MVC/Views/Catalog/Components/Categories/Default.cshtml
+11. Now we modify the view component view markup file for the category, at
+Views/Catalog/Components/Categories/Default.cshtml. This file now becomes
+much cleaner and readable, as we can see:
 
 ```razor
 @using MVC.Models.ViewModels
 @addTagHelper *, MVC
 @model CategoriesViewModel
-.
-.
-.
-@foreach (var category in Model.Categories)
-.
-.
-.
-<vc:carousel category="@category" products="@Model.Products" page-size="@Model.PageSize"></vc:carousel>
-.
-.
-.
+
+<div class="container">
+
+    @foreach (var category in Model.Categories)
+    {
+        <vc:carousel category="@category" products="@Model.Products" page-size="@Model.PageSize"></vc:carousel>
+    }
+</div>
 ```
 **Listing**: the updated Categories/Default markup file (/Views/Catalog/Components/Categories/Default.cshtml)
-
 
 ### User Notifications Counters
 
