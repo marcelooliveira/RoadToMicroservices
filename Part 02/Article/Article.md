@@ -1789,13 +1789,17 @@ clutter your controllers, views or partial views. Typical cases for view compone
 Unlike partial views, the view components can provide a self-contained black box, which business logic is 
 independent and isolated from the view it is inserted into.
 
+![Preview Notification Icons](preview_notification_icons.png)
+
 In the following sections, we will use view components to render navigation bar icons displaying: 
 - user notification count
 - basket item count
 
 #### Creating Navigation Bar Notification Icons
 
-Part 02/MVC/Views/Shared/_Layout.cshtml
+Once again, we will use the Font Awesome to display icons for our application.
+
+We start by creating the HTML elements for the user notification icons.
 
 ```razor
 <div class="navbar-collapse collapse justify-content-end">
@@ -1828,6 +1832,16 @@ Part 02/MVC/Views/Shared/_Layout.cshtml
 </div>
 ```
 **Listing**: the notification elements at the notification bar (/Views/Shared/_Layout.cshtml)
+
+Notice how the two notification have almost the same HTML elements. Later on,
+we will refactor them to eliminate this duplication.
+
+Running the aplication, we have both icons displayed at the top right position of 
+any of the applications pages. This is so because the layout markup contains the
+elements that are shared across multiple views.
+
+![Font Awesome Icons](font_awesome_icons.png)
+
 
 Part 02/MVC/wwwroot/css/site.css
 
