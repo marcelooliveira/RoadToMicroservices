@@ -2,7 +2,7 @@
 
 Welcome to the second installment of the "**ASP.NET Core Roadmap to Microservices**" article series.
 
-In the last article, we saw how to build the basic views of the e-commerce application, using views and Partial Views. Today we will explore the subject of **view components** in ASP.NET CORE.
+In the last article, we saw how to build the basic views of the e-commerce application, using views and **Partial Views**. Today we will explore the subject of **View Components** in ASP.NET Core.
 
 What are view components? How they compare to **partial views**? And how they apply in our e-commerce project?
 
@@ -14,15 +14,15 @@ role of view composition for the e-commerce application.
 We have seen how partial views allow us to break up large markup files into smaller components,
 and reduce the duplication of common markup content across markup files.
 
-View Component is a concept introduced by ASP.NET Core, and is similar to a partial view.
+**View Component** is a concept introduced by ASP.NET Core, and is similar to a partial view.
 While view components are as capable as partial views in decomposing large views and reducing duplication,
 but they're also built differently, and are much more powerful.
 
-Partial views, just like regular views, use model binding, that is, the model data which is provided by
-a specific controller action. View components, on the other hand, only depend on the data provided to them as real parameters.
+Partial views, just like regular views, use **model binding**, that is, the model data which must be provided by
+a specific controller action. View components, on the other hand, only depend on the data provided to them as parameters.
 
 Although we are implementing the view components in an e-commerce application, which based on controllers and views, 
-it is also possible to develop view components for Razor Pages.
+it is also possible to develop view components for **Razor Pages**.
 
 ### Replacing Basket Partial Views with View Components
 
@@ -52,8 +52,7 @@ Each one of these markup files is responsible for rendering a different layer of
 ```
 **Listing**: an example of how to use partial views (\Views\Basket\Index.cshtml)
 
-But partial views are somehow limited, and don't allow some interesting features that
-we can find in View Components, such:
+But Partial Views are somehow limited, and don't allow some interesting features that we can find in View Components, such:
 
 - Behavior independent from the hosting view
 - Separation of concerns similar to controller/views
@@ -61,13 +60,13 @@ we can find in View Components, such:
 - Business logic
 - Testability
 
-But these nice features also means we have a little more work to do in order to create view components.
+But these nice features also mean we have a little more work to do in order to create view components.
 Besides the markup file, we also have to create a dedicated class for the view component.
 But this must reside in a **ViewComponents** folder, which we must create first.
 
 Now let's create a class named BasketListViewComponent inside the **ViewComponents** folder.
 
-This class just need to have an Invoke() method calling and returning the "Default" view:
+This class just needs to have an Invoke() method calling and returning the `Default` view:
 
 ```csharp
 public class BasketListViewComponent : ViewComponent
@@ -86,11 +85,9 @@ But notice how our previous Basket List partial view had an attribute for the mo
 <partial name="_BasketList" for="@items" />
 ```
 
-This @items attribute will now be passed to the new BasketListViewComponent through an items parameter
-in the Invoke method of the BasketListViewComponent class, and it is then passed as a model
-for the Default markup file:
-
-C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\ViewComponents\BasketListViewComponent.cs
+This `@items` attribute will now be passed to the new `BasketListViewComponent` through an items parameter
+in the `Invoke()` method of the `BasketListViewComponent` class, and it is then passed as a model
+for the `Default` markup file:
 
 ```csharp
 public class BasketListViewComponent : ViewComponent
@@ -103,10 +100,9 @@ public class BasketListViewComponent : ViewComponent
 ```
 **Listing** : the ViewComponents\BasketListViewComponent.cs file
 
-
-By default, view component class names must have the -ViewComponent. But you can override this rule
-by using the ViewComponentAttribute and setting the name of the component
-(Notice that this allows you to use any class name you want).
+By default, view component class names must have the **-ViewComponent** suffix. But you can override this rule
+by using the `ViewComponentAttribute` and setting the name of the component (Notice that this allows you to use 
+any class name you want).
 
 ```csharp
 [ViewComponent(Name = "BasketList")]
@@ -121,8 +117,8 @@ public class BasketList : ViewComponent
 **Listing** : using attribute to set the view component name
 
 Now let's create the markup (view) file for the component. First, we have to create
-a \Components folder under the \Views\Basket folder, and then 
-a \BasketList folder under the \Components folder. Then we create the Default.cshtml file
+a **\Components** folder under the **\Views\Basket** folder, and then 
+a **\BasketList** folder under the **\Components** folder. Then we create the `Default.cshtml` file
 (which is by the way the default name for any component), which looks exactly like a regular
 view file. Add a new MVC view (scaffolding) with no template, no model and no layout:
 
@@ -207,14 +203,14 @@ C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\Views\Basket\Ind
 
 Now let's update the basket view to replace the partial view tag helper with the view component tag helper.
 
-Open the \Views\Basket\Index.cshtml file. We now must make the Tag Helpers available for this file.
+Open the `\Views\Basket\Index.cshtml` file. We now must make the Tag Helpers available for this file.
 So, add the following directive:
 
 ```razor
 @addTagHelper *, MVC
 ```
 
-The @addTagHelper directive will allow us to use view component tag helpers. The "*" parameter
+The `@addTagHelper` directive will allow us to use view component tag helpers. The "*" parameter
 means all tag helpers will be available, and the "MVC" part means all view components found in the
 MVC namespace will be available.
 
@@ -227,14 +223,14 @@ Now comment this line:
 **Listing**: removing PartialTagHelper for BasketList (\Views\Basket\Index.cshtml)
 
 Now, let's reference our view component tag helper. View components will be available when
-you type the "<vc:" prefix:
+you type the **"<vc:"** prefix:
 
 ![Replacing Partial View Tag Helper](replacing_partial_view_tag_helper.png)
 
 Notice how the BasketList view component is displayed as "basket-list". This is the called
-"Kebab-Case" style (because it looks like, you know, a kebab stick).
+"kebab-case" style (because it looks like, you know, a kebab stick).
 
-Another thing you may have noticed is the @_Generated_BasketListViewComponentTagHelper name,
+Another thing you may have noticed is the `@_Generated_BasketListViewComponentTagHelper` name,
 which is the name of the class automatically generated into the assembly when you compile the view component.
 
 Now let's also provide the items parameter for the view component:
@@ -251,10 +247,8 @@ At this point, we can run the application, and verify that our view component is
 
 #### Moving BasketItem to ViewModels
 
-In the above section we are using BasketItem as a view model. So, as a refactoring step, 
-let's move it to the Models\ViewModels folder:
-
-C:\Users\marce\Documents\GitHub\RoadToMicroservices\Part 02\MVC\Controllers\BasketController.cs
+In the above section we are using `BasketItem` as a view model. So, as a refactoring step, 
+let's move it to the `Models\ViewModels` folder:
 
 ```csharp
 public class BasketItem
@@ -295,13 +289,13 @@ view component classes can be unit-tested. Let's add a new unit testing project 
 
 ##### Adding a New Unit Testing Project
 
-Go to the File menu and select: New > Project > Test > xUnit Test Project (.NET Core)
+Go to the **File** menu and select:** New > Project > Test > xUnit Test Project (.NET Core)**
 
 ![Add New Project Xunit](add_new_project_xunit.png)
 
 **Figure**: Adding a new xUnit project
 
-The new xUnit test project always contains an empty test class (UnitTest1):
+The new **xUnit** test project always contains an empty test class (`UnitTest1`):
 
 ```csharp
 public class UnitTest1
@@ -316,11 +310,11 @@ public class UnitTest1
 
 The xUnit is one of the unit testing project templates that come with Visual Studio.
 
-The [Fact] attribute tells the xUnit framework that a parameterless test method must be run by the Test Runner. 
+The `[Fact]` attribute tells the xUnit framework that a parameterless test method must be run by the **Test Runner**. 
 (We are going to see the Test Runner in the next section).
 
-Since we desire to test the BasketListViewComponent class, we will rename the test class to
-BasketListViewComponentTest:
+Since we desire to test the `BasketListViewComponent` class, we will rename the test class to
+`BasketListViewComponentTest`:
 
 ```csharp
 public class BasketListViewComponentTest
@@ -334,7 +328,7 @@ public class BasketListViewComponentTest
 ```
 **Listing**: renaming the test class to BasketListViewComponentTest
 
-Let's also rename the Test1() method to something expressive, something that describes
+Let's also rename the `Test1()` method to something expressive, something that describes
 the behavior we are verifying: "calls to the Invoke() method with items should display default view"
 
 ```csharp
@@ -351,9 +345,9 @@ public class BasketListViewComponentTest
 
 As a good practice, each unit test method must be split in 3 sections, called "Arrange-Act-Assert":
 
-- The Arrange section of a unit test method initializes objects and sets the value of the data that is passed to the method under test.
-- The Act section invokes the method under test with the arranged parameters.
-- The Assert section verifies that the action of the method under test behaves as expected.
+- The **Arrange** section of a unit test method initializes objects and sets the value of the data that is passed to the method under test.
+- The **Act** section invokes the method under test with the arranged parameters.
+- The **Assert** section verifies that the action of the method under test behaves as expected.
 
 Let's explicitly introduce this sections in the code:
 
@@ -406,15 +400,15 @@ public void Invoke_With_Items_Should_Display_Default_View()
 }
 ```
 
-But the Invoke() method produces an compilation error:
+But the `Invoke()` method produces an compilation error:
 
 ```
 error CS0012: The type 'ViewComponent' is defined in an assembly that is not referenced. You must add a reference to assembly 'Microsoft.AspNetCore.Mvc.ViewFeatures, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60'.
 ```
 
-Press CTRL + DOT to open the context menu and and select: Install package 'Microsoft.AspNetCore.Mvc.ViewFeatures'.
+Press **CTRL + DOT** to open the context menu and and select: **Install package 'Microsoft.AspNetCore.Mvc.ViewFeatures'.**
 
-But remember that the BasketListViewComponent.Invoke() method requires an items parameter:
+But remember that the `BasketListViewComponent.Invoke()` method requires an items parameter:
 
 ```
 Invoke With Items => Display Default View
@@ -461,11 +455,11 @@ Invoke With Items => Display Default View
       ACTION      =>       ASSERT
 ```
 
-The BasketListViewComponent.Invoke() returns a IViewComponentResult, which is an interface. But we must make sure the object returned by the method is
-a view, or more specifically, an instance of ViewViewComponentResult.
+The `BasketListViewComponent.Invoke()` method returns a `IViewComponentResult`, which is an interface. But we must make sure the object returned by the method is
+a view, or more specifically, an instance of `ViewViewComponentResult`.
 
 When using xUnit testing framework, we can verify that a variable is of a certain type by using the method
-Assert.IsAssignableFrom<T>(object):
+`Assert.IsAssignableFrom<T>(object)`:
 
 ```csharp
 //act
@@ -476,11 +470,11 @@ Assert.IsAssignableFrom<ViewViewComponentResult>(result);
 
 Now we have our first testable arrange-act-assert method. Let's use the Test Explorer to execute it:
 
-Test > Windows > Test Explorer
+**Test > Windows > Test Explorer**
 
 OR
 
-Ctrl+E, T
+**Ctrl+E, T**
 
 ![Test Explorer Menu](test_explorer_menu.png)
 
@@ -497,7 +491,7 @@ This structure is quite helpful in keeping the Test Explorer organized, while we
 implement more and more tests. Otherwise, the Test Explorer might be cluttered by the
 increasing volume of a plain list.
 
-When we click the Run All menu, the application will be recompiled if needed,
+When we click the **Run All** menu, the application will be recompiled if needed,
 then the xUnit testing framework will execute the only existing test so far:
 
 ![One Test Passed](one_test_passed.png)
@@ -518,9 +512,9 @@ the test executes. If you want to debug the execution of the test, you should:
 ![Breakpoint Act Hit](breakpoint_act_hit.png)
 
 At this point our test is doing a simple test, which is just checking whether the result variable contains a view. But this is not
-enough: we must also check if the view in the result is actually the Default view.
-We can do this by comparing the ViewName property of the ViewViewComponentResult object
-with the "Default" string. In unit testing methods, we do this by calling the Assert.Equal(expected, actual):
+enough: we must also check if the view in the result is actually the `Default` view.
+We can do this by comparing the ViewName property of the `ViewViewComponentResult` object
+with the "Default" string. In unit testing methods, we do this by calling the `Assert.Equal(expected, actual)`:
 
 ```csharp
 //assert
@@ -565,8 +559,8 @@ Running the test again, we can see it's still passing:
 Now, the test implementagion can be considered complete, and should not be changed again, 
 unless there are changes in the method under test, or in the objects it depends upon.
 
-But be careful not to test more than you should per unit test. Here, always apply the KISS Principle:
-(Keep It Simple, Stupid). Each test must do one thing and one thing only. If a single test method is
+But be careful not to test more than you should per unit test. Here, always apply the **KISS Principle**:
+(*Keep It Simple, Stupid*). Each test must do one thing and one thing only. If a single test method is
 accumulating multiple responsibilities, refactor it and split it into multiple test methods
 with single responsibilities.
 
@@ -577,7 +571,7 @@ It's time to implement the second rule regarding the basket list view component:
 
 - If the list parameter contains basket items, the component must display the default view
 
-In the same BasketListViewComponentTest class, let's implement a second unit test method for this rule:
+In the same `BasketListViewComponentTest` class, let's implement a second unit test method for this rule:
 
 ```csharp
 [Fact]
@@ -592,7 +586,7 @@ public void Invoke_Without_Items_Should_Display_Empty_View()
 ```
 Listing: the new Invoke_Without_Items_Should_Display_Empty_View test method
 
-In this case, the BasketListViewComponent.Invoke() method will be called with an empty list:
+In this case, the `BasketListViewComponent.Invoke()` method will be called with an empty list:
 
 ```csharp
 [Fact]
@@ -643,7 +637,7 @@ unit test we created, which remains green:
 Whenever possible, create a test first, then implement the rules in the business classes until the test passes.
 Let's do it now. Let's make the test pass.
 
-We should modify the BasketListViewComponent class to include a condition verifying the 
+We should modify the `BasketListViewComponent` class to include a condition verifying the 
 number of items in the basket. If there are no items, we should return an Empty view:
 
 ```csharp
@@ -663,7 +657,7 @@ Running the tests again, we can notice that everything passes:
 ![Two Tests Passing](two_tests_passing.png)
 
 But while the second test is passing, we still don't have an Empty view for this basket list condition.
-We can solve that by adding a new Empty.cshtml markup file in the \MVC\Views\Basket\ project folder:
+We can solve that by adding a new `Empty.cshtml` markup file in the `\MVC\Views\Basket\` project folder:
 
 ```razor
 <div class="card">
@@ -2276,3 +2270,7 @@ That's it! And so we finish the second part of the article series.
 If you reached this line, thank you very much for your patience. 
 If you liked this article, or have any complaints or suggestions, 
 please leave a comment below. I'll be pleased to have your feedback!
+
+### History
+
+* 2019-05-01: Initial version
