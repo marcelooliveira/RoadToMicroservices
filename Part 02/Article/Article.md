@@ -1891,12 +1891,25 @@ according to the new css style we added:
 
 #### Creating UserCounter ViewComponent
 
-Part 02/MVC/Models/ViewModels/UserCountViewModel.cs
+We know that each viewcomponent typically has:
+
+- a ViewComponent class
+- a Default markup file
+- a model
+
+Let's implement the model first. In this case, we are creating a
+new UserCountViewModel which will hold data to be used by the notification counters:
+
+- Controller name 
+- Title (tool tip text)
+- Css Class 
+- Icon (Font Awesome icon class) 
+- Count 
 
 ```csharp
 public class UserCountViewModel
 {   
-    public UserCountViewModel(string title, string controllerName, string cssClass, string icon, string count)
+    public UserCountViewModel(string title, string controllerName, string cssClass, string icon, int count)
     {
         Title = title;
         ControllerName = controllerName;
@@ -1909,15 +1922,13 @@ public class UserCountViewModel
     public string Title { get; set; }
     public string CssClass { get; set; }
     public string Icon { get; set; }
-    public string Count { get; set; }
+    public int Count { get; set; }
 }
 ```
 Listing: the new UserCountViewModel class (/Models/ViewModels/UserCountViewModel.cs)
 
 
-
-
-Part 02/MVC/ViewComponents/UserCounterViewComponent.cs
+As usual, the view component requires a view component class:
 
 ```csharp
 public class UserCounterViewComponent : ViewComponent
@@ -1927,7 +1938,7 @@ public class UserCounterViewComponent : ViewComponent
 
     }
 
-    public IViewComponentResult Invoke(string title, string controllerName, string cssClass, string icon, string count)
+    public IViewComponentResult Invoke(string title, string controllerName, string cssClass, string icon, int count)
     {
         var model = new UserCountViewModel(title, controllerName, cssClass, icon, count);
         return View("Default", model);
@@ -1936,8 +1947,8 @@ public class UserCounterViewComponent : ViewComponent
 ```
 **Listing**: the new UserCounterViewComponent class (/ViewComponents/UserCounterViewComponent.cs)
 
-
-Part 02/MVC/Views/Shared/Components/UserCounter/Default.cshtml
+Notice how the view component class above accepts many parameters required
+by the view model:
 
 ```razor
 @using MVC.Models.ViewModels
@@ -1947,16 +1958,16 @@ Part 02/MVC/Views/Shared/Components/UserCounter/Default.cshtml
 <div class="container-notification">
     <a asp-controller="@Model.ControllerName"
        title="@Model.Title">
-        <div class="user-count @(Model.CssClass) show-count fa fa-@(Model.Icon)" count="@(Model.Count)">
+        <div class="user-count @(Model.CssClass) show-count fa fa-@(Model.Icon)" data-count="@(Model.Count)">
         </div>
     </a>
 </div> 
 ```
 **Listing**: the new UserCounter/Default markup file (/Views/Shared/Components/UserCounter/Default.cshtml)
 
-Part 02/MVC/Views/Shared/_Layout.cshtml
+Now it's time to apply our UserCounter view component tag helper to the
+layout page. But first we have to remove the following existing lines...
 
-Remove these lines:
 ```razor
 <div class="container-notification">
     <a asp-controller="notifications"
@@ -1977,7 +1988,7 @@ Remove these lines:
 </div>
 ```
 
-And add these lines:
+...and replace them with these lines:
 
 ```razor
 @addTagHelper *, MVC
@@ -2007,43 +2018,25 @@ And add these lines:
 ```
 **Listing**: UserCounter Tag Helpers added to the layout file (/Views/Shared/_Layout.cshtml)
 
+You can see by the above markup that our layout page became cleaner and more
+readable.
 
-Part 02/MVC/wwwroot/css/site.css
+Running our application once again, we can make sure the view components
+replaced the old HTML elements successfully, without breaking the layout:
 
-Replace this line...
-```css
-content: attr(data-count);
-```
-...whith this one:
-```css
-content: attr(count);
-```
+![Notification Icons Style](notification_icons_style.png)
+**Picture**: Notification Icons rendered by view components
 
 #### Creating UserCounterService
 
-Part 02/MVC/Models/ViewModels/UserCountViewModel.cs
+Previously in this article, we showed how to create a service for the
+basket view component. This service had to be first configured in the Startup class,
+so that any parameter of the service interface type could be provided as the corresponding
+concrete class implementation.
 
-Replace the string count with int count
-```csharp
-public UserCountViewModel(string title, string controllerName, string cssClass, string icon, string count)
-.
-.
-.
-public string Count { get; set; }
-```
-
-
-```csharp
-public UserCountViewModel(string title, string controllerName, string cssClass, string icon, int count)
-.
-.
-.
-public int Count { get; set; }
-```
-**Listing**: Count parameter as integer (/Models/ViewModels/UserCountViewModel.cs)
-
-
-Part 02/MVC/Services/IUserCounterService.cs
+Now we are going to create a similar service class and interface for the user notification component,
+following the same steps. First, let's create an interface with two methods: each one retrieves
+a different count number:
 
 ```csharp
 public interface IUserCounterService
@@ -2054,8 +2047,8 @@ public interface IUserCounterService
 ```
 **Listing**: the new IUserCounterService interface (/Services/IUserCounterService.cs)
 
-
-Part 02/MVC/Services/UserCounterService.cs
+Then the UserCounterService class will be created to provide the concrete
+class:
 
 ```csharp
 public class UserCounterService : IUserCounterService
@@ -2073,18 +2066,22 @@ public class UserCounterService : IUserCounterService
 ```
 **Listing**: the new UserCounterService class (/Services/UserCounterService.cs)
 
+Notice how the count numbers are hard coded. Don't worry, in the following articles
+we will have plenty of time to implement the business rules and database logic for this
+feature.
 
-Part 02/MVC/Startup.cs
+Next, we configure the dependency injection rule for the service. In this case,
+any IUserCounterService parameter will be provided as an instance of the UserCounterService class
+through the built-in Dependency Injection Container of ASP.NET Core:
 
 ```csharp
-var userCounterServiceInstance = new UserCounterService();
-services.AddSingleton<IUserCounterService>(userCounterServiceInstance);
+services.AddTransient<IUserCounterService, UserCounterService>();
 ```
 **Listing**: new dependency injection instructions (/Startup.cs)
 
-
-
-Part 02/MVC/ViewComponents/UserCounterViewComponent.cs
+Notice that we have two types of notifications, but only one view component. Therefore,
+we must distinguish between them using some kind of code. We are going to create
+a new UserCounterType enum in order to codify our user counter types:
 
 ```csharp
 public enum UserCounterType
@@ -2095,9 +2092,9 @@ public enum UserCounterType
 ```
 **Listing**: the new UserCounterType enum (/ViewComponents/UserCounterViewComponent.cs)
 
-
-
-
+And now we can refactor the UserCounterViewComponent class, passing the IUserCounterService
+as a constructor parameter, and modify the Invoke() method to accept the UserCounterType
+parameter:
 
 ```csharp
 protected readonly IUserCounterService userCounterService;
@@ -2121,19 +2118,29 @@ public IViewComponentResult Invoke(string title, string controllerName, string c
     {
         count = userCounterService.GetBasketCount();
     }
+    ...
 ```
 **Listing**: modifying the UserCounterViewComponent class to use enum (/ViewComponents/UserCounterViewComponent.cs)
 
-
-
-Part 02/MVC/Views/Shared/_Layout.cshtml
+Now, we must refactor the UserCounter view component tag helpers int the layout page,
+removing the count attribute and providing the new user-counter-type attribute:
 
 ```razor
-user-counter-type="Notification">
+<vc:user-counter title="Notifications"
+    controller-name="notifications"
+    css-class="notification"
+    icon="bell"
+    user-counter-type="Notification">
+</vc:user-counter>
 .
 .
 .
-user-counter-type="Basket">
+<vc:user-counter title="Basket"
+    controller-name="basket"
+    css-class="basket"
+    icon="shopping-cart"
+    user-counter-type="Basket">
+</vc:user-counter>
 ```
 **Listing**: the user counter tag helpers with the appropriate UserCounterType enum (/Views/Shared/_Layout.cshtml)
 

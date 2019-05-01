@@ -5,7 +5,7 @@
 <div class="container-notification">
     <a asp-controller="@Model.ControllerName"
        title="@Model.Title">
-        <div class="user-count @(Model.CssClass) show-count fa fa-@(Model.Icon)" count="@(Model.Count)">
+        <div class="user-count @(Model.CssClass) show-count fa fa-@(Model.Icon)" data-count="@(Model.Count)">
         </div>
     </a>
 </div>

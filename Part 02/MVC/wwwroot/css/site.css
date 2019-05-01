@@ -137,7 +137,7 @@ body {
     border-radius: 60px;
     background: #ffcc00;
     opacity: 0;
-    content: attr(count);
+    content: attr(data-count);
     opacity: 0;
     -webkit-transform: scale(0.5);
     transform: scale(0.5);
