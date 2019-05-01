@@ -1842,23 +1842,17 @@ elements that are shared across multiple views.
 
 ![Font Awesome Icons](font_awesome_icons.png)
 
-
-Part 02/MVC/wwwroot/css/site.css
+Now let's configure the style for the number for the counter, adding
+the following snippet to the site.css:
 
 ```css
-.user-count {
-    display: inline-block;
-    position: relative;
-    padding: 0.08em;
-    font-size: 1.2em;
-}
-
+/*change the default link color from blue to black*/
 .user-count::before,
 .user-count::after {
     color: #000;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
+/*create a yellow circle for the count number*/
 .user-count::after {
     font-family: Arial;
     font-size: 0.7em;
@@ -1880,6 +1874,7 @@ Part 02/MVC/wwwroot/css/site.css
     transition-timing-function: ease-out;
 }
 
+/*define the circle to be as large as the icon*/
 .user-count.show-count::after {
     -webkit-transform: scale(1);
     transform: scale(1);
@@ -1887,8 +1882,6 @@ Part 02/MVC/wwwroot/css/site.css
 }
 ```
 **Listing**: the cascade style sheet with styling for the user count controls (/wwwroot/css/site.css)
-
-
 
 #### Creating UserCounter ViewComponent
 
