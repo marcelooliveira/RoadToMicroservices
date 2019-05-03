@@ -1,0 +1,36 @@
+﻿@using MVC.Models.ViewModels
+
+@model BasketItem
+
+@{
+    var item = Model;
+}
+
+<div class="row row-center">
+    <div class="col-sm-2">
+        <img class="img-product-basket w-75" src="/images/catalog/large_@(item.ProductId.ToString("000")).jpg" />
+    </div>
+    <input type="hidden" name="productId" value="012" />
+    <div class="col-sm-4">@item.Name</div>
+    <div class="col-sm-2 text-center">@item.UnitPrice.ToString("C")</div>
+    <div class="col-sm-2 text-center">
+        <div class="input-group">
+            <button type="button" class="btn btn-light">
+                <span class="fa fa-minus"></span>
+            </button>
+            <input type="text" value="@item.Quantity"
+                   class="form-control text-center quantity" />
+            <button type="button" class="btn btn-light">
+                <span class="fa fa-plus"></span>
+            </button>
+        </div>
+    </div>
+    <div class="col-sm-2">
+        <div class="pull-right">
+            <span class="pull-right" subtotal>
+                @((item.Quantity * item.UnitPrice).ToString("C"))
+            </span>
+        </div>
+    </div>
+</div>
+<br />

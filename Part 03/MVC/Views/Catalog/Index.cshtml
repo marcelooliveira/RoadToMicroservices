@@ -1,0 +1,9 @@
+﻿@addTagHelper *, MVC
+@model List<Product>;
+@{
+    ViewData["Title"] = "Catalog";
+}
+
+<partial name="_SearchProducts"/>
+
+<vc:categories products="@Model"></vc:categories>

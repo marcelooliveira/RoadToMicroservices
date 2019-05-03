@@ -1,0 +1,15 @@
+﻿@using MVC.Models.ViewModels
+@model List<BasketItem>;
+
+@{
+    var items = Model;
+}
+
+<div class="card">
+    <div class="card-body">
+        <!--https://getbootstrap.com/docs/4.0/components/alerts/-->
+        <div class="alert alert-warning" role="alert">
+            There are no items in your basket yet! Click <a asp-controller="catalog"><b>here</b></a> to start shopping!
+        </div>
+    </div>
+</div>

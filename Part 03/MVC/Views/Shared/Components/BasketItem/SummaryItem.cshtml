@@ -1,0 +1,23 @@
+﻿@using MVC.Models.ViewModels
+
+@model BasketItem
+
+@{
+    var item = Model;
+}
+
+<div class="row row-center">
+    <div class="col-sm-2">@item.ProductId</div>
+    <input type="hidden" name="productId" value="012" />
+    <div class="col-sm-4">@item.Name</div>
+    <div class="col-sm-2 text-center">@item.UnitPrice.ToString("C")</div>
+    <div class="col-sm-2 text-center">@item.Quantity</div>
+    <div class="col-sm-2">
+        <div class="pull-right">
+            <span class="pull-right" subtotal>
+                @((item.Quantity * item.UnitPrice).ToString("C"))
+            </span>
+        </div>
+    </div>
+</div>
+<br />
