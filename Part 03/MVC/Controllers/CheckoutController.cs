@@ -1,13 +1,25 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MVC.Models.ViewModels;
+using System.Threading.Tasks;
 
 namespace MVC.Controllers
 {
     [Authorize]
     public class CheckoutController : BaseController
     {
-        public IActionResult Index()
+        private readonly IHttpHelper httpHelper;
+
+        public CheckoutController(IHttpHelper httpHelper)
         {
+            this.httpHelper = httpHelper;
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Index(RegistrationViewModel registration)
+        {
+            httpHelper.SetRegistration(GetUserId(), registration);
             return View();
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MVC.Areas.Identity.Data;
 using MVC.Models.ViewModels;
@@ -9,28 +10,16 @@ namespace MVC.Controllers
     [Authorize]
     public class RegistrationController : BaseController
     {
-        private readonly IIdentityParser<AppIdentityUser> appUserParser;
+        private readonly IHttpHelper httpHelper;
 
-        public RegistrationController(IIdentityParser<AppIdentityUser> appUserParser)
+        public RegistrationController(IHttpHelper httpHelper)
         {
-            this.appUserParser = appUserParser;
+            this.httpHelper = httpHelper;
         }
 
         public IActionResult Index()
         {
-            var usuario = appUserParser.Parse(HttpContext.User);
-            var viewModel = new RegistrationViewModel
-            {
-                District = usuario.District,
-                ZipCode = usuario.ZipCode,
-                AdditionalAddress = usuario.AdditionalAddress,
-                Email = usuario.Email,
-                Address = usuario.Address,
-                City = usuario.City,
-                Name = usuario.Name,
-                Phone = usuario.Phone,
-                State = usuario.State
-            };
+            var viewModel = httpHelper.GetRegistration(GetUserId());
             return View(viewModel);
         }
     }

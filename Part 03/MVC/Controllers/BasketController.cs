@@ -8,8 +8,6 @@ namespace MVC.Controllers
     {
         public IActionResult Index()
         {
-            var clientId = GetUserId();
-
             return View();
         }
     }

@@ -1,4 +1,6 @@
-﻿namespace MVC.Services
+﻿using Newtonsoft.Json;
+
+namespace MVC.Services
 {
     public class UserCounterService : IUserCounterService
     {

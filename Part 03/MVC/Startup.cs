@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MVC.Areas.Identity.Data;
+using MVC.Controllers;
 using MVC.Services;
 
 namespace MVC
@@ -32,10 +33,14 @@ namespace MVC
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddDistributedMemoryCache();
+            services.AddSession();
+
             services.AddTransient<IBasketService, BasketService>();
             var userCounterServiceInstance = new UserCounterService();
             services.AddSingleton<IUserCounterService>(userCounterServiceInstance);
             services.AddTransient<IIdentityParser<AppIdentityUser>, IdentityParser>();
+            services.AddTransient<IHttpHelper, HttpHelper>();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -68,7 +73,7 @@ namespace MVC
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseCookiePolicy();
-
+            app.UseSession();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
