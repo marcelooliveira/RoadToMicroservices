@@ -19,8 +19,12 @@ namespace MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(RegistrationViewModel registration)
         {
-            httpHelper.SetRegistration(GetUserId(), registration);
-            return View();
+            if (ModelState.IsValid)
+            {
+                httpHelper.SetRegistration(GetUserId(), registration);
+                return View(registration);
+            }
+            return RedirectToAction("Index", "Registration");
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿@using MVC.Models.ViewModels
-@model string
+@model RegistrationViewModel
 @addTagHelper *, MVC
 @{
     ViewData["Title"] = "Checkout";
@@ -9,8 +9,9 @@
 <h3>Order Has Been Placed!</h3>
 
 <div class="panel-info">
+    <p>Thank you very much, <b>@Model.Name</b>!</p>
     <p>Your order has been placed.</p>
-    <p>Soon you will receive an e-mail at <b>@email</b> including all order details.</p>
+    <p>Soon you will receive an e-mail at <b>@Model.Email</b> including all order details.</p>
     <p><a href="/" class="btn btn-success">Back to product catalog</a></p>
 </div>
 

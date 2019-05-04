@@ -6,13 +6,15 @@
 <h3>Registration</h3>
 
 <form method="post" asp-controller="checkout" asp-action="index">
+    <input type="hidden" asp-for="@Model.UserId" />
     <div class="card">
         <div class="card-body">
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label class="control-label">Customer Name</label>
-                        <input class="form-control" asp-for="@Model.Name" />
+                        <label class="control-label" for="name">Customer Name</label>
+                        <input type="text" class="form-control" id="name" asp-for="@Model.Name" />
+                        <span asp-validation-for="@Model.Name" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="email">Email</label>
@@ -20,36 +22,43 @@
                         <span asp-validation-for="@Model.Email" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label class="control-label">Phone</label>
-                        <input class="form-control" asp-for="@Model.Phone" />
+                        <label class="control-label" for="phone">Phone</label>
+                        <input type="text" class="form-control" id="phone" asp-for="@Model.Phone" />
+                        <span asp-validation-for="@Model.Phone" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label class="control-label">Address</label>
-                        <input class="form-control" asp-for="@Model.Address" />
+                        <label class="control-label" for="address">Address</label>
+                        <input type="text" class="form-control" id="address" asp-for="@Model.Address" />
+                        <span asp-validation-for="@Model.Address" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label class="control-label">Additional Address</label>
-                        <input class="form-control" asp-for="@Model.AdditionalAddress" />
+                        <label class="control-label" for="additionaladdress">Additional Address</label>
+                        <input type="text" class="form-control" id="additionaladdress" asp-for="@Model.AdditionalAddress" />
+                        <span asp-validation-for="@Model.AdditionalAddress" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label class="control-label">District</label>
-                        <input class="form-control" asp-for="@Model.District" />
+                        <label class="control-label" for="district">District</label>
+                        <input type="text" class="form-control" id="district" asp-for="@Model.District" />
+                        <span asp-validation-for="@Model.District" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label class="control-label">City</label>
-                        <input class="form-control" asp-for="@Model.City" />
+                        <label class="control-label" for="city">City</label>
+                        <input type="text" class="form-control" id="city" asp-for="@Model.City" />
+                        <span asp-validation-for="@Model.City" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label class="control-label">State</label>
-                        <input class="form-control" asp-for="@Model.State" />
+                        <label class="control-label" for="state">State</label>
+                        <input type="text" class="form-control" id="state" asp-for="@Model.State" />
+                        <span asp-validation-for="@Model.State" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label class="control-label">Zip Code</label>
-                        <input  class="form-control" asp-for="@Model.ZipCode" />
+                        <label class="control-label" for="zipcode">Zip Code</label>
+                        <input type="text" class="form-control" id="zipcode" asp-for="@Model.ZipCode" />
+                        <span asp-validation-for="@Model.ZipCode" class="text-danger"></span>
                     </div>
 
                     <div class="form-group">
@@ -68,3 +77,8 @@
         </div>
     </div>
 </form>
+
+@section Scripts
+{
+    <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml"/>
+}

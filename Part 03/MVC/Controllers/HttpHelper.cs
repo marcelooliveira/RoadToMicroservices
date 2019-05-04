@@ -23,7 +23,7 @@ namespace MVC.Controllers
         {
             string json = contextAccessor.HttpContext.Session.GetString($"registration_{clientId}");
             if (string.IsNullOrWhiteSpace(json))
-                return new RegistrationViewModel();
+                return new RegistrationViewModel(clientId);
 
             return JsonConvert.DeserializeObject<RegistrationViewModel>(json);
         }
