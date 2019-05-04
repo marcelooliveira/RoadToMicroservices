@@ -11,5 +11,11 @@ namespace MVC.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        protected string GetUserId()
+        {
+            return @User.FindFirst("sub")?.Value;
+        }
     }
+
 }
