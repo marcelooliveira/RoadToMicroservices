@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using IdentityModel;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using MVC.Models;
 using System.Diagnostics;
+using System.Linq;
 
 namespace MVC.Controllers
 {
@@ -14,7 +17,12 @@ namespace MVC.Controllers
 
         protected string GetUserId()
         {
-            return @User.FindFirst("sub")?.Value;
+            return @User.FindFirst(JwtClaimTypes.Subject)?.Value;
+        }
+
+        protected string GetUserEmail()
+        {
+            return @User.FindFirst(JwtClaimTypes.Name)?.Value;
         }
     }
 

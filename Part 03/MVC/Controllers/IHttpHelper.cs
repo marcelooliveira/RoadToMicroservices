@@ -4,7 +4,7 @@ namespace MVC.Controllers
 {
     public interface IHttpHelper
     {
-        RegistrationViewModel GetRegistration(string clientId);
+        RegistrationViewModel GetRegistration(string clientId, string email);
         void SetRegistration(string clientId, RegistrationViewModel registrationViewModel);
     }
 }

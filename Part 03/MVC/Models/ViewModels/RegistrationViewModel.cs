@@ -15,11 +15,15 @@ namespace MVC.Models.ViewModels
             UserId = userId;
         }
 
-        public RegistrationViewModel(string userId, string name, string email, string phone, string address, string additionalAddress, string district, string city, string state, string zipCode)
+        public RegistrationViewModel(string userId, string email) : this(userId)
         {
-            UserId = userId;
-            Name = name;
             Email = email;
+        }
+
+        public RegistrationViewModel(string userId, string name, string email, string phone, string address, string additionalAddress, string district, string city, string state, string zipCode)
+            : this(userId, email)
+        {
+            Name = name;
             Phone = phone;
             Address = address;
             AdditionalAddress = additionalAddress;

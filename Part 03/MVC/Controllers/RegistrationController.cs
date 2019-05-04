@@ -19,7 +19,7 @@ namespace MVC.Controllers
 
         public IActionResult Index()
         {
-            var viewModel = httpHelper.GetRegistration(GetUserId());
+            var viewModel = httpHelper.GetRegistration(GetUserId(), GetUserEmail());
             return View(viewModel);
         }
     }

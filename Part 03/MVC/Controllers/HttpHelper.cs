@@ -19,11 +19,11 @@ namespace MVC.Controllers
             contextAccessor.HttpContext.Session.SetString($"registration_{clientId}", json);
         }
 
-        public RegistrationViewModel GetRegistration(string clientId)
+        public RegistrationViewModel GetRegistration(string clientId, string email)
         {
             string json = contextAccessor.HttpContext.Session.GetString($"registration_{clientId}");
             if (string.IsNullOrWhiteSpace(json))
-                return new RegistrationViewModel(clientId);
+                return new RegistrationViewModel(clientId, email);
 
             return JsonConvert.DeserializeObject<RegistrationViewModel>(json);
         }
