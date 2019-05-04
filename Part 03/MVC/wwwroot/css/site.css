@@ -88,14 +88,25 @@ body {
     margin-bottom: 100px;
 }
 
+.carousel-control-prev
+,.carousel-control-next {
+    width: 32px;
+}
+
+.carousel-control-prev {
+    margin-left: -32px;
+}
+
+.carousel-control-next {
+    margin-right: -32px;
+}
+
 .carousel-control-prev-icon {
     filter: brightness(0);
-    margin-left: -200px;
 }
 
 .carousel-control-next-icon {
     filter: brightness(0);
-    margin-right: -200px;
 }
 
 .btn-addtobasket::before {
