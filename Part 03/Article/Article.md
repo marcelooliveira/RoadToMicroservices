@@ -78,32 +78,49 @@ _Layout.cshtml
 
 ![Identity Account Login](identity_account_login.png)
 
+![Register Login And Icons](register_login_and_icons.png)
+
+_Layout.cshtml
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <ul class="nav navbar-nav">
+            <li>
+                <vc:notification-counter title="Notifications"...
+
+                <vc:basket-counter title="Basket"...
+
+            </li>
+        </ul>
+    }
+
+![Register Login No Icons](register_login_no_icons.png)
+
+![Click User Name](click_user_name.png)
+
+![Account Manage](account_manage.png)
+
+![Change Password](change_password.png)
+
+![Account Manage Twofactorauthentication](account_manage_twofactorauthentication.png)
+
+![Account Manage Personaldata](account_manage_personaldata.png)
+
+![Mvc Db](mvc_db.png)
+
+
+
 
 
 ### Identity Core
 
-Part 03/MVC/Areas/Identity/Data/AppIdentityUser.cs
-
-ADD
-
-        public string Name { get; set; }
-        public string Phone { get; set; }
-        public string Address { get; set; }
-        public string AdditionalAddress { get; set; }
-        public string District { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public string ZipCode { get; set; }
+![Basket Nonauthorized](basket_nonauthorized.png)
 
 
-Part 03/MVC/Controllers/BaseController.cs
 
-ADD
 
-        protected string GetUserId()
-        {
-            return @User.FindFirst("sub")?.Value;
-        }
+
+
 
 Part 03/MVC/Controllers/BasketController.cs
 
@@ -117,9 +134,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
  [Authorize]
-
-var clientId = GetUserId();
-
 
 
 Part 03/MVC/Controllers/CheckoutController.cs
@@ -160,37 +174,15 @@ using MVC.Services;
 
 [Authorize]
 
-        private readonly IIdentityParser<AppIdentityUser> appUserParser;
+![Add To Basket Nonauthorized](add_to_basket_nonauthorized.png)
 
-        public RegistrationController(IIdentityParser<AppIdentityUser> appUserParser)
-        {
-            this.appUserParser = appUserParser;
-        }
+https://localhost:44340/Identity/Account/Login?ReturnUrl=%2FBasket
 
-
-        public IActionResult Index()
-        {
-            //return View();
-            var usuario = appUserParser.Parse(HttpContext.User);
-            var viewModel = new RegistrationViewModel
-            {
-                District = usuario.District,
-                ZipCode = usuario.ZipCode,
-                AdditionalAddress = usuario.AdditionalAddress,
-                Email = usuario.Email,
-                Address = usuario.Address,
-                City = usuario.City,
-                Name = usuario.Name,
-                Phone = usuario.Phone,
-                State = usuario.State
-            };
-            return View(viewModel);
-        }
+![Returnurl](returnurl.png)
 
 Part 03/MVC/MVC.csproj
 
 <PackageReference Include="IdentityModel" Version="3.10.10" />
-
 
 CREATED
 
@@ -305,6 +297,29 @@ Part 03/MVC/Views/Registration/Index.cshtml
 
         //<input type="text" class="form-control" />
         <input type="text" class="form-control" value="@Model.Name" />
+
+Part 03/MVC/Areas/Identity/Data/AppIdentityUser.cs
+
+ADD
+
+        public string Name { get; set; }
+        public string Phone { get; set; }
+        public string Address { get; set; }
+        public string AdditionalAddress { get; set; }
+        public string District { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string ZipCode { get; set; }
+
+
+Part 03/MVC/Controllers/BaseController.cs
+
+ADD
+
+        protected string GetUserId()
+        {
+            return @User.FindFirst("sub")?.Value;
+        }
 
 ### AddMicrosoftAccount
 
