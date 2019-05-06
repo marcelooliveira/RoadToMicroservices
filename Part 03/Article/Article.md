@@ -1,7 +1,5 @@
 ### CAROUSEL - PUT THIS COMMIT FIRST!
 
-![File](file.png)
-
 Part 03/MVC/wwwroot/css/site.css
 
 ADD
@@ -30,7 +28,48 @@ REMOVE
 
 ### Identity added
 
+Microsoft.EntityFrameworkCore.Sqlite
+
+![Add Nuget Package](add_nuget_package.png)
+
+![Sqlite](Microsoft.EntityFrameworkCore.Sqlite.png)
+
+![New Scaffolding Item](new_scaffolding_item.png)
+
+![Add Scaffold](add_scaffold.png)
+
 AppIdentityContext, AppIdentityUser
+
+![Add Identity](add_identity.png)
+
+![Identity Area](identity_area.png)
+
+Startup.cs
+
+    app.UseAuthentication();
+
+![File Loginpartial](file_loginpartial.png)
+
+_Layout.cshtml
+
+    <partial name="_LoginPartial" />
+
+appsettings.json
+
+    "AllowedHosts": "*",
+    "ConnectionStrings": {
+    "AppIdentityContextConnection": "DataSource=MVC.db"
+    }
+
+
+PM> Add-Migration Identity
+
+![Add Migration](add_migration.png)
+
+PM> Update-Database
+
+
+
 
 ### Identity Core
 
