@@ -44,16 +44,6 @@ AppIdentityContext, AppIdentityUser
 
 ![Identity Area](identity_area.png)
 
-Startup.cs
-
-    app.UseAuthentication();
-
-![File Loginpartial](file_loginpartial.png)
-
-_Layout.cshtml
-
-    <partial name="_LoginPartial" />
-
 appsettings.json
 
     "AllowedHosts": "*",
@@ -61,13 +51,32 @@ appsettings.json
     "AppIdentityContextConnection": "DataSource=MVC.db"
     }
 
-
 PM> Add-Migration Identity
 
 ![Add Migration](add_migration.png)
 
 PM> Update-Database
 
+Startup.cs
+
+    app.UseStaticFiles();
+    app.UseAuthentication();
+
+![File Loginpartial](file_loginpartial.png)
+
+_Layout.cshtml
+
+    <div class="navbar-collapse collapse justify-content-end">
+        <partial name="_LoginPartial" />
+        <ul class="nav navbar-nav">
+
+![Register Link](register_link.png)
+
+![Identity Account Register](identity_account_register.png)
+
+![Login Link](login_link.png)
+
+![Identity Account Login](identity_account_login.png)
 
 
 
