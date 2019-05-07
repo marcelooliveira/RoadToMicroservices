@@ -29,58 +29,54 @@ REMOVE
 ### Identity added
 
 At the end of part 2 of this sequence of courses, we had an e-commerce 
-application in which the user chose products from a catalog (carousel 
-of products), placed them in his shopping cart, and filled out a register 
-with his address and personal data for delivery. However, access to all 
+application with views in which the user chooses products from a catalog (carousel 
+of products), places them in the shopping basket, and fills in a registration form 
+with address and other personal data for shipping procedures. However, access to all 
 screens is open to any anonymous user who has access to the website, 
-which causes us to have some problems:
+which leads us to some obvious problems:
 
 - The sensitive points in our application (such as the cart and checkout 
-- screen) are vulnerable to hackers, robots and other types of malicious 
-- software that can forge false requests or steal information
+screen) are vulnerable to hackers, robots and other types of malicious 
+software that can forge false requests or steal information
 - Our application does not know who is currently accessing, so it is not 
-- possible to provide certain conveniences, such as automatically filling 
-- the registration for a user who has previously purchased the website.
-- Requests currently have the user's cadastral data, but nothing prevents
--  a user from making purchases by filling in someone else's data. Thus,
--   the application does not know if the data is being filled by an 
--   appropriate person.
+possible to provide certain conveniences, such as automatically filling 
+the registration for a user who has previously purchased at our website.
+- Orders currently store the user's personal data, but nothing prevents
+a user from making purchases and filling in someone else's data. Thus,
+the application does not know if the data is being provided by an 
+appropriate person.
 
 In this part 3 of the course, we will use a login system and ensure that 
 our application is accessed only by authenticated users. This will allow 
 you to protect sensitive points of the application from accessing anonymous
- users. With authentication, we will ensure that the user entered the 
-system through a secure identification service. This will also enable the 
-application to further track user access, identify usage patterns, 
-automatically fill out registration forms, view customer order history, 
+users. By implementing authentication, we will ensure that the user access
+sensitive points of the system through a secure identification process.
+This will also enable the application to further track user access, identify 
+usage patterns, automatically fill out registration forms, view customer order history, 
 and other conveniences that enhance the user experience in the application.
 
-If you only need a user table with password login features and a user profile, 
-then ASP.NET Core Identity is the best option for you.
-If you only need a user table with login and password features and a user 
-profile for your application, then ASP.NET Core Identity is the best option 
-for you.
+If all you need is a user table with password login and a user profile, 
+then **ASP.NET Core Identity** is the best option for you.
 In this chapter we will learn how to install ASP.NET Core Identity in our 
 e-commerce solution and take advantage of the security, login / logout, 
 authentication, and user profile features provided by this framework.
-The installation of ASP.NET Core Identity in a preexisting project that 
-did not have Identity since the beginning is different from the installation 
-in which a new ASP.NET Core project already comes with Identity since its 
-inception. To install in our project, which does not have Identity, we will 
+
+The installation of Identity in a brand ASP.NET Core MVC project from start 
+is quite different from the installation of Identity in an existing application.
+To install it in our project, which stil does not have Identity, we will 
 follow a process in which the installation adds to our project a group of 
 ready-made files (similar to prefabricated modules that are seen in 
-construction), and this process called "assembly scaffolding "or" Scaffolding 
-"in English.
-But before we install the ASP.NET Core Identity packages themselves, it is
-necessary to make some temporary adaptations in our project, otherwise the 
-installation of ASP.NET Core Identity packages will not be successful.
+civil construction), and this process is called "scaffolding".
+
+But before we install the ASP.NET Core Identity package itself, it is
+necessary to prepare our project for a new SQLite database that will be used
+by Identity to hold user, profile and other related information.
 
 Below, we will install the NuGet package for the SQLite database management 
 engine.
 
-Right-click the MVC project name, choose the Add NuGet Package submenu, and 
-when you open the package installation page, enter the package name: 
-Microsoft.EntityFrameworkCore.SQLite
+Right-click the MVC project name, choose the Add NuGet Package submenu, and then 
+enter the package name: 
 
 Microsoft.EntityFrameworkCore.Sqlite
 
