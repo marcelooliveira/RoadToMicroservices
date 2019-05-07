@@ -86,13 +86,13 @@ Microsoft.EntityFrameworkCore.Sqlite
 
 Now click the "Install" button and wait for the package to install.
 
-Okay, now the project is ready to receive the Scaffold of ASP.NET Core 
+Okay, now the project is ready to go through scaffolding of ASP.NET Core 
 Identity.
 
 ### Applying the ASP.NET Core Identity Scaffold
 
-Manually create login / logout, authentication, etc. features. in our 
-application would require a lot of effort, both for the development of 
+Manually creating login / logout, authentication and other features in our 
+application would normally require a lot of effort, both for the development of 
 views and for creating business logic, model entities, data access, 
 security, etc., in addition to many hours of unit testing, functional 
 tests, integrated testing, etc.
