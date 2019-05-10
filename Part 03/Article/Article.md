@@ -55,6 +55,25 @@ enables the application to track user access, identify usage patterns, automatic
 fill out registration forms, view customer order history, and other conveniences, 
 enhancing user experience.
 
+If all you need is a user table with login and password columns and a user profile 
+for your application, then ASP.NET Core Identity is the best option for you.
+
+In this chapter, we will learn how to install ASP.NET Core Identity in our e-commerce 
+solution and take advantage of the security, login/logout, authentication, and user 
+profile features provided by this framework.
+
+By default, the database engine used by Identity is SQL Server. However, we will be 
+using SQLite, which is a simpler and more compact database engine than SQL Server. 
+Before installing Identity, we will prepare the project to use this new database 
+engine.
+
+Soon, we will install the NuGet package for the SQLite database management engine.
+
+Right-click the MVC project name, choose the Add NuGet Package submenu, and the package 
+installation page opens, enter the package name: Microsoft.EntityFrameworkCore.SQLite
+
+[Picture: NuGet Solution]
+
 - The sensitive points in our application (such as the cart and checkout screens)
 are vulnerable to hackers, robots and other types of malicious software that can
 forge false requests or steal information.
