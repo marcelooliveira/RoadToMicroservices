@@ -91,6 +91,16 @@ application, that would require a lot of effort. We are talking about the develo
 of views, business logic, model entities, data access, security, etc., in addition to 
 many hours of unit testing, functional testing, integrated testing and so on.
 
+Fortunately, our application can benefit from authentication and authorization features 
+without much effort. Authentication and authorization are ubiquitous in web applications. 
+Because of this, Microsoft provides a package of files to be transparently installed in 
+ASP.NET Core projects without such features. It's called ASP.NET Core Identity.
+
+To apply ASP.NET Core Identity in our solution, we need to right-click the project, click 
+Add Scaffolded Item and then choose the Add option. That will open a new Add Scaffold 
+dialog window.
+
+[PICTURE XXXX]
 
 - The sensitive points in our application (such as the cart and checkout screens)
 are vulnerable to hackers, robots and other types of malicious software that can
