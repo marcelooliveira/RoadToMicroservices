@@ -74,6 +74,24 @@ installation page opens, enter the package name: Microsoft.EntityFrameworkCore.S
 
 [Picture: NuGet Solution]
 
+Now click the "Install" button and wait for the package to install.
+
+Okay, now the project is ready to receive the scaffolding of ASP.NET Core Identity.
+
+Applying the ASP.NET Core Identity Scaffold
+
+Installing a new ASP.NET Core with Identity from the beginning is different from 
+installing Identity in an existing project. Since our project does not have Identity, 
+we will install a package of files containing the functionalities we need. This process 
+is analogous to building walls in a construction site using prefabricated modules. 
+This process is known as scaffolding.
+
+If we had to manually create login/logout, authentication and other features in our 
+application, that would require a lot of effort. We are talking about the development 
+of views, business logic, model entities, data access, security, etc., in addition to 
+many hours of unit testing, functional testing, integrated testing and so on.
+
+
 - The sensitive points in our application (such as the cart and checkout screens)
 are vulnerable to hackers, robots and other types of malicious software that can
 forge false requests or steal information.
