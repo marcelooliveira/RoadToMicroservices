@@ -28,37 +28,56 @@ REMOVE
 
 ### Identity added
 
-At the end of part 2 of this sequence of courses, we had an e-commerce 
-application with views in which the user chooses products from a catalog (carousel 
-of products), places them in the shopping basket and fills in a registration form 
-with address and other personal data for shipping procedures. However, access to all 
-screens is open to any anonymous user who has access to the website, 
-which leads us to some obvious problems:
+At the end of part 2 of this sequence of courses, we had an e-commerce application
+with views in which the user chooses products from a catalog (carousel  of
+products), places them in the shopping basket and fills in a registration form
+with address and other personal data for shipping procedures. However, access to
+all  screens is open to any anonymous user who has access to the website,  which
+leads us to some obvious problems:
 
-- The sensitive points in our application (such as the cart and checkout screens) are vulnerable to hackers, robots and other types of malicious software that can forge false requests or steal information.
-- Our application does not know who is currently accessing, so it is not possible to provide certain conveniences, such as automatically filling the registration for a user who has previously purchased at our website.
-- Orders currently store the user's personal data, but nothing prevents
-a user from making purchases and filling in someone else's data. Thus,
-the application does not know if the data is being provided by an
-appropriate person.
+- The sensitive points in our application (such as the cart and checkout screens)
+are vulnerable to hackers, robots and other types of malicious software that can
+forge false requests or steal information.
+- Our application does not know who is currently accessing, so it is not possible
+to provide certain conveniences, such as automatically filling the registration
+for a user who has previously purchased at our website.
+- Orders currently store the user's personal data, but nothing prevents a user
+from making purchases and filling in someone else's data. Thus, the application
+does not know if the data is being provided by an appropriate person.
 
-In this part 3 of the course, we will use a login system and ensure that our application is accessed only by authenticated users. This will allow you to protect sensitive points of the application from accessing anonymous
-users. By implementing authentication, we will ensure that the user access sensitive points of the system through a secure identification process.
-This will also enable the application to further track user access, identify usage patterns, automatically fill out registration forms, view customer order history, and other conveniences that enhance the user experience in the application.
+In this part 3 of the course, we will use a login system and ensure that our
+application is accessed only by authenticated users. This will allow you to
+protect sensitive points of the application from accessing anonymous users. By
+implementing authentication, we will ensure that the user access sensitive points
+of the system through a secure identification process. This will also enable the
+application to further track user access, identify usage patterns, automatically
+fill out registration forms, view customer order history, and other conveniences
+that enhance the user experience in the application.
 
-If all you need is a user table with a password login and a user profile, then **ASP.NET Core Identity** is the best option for you.
-In this chapter, we will learn how to install ASP.NET Core Identity in our e-commerce solution and take advantage of the security, login/logout, authentication, and user profile features provided by this framework.
 
-The installation of Identity in a brand ASP.NET Core MVC project from start is quite different from the installation of Identity in an existing application.
-To install it in our project, which still does not have Identity, we will 
-follow a process in which the installation adds to our project a group of ready-made files (similar to prefabricated modules that are seen in civil construction), and this process is called scaffolding.
+If all you need is a user table with a password login and a user profile, then
+**ASP.NET Core Identity** is the best option for you.
 
-But before we install the ASP.NET Core Identity package itself, it is
-necessary to prepare our project for a new SQLite database that will be used by Identity to hold user, profile and other related information.
+In this chapter, we will learn how to install ASP.NET Core Identity in our
+e-commerce solution and take advantage of the security, login/logout,
+authentication, and user profile features provided by this framework.
+
+The installation of Identity in a brand ASP.NET Core MVC project from start is
+quite different from the installation of Identity in an existing application.
+
+To install it in our project, which still does not have Identity, we will follow a
+process in which the installation adds to our project a group of ready-made files
+(similar to prefabricated modules that are seen in civil construction), and this
+process is called scaffolding.
+
+But before we install the ASP.NET Core Identity package itself, it is necessary to
+prepare our project for a new SQLite database that will be used by Identity to
+hold user, profile and other related information.
 
 Below, we will install the NuGet package for the SQLite database management engine.
 
-Right-click the MVC project name, choose the Add NuGet Package submenu and then enter the package name: 
+Right-click the MVC project name, choose the Add NuGet Package submenu and then enter 
+the package name: 
 
 Microsoft.EntityFrameworkCore.Sqlite
 
@@ -72,11 +91,20 @@ Okay, now the project is ready to go through the scaffolding of ASP.NET Core Ide
 
 ### Applying the ASP.NET Core Identity Scaffold
 
-Manually creating login/logout, authentication and other features in our application would normally require a lot of effort, both for the development of views and for creating business logic, model entities, data access, security, etc., in addition to many hours of unit testing, functional tests, integrated testing, etc.
+Manually creating login/logout, authentication and other features in our application
+ would normally require a lot of effort, both for the development of views and for 
+creating business logic, model entities, data access, security, etc., in addition to 
+many hours of unit testing, functional tests, integrated testing, etc.
 
-Fortunately, we can use the benefits of authentication and authorization features in our application without much effort. Because this type of functional requirement is virtually universal in web applications, Microsoft provides a package of files that can be transparently installed on ASP.NET Core projects. This package is called ASP.NET Core Identity.
+Fortunately, we can use the benefits of authentication and authorization features in 
+our application without much effort. Because this type of functional requirement is 
+virtually universal in web applications, Microsoft provides a package of files that 
+can be transparently installed on ASP.NET Core projects. This package is called 
+ASP.NET Core Identity.
 
-In order to apply ASP.NET Core Identity in our solution, we right-click on the name of the MVC project and choose the Add Scaffolded Item menu. Then, we choose Add, which will open a new window dialog called Add Scaffold.
+In order to apply ASP.NET Core Identity in our solution, we right-click on the name 
+of the MVC project and choose the Add Scaffolded Item menu. Then, we choose Add, 
+which will open a new window dialog called Add Scaffold.
 
 ![New Scaffolding Item](new_scaffolding_item.png)
 
@@ -86,35 +114,52 @@ Here, we will choose the Installed> Identity> Identity option.
 
 AppIdentityContext, AppIdentityUser
 
-The ASP.NET Core Identity Scaffold will open a new dialog window containing a series of configuration parameters, which allow you to define the layout of the pages, what features are included, data and user context classes, and also which type of database (SQL Server or SQLite).
+The ASP.NET Core Identity Scaffold will open a new dialog window containing a series
+of configuration parameters, which allow you to define the layout of the pages, what
+features are included, data and user context classes, and also which type of database (SQL Server or SQLite).
 
 ![Add Identity](add_identity.png)
 
 Here we choose:
 
-- Layout: The _Layout.cshtml file already exists in our project. This will cause the new login, log out and other pages to share the same standard layout as the rest of our MVC application.
-- Identity pages: Login, Logout, Register, ExternalLogin. These pages are sufficient for our application. However, notice that much more functionality can be added.
+- Layout: The _Layout.cshtml file already exists in our project. This will cause the 
+new login, log out and other pages to share the same standard layout as the rest of 
+our MVC application.
+- Identity pages: Login, Logout, Register, ExternalLogin. These pages are sufficient 
+for our application. However, notice that much more functionality can be added.
 - Context class: AppIdentityContext: This class will be created after confirmation.
 - User class: AppIdentityUser. This class will be created in the after confirmation.
 
-Once we confirm these parameters for the ASP.NET Core Identity scaffold, our project is modified, and the most notable change is the creation of a folder and file structure under the Areas/Identity folder of our project.
+Once we confirm these parameters for the ASP.NET Core Identity scaffold, our project 
+is modified, and the most notable change is the creation of a folder and file structure 
+under the Areas/Identity folder of our project.
 
 ![Identity Area](identity_area.png)
 
 What can we recognize in these files/folders above?
 
-- The new AppIdentityContext class: It defines the context with the entities and relationships required to configure the Entity Framework Core.
-- The new AppIdentityUser class: it contains the user profile data used in the ASPNET Core Identity authentication and authorization process.
-- The pages below Pages/Account: these are pages containing the markup code (HTML) for login, log out and other Identity views. They are Razor Pages, that is, an MVC structure where the view  resides in a single the .cshtml file while the controller actions and the model class (PageModel) are included in a single .cshtml.cs file
+- The new AppIdentityContext class: It defines the context with the entities and 
+relationships required to configure the Entity Framework Core.
+- The new AppIdentityUser class: it contains the user profile data used in the ASPNET 
+Core Identity authentication and authorization process.
+- The pages below Pages/Account: these are pages containing the markup code (HTML) for 
+login, log out and other Identity views. They are Razor Pages, that is, an MVC 
+structure where the view  resides in a single the .cshtml file while the controller 
+actions and the model class (PageModel) are included in a single .cshtml.cs file
 - Auxiliary Partial Views
-- IdentityHostingStartup class: This class is executed by the WebHost of our application, which is declared in the Program.cs file.
-- IdentityHostingStartup class configures the database and other service types that ASP.NET Identity Core needs to work.
+- IdentityHostingStartup class: This class is executed by the WebHost of our application, 
+which is declared in the Program.cs file.
+- IdentityHostingStartup class configures the database and other service types that
+ASP.NET Identity Core needs to work.
 
 ### Adding ASP.NET Core Identity Model Migration
 
-It is not enough to just add the ASP.NET Core Identity files to our project. We still have to generate the database schema so that the tables and initial data for ASP.NET Identity Core required configuration are also created.
+It is not enough to just add the ASP.NET Core Identity files to our project. We still 
+have to generate the database schema so that the tables and initial data for ASP.NET 
+Identity Core required configuration are also created.
 
-When we did the scaffolding of ASP.NET Identity Core, we added a new Identity data model to our project, as we can see in the IdentityHostingStartup.cs file class:
+When we did the scaffolding of ASP.NET Identity Core, we added a new Identity data model 
+to our project, as we can see in the IdentityHostingStartup.cs file class:
 
 ```csharp
 public void Configure(IWebHostBuilder builder)
@@ -130,9 +175,12 @@ public void Configure(IWebHostBuilder builder)
 }
 ```
 
-Note that the above Entity Framework configuration (AddDbContext method) is using the AppIdentityContext class, which name we chose in the scaffolding process.
+Note that the above Entity Framework configuration (AddDbContext method) is using the 
+AppIdentityContext class, which name we chose in the scaffolding process.
 
-At the same time, a new connection string has also been added to the appsettings.json configuration file. This configuration string is exclusive to the SQLite database used by Identity:
+At the same time, a new connection string has also been added to the appsettings.json 
+configuration file. This configuration string is exclusive to the SQLite database used 
+by Identity:
 
 appsettings.json
 
@@ -141,17 +189,21 @@ appsettings.json
     "AppIdentityContextConnection": "DataSource=MVC.db"
     }
 
-But note that the Identity SQLite database has not yet been created. We need to create it by using the technique called Migration, which we saw in the previous courses.
+But notice that the Identity SQLite database has not yet been created. We need to 
+create it by using the technique called Migration, which we saw in the previous courses.
 
 To do this, open the Tools> Package Manager Console menu, and type in the console:
 
 PM> Add-Migration Identity
 
-However, when executing this command, we receive an error message, indicating that there is more than one context in our project:
+However, when executing this command, we receive an error message, indicating that 
+there is more than one context in our project:
 
-More than one DbContext has been found. Specify which one to use. Use the '-Context' parameter for PowerShell commands and the '--context' parameter for dotnet commands.
+More than one DbContext has been found. Specify which one to use. Use the '-Context' 
+parameter for PowerShell commands and the '--context' parameter for dotnet commands.
 
-This means that the migration does not know which of the two contexts to use. You must specify the Identity context using the -Context parameter:
+This means that the migration does not know which of the two contexts to use. You must 
+specify the Identity context using the -Context parameter:
 
 ![Add Migration](add_migration.png)
 
@@ -235,7 +287,7 @@ ADD
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
- [Authorize]
+[Authorize]
 
 
 Part 03/MVC/Controllers/CheckoutController.cs
