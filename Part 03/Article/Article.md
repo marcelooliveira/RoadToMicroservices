@@ -102,6 +102,15 @@ dialog window.
 
 [PICTURE XXXX]
 
+Here, we will choose Installed > Identity > Identity. 
+
+[PICTURE XXXX]
+
+The ASP.NET Core Identity Scaffold will open a new dialog window containing a series of 
+configuration parameters. There, you can define the layout of the pages, what features 
+you will include, the data and user context classes, and also which type of database 
+(SQL Server or SQLite) Identity will use.
+
 - The sensitive points in our application (such as the cart and checkout screens)
 are vulnerable to hackers, robots and other types of malicious software that can
 forge false requests or steal information.
