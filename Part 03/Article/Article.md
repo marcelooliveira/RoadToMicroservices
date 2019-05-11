@@ -26,7 +26,7 @@ REMOVE
     margin-right: -200px;
 
 
-### Identity added
+### Introduction
 
 At the end of part 2 of this sequence of courses, we had an e-commerce application
 with views in which the user could choose products from a catalog, 
@@ -80,7 +80,7 @@ Now click the "Install" button and wait for the package to install.
 
 Okay, now the project is ready to receive the scaffolding of ASP.NET Core Identity.
 
-Applying the ASP.NET Core Identity Scaffold
+#### Applying the ASP.NET Core Identity Scaffold
 
 Installing a new ASP.NET Core with Identity from the beginning is different from 
 installing Identity in an existing project. Since our project does not have Identity, 
@@ -108,7 +108,6 @@ Here, we will choose Installed > Identity > Identity.
 
 ![Add Scaffold](add_scaffold.png)
 
-
 The ASP.NET Core Identity Scaffold will open a new dialog window containing a series of 
 configuration parameters. There, you can define the layout of the pages, what features 
 you will include, the data and user context classes, and also which type of database 
@@ -116,7 +115,7 @@ you will include, the data and user context classes, and also which type of data
 
 ![Add Identity](add_identity.png)
 
-Here we choose:
+Let's select this options:
 
 - Layout: The _Layout.cshtml file that already exists in our project. That will cause the 
 new login page, log out page and other Identity pages to share the same layout as the 
