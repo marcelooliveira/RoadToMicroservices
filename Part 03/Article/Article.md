@@ -111,6 +111,103 @@ configuration parameters. There, you can define the layout of the pages, what fe
 you will include, the data and user context classes, and also which type of database 
 (SQL Server or SQLite) Identity will use.
 
+[PICTURE XXXX]
+
+Here we choose:
+
+- Layout: The _Layout.cshtml file that already exists in our project. That will cause the 
+new login page, log out page and other Identity pages to share the same layout as the 
+rest of our application.
+- Identity pages: Login, Logout, Register, ExternalLogin. The scaffolding process will 
+copy those pages to our application, where you can edit them. Note that you still can 
+navigate to the other Identity pages that you left unmarked, but you cannot modify or 
+customize them since they will not be present in the project.
+- Context class: AppIdentityContext: This class will be created in the confirmation window.
+user class: AppIdentityUser. This class will be created in the confirmation window.
+
+Once we confirm these parameters for the ASP.NET Core Identity scaffold, our project is 
+modified, and the most notable change is the creation of a folder and file structure under 
+the Areas / Identity folder of our project.
+
+[PICTURE XXXX]
+
+What can we identify in these files/folder above?
+
+- The new AppIdentityContext class: It defines the context for the entities and relationships 
+required to configure Entity Framework Core.
+- The new AppIdentityUser class: it contains the user profile data used in the ASPNET Core 
+Identity authentication and authorization processes.
+- The pages below Pages / Account: Those are pages containing the markup code for Identity 
+pages. They are Razor Pages, that is, a kind of MVC structure type where the view is in 
+the file and the actions of the controller and the template reside in a single file. As we 
+have said, these pages can be modified and customized in our application, but the other 
+- Identity pages can be accessed, but not changed, since their files are not present in the 
+project.
+- Partial Views: _ValidationScriptPartial, _ViewImports, _ViewStart
+- IdentityHostingStartup class: The ASP.NET Core WebHost executes this class as soon as the 
+application runs. The IdentityHostingStartup class configures database and other services 
+that Identity needs to work.
+
+#### Creating and Applying ASP.NET Core Identity Model Migration
+
+It is not enough to install the ASP.NET Core Identity package in our project; we still have 
+to generate the database schema, which includes tables and initial data required by for ASP.NET 
+Identity Core.
+
+When we made the scaffolding of ASP.NET Identity Core, a new Identity data model was 
+automatically added to our project, as we can see in the IdentityHostingStartup.cs file class:
+
+```csharp
+public void Configure(IWebHostBuilder builder)
+{
+    builder.ConfigureServices((context, services) => {
+        services.AddDbContext<AppIdentityContext>(options =>
+            options.UseSqlite(
+                context.Configuration.GetConnectionString("AppIdentityContextConnection")));
+
+        services.AddDefaultIdentity<AppIdentityUser>()
+            .AddEntityFrameworkStores<AppIdentityContext>();
+    });
+}
+```
+
+Notice how the above Entity Framework configuration (AddDbContext method) is using the 
+AppIdentityContext class, whose name we chose in the scaffolding process.
+
+The same process also added a new AppIdentityContextConnection connection string to the 
+appsettings.json configuration file. ASP.NET Core Identity will use this connection 
+string to connect to the SQLite database:
+
+```json
+.
+.
+.
+"AllowedHosts": "*",
+"ConnectionStrings": {
+    "AppIdentityContextConnection": "DataSource=MVC.db"
+}
+```
+
+But note that the scaffolding process alone did not create the Identity SQLite database 
+by itself. But this can be achieved by creating a new Migration, which we saw in the previous 
+courses.
+
+To add a new migration, open the Tool s> Package Manager Console menu, and type in the 
+console.
+
+```
+PM> Add-Migration Identity 
+```
+
+The above command added the classes containing the migration statements, but it did not 
+create the database itself:
+
+
+
+
+
+
+
 - The sensitive points in our application (such as the cart and checkout screens)
 are vulnerable to hackers, robots and other types of malicious software that can
 forge false requests or steal information.
