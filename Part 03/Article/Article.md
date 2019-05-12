@@ -42,8 +42,8 @@ and password to authenticate the user.
 Both models have benefits and drawbacks. An e-commerce website that does not require 
 authentication is more convenient for customers as it reduces friction that could hurt 
 conversions, in user experience parlance. On the other hand, authentication enables 
-you to identify users and possibly better analyze their behavior during accesses, as 
-well as allowing you to provide certain benefits, such as displaying an order history 
+you to identify users and possibly better analyze their behavior over time, as 
+well as allowing you to provide users with certain benefits, such as displaying an order history 
 of a customer that has previously purchased on the website. In this course, we will 
 follow the second approach.
 
