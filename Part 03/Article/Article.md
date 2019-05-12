@@ -67,8 +67,6 @@ using SQLite, which is a simpler and more compact database engine than SQL Serve
 Before installing Identity, we will prepare the project to use this new database 
 engine.
 
-Soon, we will install the NuGet package for the SQLite database management engine.
-
 Right-click the MVC project name, choose the Add NuGet Package submenu, and the package 
 installation page opens, enter the package name: Microsoft.EntityFrameworkCore.SQLite
 
@@ -78,14 +76,14 @@ installation page opens, enter the package name: Microsoft.EntityFrameworkCore.S
 
 Now click the "Install" button and wait for the package to install.
 
-Okay, now the project is ready to receive the scaffolding of ASP.NET Core Identity.
+Okay, now the project is ready to receive the ASP.NET Core Identity scaffolding.
 
 #### Applying the ASP.NET Core Identity Scaffold
 
 Installing a new ASP.NET Core with Identity from the beginning is different from 
-installing Identity in an existing project. Since our project does not have Identity, 
+installing it in an existing project. Since our project does not have Identity, 
 we will install a package of files containing the functionalities we need. This process 
-is analogous to building walls in a construction site using prefabricated modules. 
+is similar to building walls in a construction site using prefabricated modules. 
 This process is known as scaffolding.
 
 If we had to manually create login/logout, authentication and other features in our 
@@ -96,9 +94,9 @@ many hours of unit testing, functional testing, integrated testing and so on.
 Fortunately, our application can benefit from authentication and authorization features 
 without much effort. Authentication and authorization are ubiquitous in web applications. 
 Because of this, Microsoft provides a package of files to be transparently installed in 
-ASP.NET Core projects without such features. It's called ASP.NET Core Identity.
+ASP.NET Core projects that lack such features. It's called ASP.NET Core Identity.
 
-To apply ASP.NET Core Identity in our solution, we need to right-click the project, click 
+To apply ASP.NET Core Identity in our solution, we right-click the project, click 
 Add Scaffolded Item and then choose the Add option. That will open a new Add Scaffold 
 dialog window.
 
@@ -109,7 +107,7 @@ Here, we will choose Installed > Identity > Identity.
 ![Add Scaffold](add_scaffold.png)
 
 The ASP.NET Core Identity Scaffold will open a new dialog window containing a series of 
-configuration parameters. There, you can define the layout of the pages, what features 
+configuration parameters. There, you can define the layout of the pages, what source code 
 you will include, the data and user context classes, and also which type of database 
 (SQL Server or SQLite) Identity will use.
 
@@ -117,27 +115,24 @@ you will include, the data and user context classes, and also which type of data
 
 Let's select this options:
 
-- Layout: The _Layout.cshtml file that already exists in our project. That will cause the 
-new login page, log out page and other Identity pages to share the same layout as the 
-rest of our application.
+- Layout: The _Layout.cshtml file that already exists in our project. It will define a basic 
+markup to be shared by the Identity pages and the rest of our application.
 - Identity pages: Login, Logout, Register, ExternalLogin. The scaffolding process will 
 copy those pages to our application, where you can edit them. Note that you still can 
 navigate to the other Identity pages that you left unmarked, but you cannot modify or 
 customize them since they will not be present in the project.
-- Context class: AppIdentityContext: This class will be created in the confirmation window.
-user class: AppIdentityUser. This class will be created in the confirmation window.
+- Context class: AppIdentityContext.
+- User class: AppIdentityUser. Represents a user in the identity system
 
 After confirming these parameters, the scaffolding will modify our project.
 The most notable change is the new file structure under the Areas / Identity folder of our project.
 
 ![Identity Area](identity_area.png)
 
-What can we identify in these files/folder above?
+Observe the new structure under Areas folder:
 
-- The new AppIdentityContext class: It defines the context for the entities and relationships 
-required to configure Entity Framework Core.
-- The new AppIdentityUser class: it contains the user profile data used in the ASPNET Core 
-Identity authentication and authorization processes.
+- The AppIdentityContext class: this is the class for the Entity Framework database context used for identity.
+- The AppIdentityUser class: it represents a user in the identity system.
 - The pages below Pages / Account: Those are pages containing the markup code for Identity 
 pages. They are Razor Pages, that is, a kind of MVC structure type where the view is in 
 the file and the actions of the controller and the template reside in a single file. As we 
@@ -177,7 +172,7 @@ AppIdentityContext class, whose name we chose in the scaffolding process.
 
 The same process also added a new AppIdentityContextConnection connection string to the 
 appsettings.json configuration file. ASP.NET Core Identity will use this connection 
-string to connect to the SQLite database:
+string to access the SQLite database:
 
 ```json
 .
@@ -190,7 +185,7 @@ string to connect to the SQLite database:
 ```
 
 But note that the scaffolding process alone did not create the Identity SQLite database 
-by itself. But this can be achieved by creating a new Migration, which we saw in the previous 
+by itself. This can be achieved by creating a new Migration, which we saw in the previous 
 courses.
 
 To add a new migration, open the Tool s> Package Manager Console menu, and type in the 
@@ -205,15 +200,14 @@ create the database itself:
 
 ![Add Migration](add_migration.png)
 
-To create the database, you must apply the migration by updating the database with the 
-Update-Database statement:
+To create the database, you must apply the migration by executing the Update-Database command:
 
 ```
 PM> Update-Database -verbose
 ```
 
-This command creates the MVC.db database file defined in the connection string configured in 
-appsettings.json:
+This command creates the MVC.db database file defined in the connection string included in 
+the appsettings.json configuration file:
 
 ![Mvc Db](mvc_db.png)
 
@@ -229,12 +223,12 @@ integrate ASP.NET Core Identity features in our application.
 ### ASP.NET Core Identity Configuration
 
 The Identity components are already present in our project. However, we 
-need to modify it to add further configuration that will integrate these components 
+need to add further configuration that will integrate these components 
 with the rest of the application.
 
 In software architecture, that is referred to as middleware.
 
-ASP.NET Core provides a standard approach to integrate these new middlewares into the 
+ASP.NET Core provides a standard approach to integrate a middleware into the 
 normal execution of the application. This mechanism resembles a water pipeline. Each 
 new service further extends the plumbing system, taking the water at one end, and 
 passing it to the next segment.
