@@ -127,9 +127,8 @@ customize them since they will not be present in the project.
 - Context class: AppIdentityContext: This class will be created in the confirmation window.
 user class: AppIdentityUser. This class will be created in the confirmation window.
 
-Once we confirm these parameters for the ASP.NET Core Identity scaffold, our project is 
-modified, and the most notable change is the creation of a folder and file structure under 
-the Areas / Identity folder of our project.
+After confirming these parameters, the scaffolding will modify our project.
+The most notable change is the new file structure under the Areas / Identity folder of our project.
 
 ![Identity Area](identity_area.png)
 
@@ -227,7 +226,60 @@ That's it! Now our application already has all the necessary components to perfo
 authentication and authorization. From now on, we will start using these components to 
 integrate ASP.NET Core Identity features in our application.
 
+### ASP.NET Core Identity Configuration
 
+The Identity components are already present in our project. However, we 
+need to modify it to add further configuration that will integrate these components 
+with the rest of the application.
+
+In software architecture, that is referred to as middleware.
+
+ASP.NET Core provides a standard approach to integrate these new middlewares into the 
+normal execution of the application. This mechanism resembles a water pipeline. Each 
+new service further extends the plumbing system, taking the water at one end, and 
+passing it to the next segment.
+
+Similarly, ASP.NET Core will pass requests along a chain of middlewares. Upon receiving 
+a request, each middleware decides either to process it or to pass the request to the next 
+middleware in the chain. If the user is anonymous and the resource requires authorization, 
+then Identity will redirect the user to the login page.
+
+The scaffolding process created the IdentityHostingStartup class, which already configured 
+some Identity services.
+
+```csharp
+public void Configure(IWebHostBuilder builder)
+{
+    ...
+        services.AddDefaultIdentity<AppIdentityUser>()
+            .AddEntityFrameworkStores<AppIdentityContext>();
+    ...
+}
+```
+
+The AddDefaultIdentity() method adds a set of common identity services to the application, 
+including a default UI, token providers, and configures authentication to use identity 
+cookies.
+
+Identity is enabled by calling UseAuthentication. This method adds authentication middleware 
+to the request pipeline:
+
+```csharp
+    ...
+    app.UseStaticFiles();
+    app.UseAuthentication();
+    ...
+```
+
+The UseAuthentication() method adds the AuthenticationMiddleware to the specified 
+ApplicationBuilder, which enables authentication capabilities.
+
+However, the above code configures just the back end behavior. For the front end, 
+you can integrate ASP.NET Core Identity views with the application user interface 
+by including an Identity in the layout markup that will allow users to log in or 
+register.
+
+### Using ASP.NET Core Identity Views Within Our Application
 
 ##### 
 ##### 
