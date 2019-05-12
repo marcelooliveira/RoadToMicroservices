@@ -275,28 +275,80 @@ register.
 
 ### Using ASP.NET Core Identity Views Within Our Application
 
-##### 
-##### 
-##### 
-##### 
-##### 
-
-
-
-Startup.cs
-
-    app.UseStaticFiles();
-    app.UseAuthentication();
+The ASP.NET Core Identity scaffolding process includes the LoginPartial file in
+the Views\Shared folder. This file contains the partial view that displays either the 
+authenticated user name or hyperlinks for login and registration.
 
 ![File Loginpartial](file_loginpartial.png)
 
+```razor
+@using Microsoft.AspNetCore.Identity
+@using MVC.Areas.Identity.Data
+@inject SignInManager<AppIdentityUser> SignInManager
+@inject UserManager<AppIdentityUser> UserManager
+
+<ul class="navbar-nav">
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item">
+        <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+    </li>
+    <li class="nav-item">
+        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+        </form>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </li>
+}
+</ul>
+```
+
+You can add this component to any of the application views, with the line below:
+
+```razor
+<partial name="_LoginPartial" />
+```
+
+However, adding this line more than one time would cause undesirable code duplication. 
+We can avoid this redundancy by including the line above in the standard layout view of 
+the application (_Layout.cshtml file) since this will cause the component to be visible 
+through all of our e-commerce views. We need to include it more specifically in the 
+application's navigation bar, inside the <div> element that contains the "navbar-collapse" 
+class:
+
 _Layout.cshtml
 
+```razor
     <div class="navbar-collapse collapse justify-content-end">
         <partial name="_LoginPartial" />
         <ul class="nav navbar-nav">
+```
+
+By running the application, we can now see the log and login links at the upper right corner 
+of the product search page:
 
 ![Register Link](register_link.png)
+
+Now we will click to add any product to navigate to the shopping cart page. Notice how the login 
+and register links are also present here:
+
+![Register Link](register_link.png)
+
+
+
+##### 
+##### 
+##### 
+##### 
+##### 
 
 ![Identity Account Register](identity_account_register.png)
 
