@@ -1,32 +1,8 @@
 ### CAROUSEL - PUT THIS COMMIT FIRST!
 
-Part 03/MVC/wwwroot/css/site.css
-
-ADD
-
-.carousel-control-prev
-,.carousel-control-next {
-    width: 32px;
-}
-
-.carousel-control-prev {
-    margin-left: -32px;
-}
-
-.carousel-control-next {
-    margin-right: -32px;
-}
-
-REMOVE
-
-    margin-left: -200px;
-.
-.
-.
-    margin-right: -200px;
-
-
 ### Introduction
+
+![Identity](identity.png)
 
 At the end of part 2 of this sequence of courses, we had an e-commerce application
 with views in which the user could choose products from a catalog, 
@@ -79,6 +55,8 @@ Now click the "Install" button and wait for the package to install.
 Okay, now the project is ready to receive the ASP.NET Core Identity scaffolding.
 
 #### Applying the ASP.NET Core Identity Scaffold
+
+![Scaffolding](scaffolding.png)
 
 Installing a new ASP.NET Core with Identity from the beginning is different from 
 installing it in an existing project. Since our project does not have Identity, 
@@ -220,7 +198,9 @@ That's it! Now our application already has all the necessary components to perfo
 authentication and authorization. From now on, we will start using these components to 
 integrate ASP.NET Core Identity features in our application.
 
-### ASP.NET Core Identity Configuration
+### Adding ASP.NET Core Identity Components to the Back-End
+
+![Backend](backend.png)
 
 The Identity components are already present in our project. However, we 
 need to add further configuration that will integrate these components 
@@ -273,7 +253,9 @@ you can integrate ASP.NET Core Identity views with the application user interfac
 by including an Identity in the layout markup that will allow users to log in or 
 register.
 
-### Using ASP.NET Core Identity Views Within Our Application
+### Adding ASP.NET Core Identity Components to the Front-End
+
+![Frontend](frontend.png)
 
 The ASP.NET Core Identity scaffolding process includes the LoginPartial file in
 the Views\Shared folder. This file contains the partial view that displays either the 
@@ -281,7 +263,7 @@ authenticated user name or hyperlinks for login and registration.
 
 ![File Loginpartial](file_loginpartial.png)
 
-```razor
+```
 @using Microsoft.AspNetCore.Identity
 @using MVC.Areas.Identity.Data
 @inject SignInManager<AppIdentityUser> SignInManager
@@ -313,7 +295,7 @@ else
 
 You can add this component to any of the application views, with the line below:
 
-```razor
+```
 <partial name="_LoginPartial" />
 ```
 
@@ -326,7 +308,7 @@ class:
 
 _Layout.cshtml
 
-```razor
+```
     <div class="navbar-collapse collapse justify-content-end">
         <partial name="_LoginPartial" />
         <ul class="nav navbar-nav">
@@ -342,11 +324,13 @@ and register links are also present here:
 
 ![Register Link](register_link.png)
 
+#### Razor Pages
+
+![Razorpages](razorpages.png)
+
 ##### Creating a New User
 
-
 Since we created a new database without users,  our customers need to fill in the Identity's Register page. 
-
 
 ##### 
 ##### 
@@ -391,19 +375,9 @@ _Layout.cshtml
 
 ![Mvc Db](mvc_db.png)
 
-
-
-
-
 ### Identity Core
 
 ![Basket Nonauthorized](basket_nonauthorized.png)
-
-
-
-
-
-
 
 Part 03/MVC/Controllers/BasketController.cs
 
@@ -606,6 +580,8 @@ ADD
 
 ### AddMicrosoftAccount
 
+![Microsoft Google](microsoft-google.png)
+
 Part 03/MVC/Startup.cs
 
 //using System;
@@ -630,6 +606,8 @@ Part 03/MVC/appsettings.json
   },
   "Authentication_Microsoft_ApplicationId": "365218f7-1110-4d12-ad00-2472000b3219",
   "Authentication_Microsoft_Password": "wutBVKOC4[lgpwLC4147$-("
+
+![Enter Microsoft](enter-microsoft.png)
 
 ### Persisting User Data to Identity Database
 
