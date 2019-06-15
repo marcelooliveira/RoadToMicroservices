@@ -607,15 +607,6 @@ Part 03/MVC/appsettings.json
   "Authentication_Microsoft_ApplicationId": "365218f7-1110-4d12-ad00-2472000b3219",
   "Authentication_Microsoft_Password": "wutBVKOC4[lgpwLC4147$-("
 
-![Enter Microsoft](enter-microsoft.png)
-
-![Loggedin As Microsoft](loggedin-as-microsoft.png)
-
-![Enter Google](enter-google.png)
-
-![Associate Your Google Account](associate-your-google-account.png)
-
-![Loggedin As Google](loggedin-as-google.png)
 
 ### Persisting User Data to Identity Database
 
@@ -822,4 +813,159 @@ Part 03/MVC/Views/Registration/Index.cshtml
 {
     <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml"/>
 }
+
+
+
+
+
+### Logging In With Microsoft Account, Google, Facebook, etc.
+
+#### Why allow external account login?
+
+Registering a new user and password in a web application is an often tedious process, which in an e-commerce application can be not only unmotivating to the client, but also detrimental to the business, as any additional steps may deter potential buyers. may prefer another e-commerce website that is friendlier and less bureaucratic. Undoubtedly, the worst of all is the loss of sales as the end result.
+
+An external login process, which allows us to integrate the identity process with existing accounts on external services such as Microsoft, Google and Facebook, and without the need to create new passwords, can provide a more convenient registration process for our clients.
+
+However, it is critical that this external login process is only an alternative, not a requirement for entry into our application. Otherwise, we will be requiring you to have an account already registered with one of these external services.
+
+Fortunately, ASP.NET Core Identity provides a mechanism to allow users to enter their existing credentials into services such as Microsoft, Google, Facebook, Twitter, etc.
+
+#### Configuring External Logon with Microsoft Account
+
+Keep in mind that external logon services are not aware of your application, and vice versa. Both parties need a configuration that defines which applications / services will be involved in the authentication process.
+
+Let's create the necessary configuration so that our users can use their Microsoft accounts (@ hotmail.com, @ outlook.com, etc.) as a means of login for our application.
+
+First, the Microsoft authentication service needs to know our application. We need to enter the address of the service called Microsoft Application Registration Portal https://apps.dev.microsoft.com and create the settings for our application.
+
+First, you (the developer) need to log in with your Microsoft account to access the portal:
+
+![Enter Microsoft](enter-microsoft.png)
+
+In this developer portal you can read the list of applications you have. If you do not already have a Microsoft account, you can create one. After you sign in, you will be redirected to the My Apps page:
+
+![Apps Dev Microsoft](apps-dev-microsoft.png)
+
+Here, we will register a new application. Touch add an application in the upper right corner and enter the name of the application.
+
+Let's give it a meaningful name, such as GroceryStore.
+
+![New Microsoft Appliction](new-microsoft-appliction.png)
+
+Click Create Application to continue to the registration page. Provide a name and note the value of the application Id, which you can use as ClientId later.
+
+![Microsoft Application Properties](microsoft-application-properties.png)
+
+![Application Secrets](application-secrets.png)
+
+Here you will touch on Add platform in the platforms section and select the Web platform.
+
+![Microsoft Add Platform](microsoft-add-platform.png)
+
+Under Web Platform, enter your development URL with / signin-microsoft added to the redirect field URLs (for example: https: // localhost: 44320 / signin-microsoft). The Microsoft authentication scheme that we will configure later will automatically handle the requests in / signin-microsoft route to implement the OAuth flow:
+
+![Microsoft Redirect Url](microsoft-redirect-url.png)
+
+Note that on this page we will click Add URL to ensure that the URL has been added.
+
+![Microsoft Redirect Url Add](microsoft-redirect-url-add.png)
+
+Fill in any other application settings if necessary and touch save at the bottom of the page to save changes to the application configuration.
+
+![Microsoft Application Save](microsoft-application-save.png)
+
+Now look at the Application Id that appears on the registration page. Click to generate a new password in the "application secrets" section. This will display a box in which you can copy the application password:
+
+![Microsoft App New Password](microsoft-app-new-password.png)
+
+Where will we store this password? In a real-world commercial application, we would have to use some form of secure storage, such as Environment Variables or the Secret Manager tool (https://docs.microsoft.com/aspnet/core/security/app-secrets ? view = aspnetcore-2.2 & tabs = windows).
+
+However, to make life easier for you, let's simply use the appsettings.json configuration file to store the application password registered on the Microsoft Developer Portal. Here, we created two new configuration keys:
+
+Authentication_Microsoft_Application: The web application ID created at Microsoft
+Authentication_Microsoft_Password: the password of the web application created in Microsoft
+
+```
+  "ExternalLogin": {
+    "Microsoft": {
+      "ClientId": "nononononononononononnnononoon",
+      "ClientSecret": "nononononononononononnnononoon"
+    },
+    "Google": {
+      "ClientId": "nononononononononononnnononoon",
+      "ClientSecret": "nononononononononononnnononoon"
+    }
+  }
+```
+
+Now let's add the following excerpt to the CofigureServices method of the Startup class to enable authentication through Microsoft account:
+
+```csharp
+services.AddAuthentication()
+    .AddMicrosoftAccount(options =>
+    {
+        options.ClientId = Configuration["ExternalLogin:Microsoft:ClientId"];
+        options.ClientSecret = Configuration["ExternalLogin:Microsoft:ClientSecret"];
+    })
+    .AddGoogle(options =>
+    {
+        options.ClientId = Configuration["ExternalLogin:Google:ClientId"];
+        options.ClientSecret = Configuration["ExternalLogin:Google:ClientSecret"];
+    });
+```
+
+Running our e-commerce application again, we can see on the login page a right panel, where you can find a new button that allows you to sign in with the Microsoft service.
+
+![Microsoft](microsoft.png)
+
+After logging in to the Microsoft page, our user is redirected to an "account association page" provided by ASP.NET Core Identity. Here, we will click on "Register" to complete the association between the Microsoft account and the account of our store:
+
+![Associate Your Microsoft Account](associate-your-microsoft-account.png)
+
+As we can see below, the client is now registered with Microsoft's own email, and no further login information is required in our application!
+
+![Loggedin As Microsoft](loggedin-as-microsoft.png)
+
+Note that accounts created directly by Identity can coexist side by side with user accounts created in external mechanisms such as Google, Microsoft, Facebook, etc. as we can see in the user table (AspNetUsers) of the SQLite database MVC.db:
+![Sqlite Aspnetuser Microsoft](sqlite-aspnetuser-microsoft.png)
+
+Eventually we can investigate which user accounts were created outside our system. Just open the AspNetUserLogins table from the MVC.db database:
+![Aspnetuserlogins](aspnetuserlogins.png)
+
+![Enter Google](enter-google.png)
+
+![Associate Your Google Account](associate-your-google-account.png)
+
+![Loggedin As Google](loggedin-as-google.png)
+
+Note that the table above has the UserId column, where we can find the id of the user who just logged in to the Microsoft service.
+
+#### Configuring External Logon with Microsoft Account
+
+Although we do not show authentication through other external services like Google, Twitter and Facebook, the process is very similar. On the side of our application, we can simply modify the code in the ConfigureServices method in the Startup class to include new external login services, as follows:
+
+```csharp
+services.AddAuthentication()
+    .AddMicrosoftAccount(microsoftOptions => { ... })
+    .AddGoogle(googleOptions => { ... })
+    .AddTwitter(twitterOptions => { ... })
+    .AddFacebook(facebookOptions => { ... });
+```
+
+### Conclusion
+
+We have reached the end of our new "ASP.NET Core Part 3" course. In this course, we understood the user authentication needs of the application we had at the end of the last course (ASP.NET Core Part 2). We then decided to use ASP.NET Core Identity as an authentication solution for our e-commerce web application.
+
+We have learned how to use the ASP.NET Core Identity scaffolding process to authorize the MVC application, so that it can enjoy the benefits of authenticating users, protecting features and sensitive pages such as Cart, Registration, and Checkout.
+
+We have learned how to customize the Identity package by translating the code from the Identity Razor pages that were included in the application, as well as using custom classes for error messages.
+
+We understand how the user layout flow works, and we have learned how to configure the MVC web application to meet the requirements of that stream. As soon as the login and logout process was understood, we began to modify
+our MVC application to use both id and username as well
+the other cadastral information of each logged in user, which in the
+context of our MVC application represents the client that is performing
+the purchase.
+
+Finally, we learned how to perform an external login process, which allows us to integrate the identity process with existing accounts in external services such as Microsoft, Google and Facebook, thus providing a more convenient registration process for our customers.
+
 
