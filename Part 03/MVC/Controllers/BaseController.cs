@@ -14,16 +14,5 @@ namespace MVC.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
-        protected string GetUserId()
-        {
-            return @User.FindFirst(JwtClaimTypes.Subject)?.Value;
-        }
-
-        protected string GetUserEmail()
-        {
-            return @User.FindFirst(JwtClaimTypes.Name)?.Value;
-        }
     }
-
 }

@@ -342,9 +342,12 @@ and register links are also present here:
 
 ![Register Link](register_link.png)
 
+##### Creating a New User
 
 
-##### 
+Since we created a new database without users,  our customers need to fill in the Identity's Register page. 
+
+
 ##### 
 ##### 
 ##### 
@@ -628,7 +631,9 @@ Part 03/MVC/appsettings.json
   "Authentication_Microsoft_ApplicationId": "365218f7-1110-4d12-ad00-2472000b3219",
   "Authentication_Microsoft_Password": "wutBVKOC4[lgpwLC4147$-("
 
-### Persisting User Data to Session
+### Persisting User Data to Identity Database
+
+![Registration Form](RegistrationForm.png)
 
 Part 03/MVC/Controllers/BasketController.cs
 
@@ -636,144 +641,91 @@ Part 03/MVC/Controllers/BasketController.cs
 
 Part 03/MVC/Controllers/CheckoutController.cs
 
+    [Authorize]
     public class CheckoutController : BaseController
     {
-        //public IActionResult Index()
-        private readonly IHttpHelper httpHelper;
+        private readonly UserManager<AppIdentityUser> userManager;
 
-        public CheckoutController(IHttpHelper httpHelper)
+        public CheckoutController(UserManager<AppIdentityUser> userManager)
         {
-            this.httpHelper = httpHelper;
+            this.userManager = userManager;
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(RegistrationViewModel registration)
         {
-            httpHelper.SetRegistration(GetUserId(), registration);
-            return View();
-        }
+            if (ModelState.IsValid)
+            {
+                var usuario = await userManager.GetUserAsync(this.User);
 
+                usuario.Email = registration.Email;
+                usuario.Phone = registration.Phone;
+                usuario.Name = registration.Name;
+                usuario.Address = registration.Address;
+                usuario.AdditionalAddress = registration.AdditionalAddress;
+                usuario.District = registration.District;
+                usuario.City = registration.City;
+                usuario.State = registration.State;
+                usuario.ZipCode = registration.ZipCode;
 
-
-Part 03/MVC/Controllers/HttpHelper.cs
-
-using Microsoft.AspNetCore.Http;
-using MVC.Models.ViewModels;
-using Newtonsoft.Json;
-
-namespace MVC.Controllers
-{
-    public class HttpHelper : IHttpHelper
-    {
-        private readonly IHttpContextAccessor contextAccessor;
-
-        public HttpHelper(IHttpContextAccessor contextAccessor)
-        {
-            this.contextAccessor = contextAccessor;
-        }
-
-        public void SetRegistration(string clientId, RegistrationViewModel registrationViewModel)
-        {
-            string json = JsonConvert.SerializeObject(registrationViewModel.GetClone());
-            contextAccessor.HttpContext.Session.SetString($"registration_{clientId}", json);
-        }
-
-        public RegistrationViewModel GetRegistration(string clientId)
-        {
-            string json = contextAccessor.HttpContext.Session.GetString($"registration_{clientId}");
-            if (string.IsNullOrWhiteSpace(json))
-                return new RegistrationViewModel();
-
-            return JsonConvert.DeserializeObject<RegistrationViewModel>(json);
+                await userManager.UpdateAsync(usuario);
+                return View(registration);
+            }
+            return RedirectToAction("Index", "Registration");
         }
     }
-}
-
-Part 03/MVC/Controllers/IHttpHelper.cs
-
-using MVC.Models.ViewModels;
-
-namespace MVC.Controllers
-{
-    public interface IHttpHelper
-    {
-        RegistrationViewModel GetRegistration(string clientId);
-        void SetRegistration(string clientId, RegistrationViewModel registrationViewModel);
-    }
-} 
 
 Part 03/MVC/Controllers/RegistrationController.cs
 
-    public class RegistrationController : BaseController
+[Authorize]
+public class RegistrationController : BaseController
+{
+    private readonly UserManager<AppIdentityUser> userManager;
+
+    public RegistrationController(UserManager<AppIdentityUser> userManager)
     {
-        //private readonly IIdentityParser<AppIdentityUser> appUserParser;
-        private readonly IHttpHelper httpHelper;
+        this.userManager = userManager;
+    }
 
-        //public RegistrationController(IIdentityParser<AppIdentityUser> appUserParser)
-        public RegistrationController(IHttpHelper httpHelper)
-        {
-            //this.appUserParser = appUserParser;
-            this.httpHelper = httpHelper;
-        }
-
-        public IActionResult Index()
-        {
- //           var usuario = appUserParser.Parse(HttpContext.User);
- //           var viewModel = new RegistrationViewModel
- //           {
- //               District = usuario.District,
- //               ZipCode = usuario.ZipCode,
- //               AdditionalAddress = usuario.AdditionalAddress,
- //               Email = usuario.Email,
- //               Address = usuario.Address,
- //               City = usuario.City,
- //               Name = usuario.Name,
- //               Phone = usuario.Phone,
- //               State = usuario.State
- //           };
-            var viewModel = httpHelper.GetRegistration(GetUserId());
+    public async Task<IActionResult> Index()
+    {
+        var user = await userManager.GetUserAsync(this.User);
+        var viewModel = new RegistrationViewModel(
+            user.Id, user.Name, user.Email, user.Phone,
+            user.Address, user.AdditionalAddress, user.District,
+            user.City, user.State, user.ZipCode
+        );
+        return View(viewModel);
+    }
+}
 
 Part 03/MVC/Models/ViewModels/RegistrationViewModel.cs
 
-        public RegistrationViewModel()
-        {
+    public RegistrationViewModel()
+    {
 
-        }
+    }
 
-        public RegistrationViewModel(string name, string email, string phone, string address, string additionalAddress, string district, string city, string state, string zipCode)
-        {
-            Name = name;
-            Email = email;
-            Phone = phone;
-            Address = address;
-            AdditionalAddress = additionalAddress;
-            District = district;
-            City = city;
-            State = state;
-            ZipCode = zipCode;
-        }
-
-
-        public RegistrationViewModel GetClone()
-        {
-            return new RegistrationViewModel(this.Name, this.Email, this.Phone, this.Address, this.AdditionalAddress, this.District, this.City, this.State, this.ZipCode);
-        }
+    public RegistrationViewModel(string name, string email, string phone, string address, string additionalAddress, string district, string city, string state, string zipCode)
+    {
+        Name = name;
+        Email = email;
+        Phone = phone;
+        Address = address;
+        AdditionalAddress = additionalAddress;
+        District = district;
+        City = city;
+        State = state;
+        ZipCode = zipCode;
+    }
 
 
-Part 03/MVC/Startup.cs
+    public RegistrationViewModel GetClone()
+    {
+        return new RegistrationViewModel(this.Name, this.Email, this.Phone, this.Address, this.AdditionalAddress, this.District, this.City, this.State, this.ZipCode);
+    }
 
-            services.AddDistributedMemoryCache();
-            services.AddSession();
-.
-.
-.
-
-            services.AddTransient<IHttpHelper, HttpHelper>();
-.
-.
-.
-            app.UseSession();
 
 Part 03/MVC/Views/Registration/Index.cshtml
 
@@ -814,20 +766,25 @@ Part 03/MVC/Views/Registration/Index.cshtml
 
 Part 03/MVC/Controllers/CheckoutController.cs
 
-//    httpHelper.SetRegistration(GetUserId(), registration);
-//    return View();
     if (ModelState.IsValid)
     {
-        httpHelper.SetRegistration(GetUserId(), registration);
+        var usuario = await userManager.GetUserAsync(this.User);
+
+        usuario.Email = registration.Email;
+        usuario.Phone = registration.Phone;
+        usuario.Name = registration.Name;
+        usuario.Address = registration.Address;
+        usuario.AdditionalAddress = registration.AdditionalAddress;
+        usuario.District = registration.District;
+        usuario.City = registration.City;
+        usuario.State = registration.State;
+        usuario.ZipCode = registration.ZipCode;
+
+        await userManager.UpdateAsync(usuario);
         return View(registration);
     }
     return RedirectToAction("Index", "Registration");
 
-
-Part 03/MVC/Controllers/HttpHelper.cs
-
-//    return new RegistrationViewModel();
-    return new RegistrationViewModel(clientId);
 
 Part 03/MVC/Models/ViewModels/RegistrationViewModel.cs
 
@@ -879,54 +836,4 @@ Part 03/MVC/Views/Registration/Index.cshtml
 {
     <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml"/>
 }
-
-### Obtaining email from identity
-
-Part 03/MVC/Controllers/BaseController.cs
-
-        protected string GetUserId()
-        {
-            //return @User.FindFirst("sub")?.Value;
-            return @User.FindFirst(JwtClaimTypes.Subject)?.Value;
-        }
-
-        protected string GetUserEmail()
-        {
-            return @User.FindFirst(JwtClaimTypes.Name)?.Value;
-        }
-
-
-Part 03/MVC/Controllers/HttpHelper.cs
-
-        //public RegistrationViewModel GetRegistration(string clientId)
-        public RegistrationViewModel GetRegistration(string clientId, string email)
-        {
-            string json = contextAccessor.HttpContext.Session.GetString($"registration_{clientId}");
-            if (string.IsNullOrWhiteSpace(json))
-                //return new RegistrationViewModel(clientId);
-                return new RegistrationViewModel(clientId, email);
-
-Part 03/MVC/Controllers/IHttpHelper.cs
-
-        //RegistrationViewModel GetRegistration(string clientId);
-        RegistrationViewModel GetRegistration(string clientId, string email);
-
-Part 03/MVC/Controllers/RegistrationController.cs
-
-            //var viewModel = httpHelper.GetRegistration(GetUserId());
-            var viewModel = httpHelper.GetRegistration(GetUserId(), GetUserEmail());
-
-Part 03/MVC/Models/ViewModels/RegistrationViewModel.cs
-
-        public RegistrationViewModel(string userId, string email) : this(userId)
-        {
-            Email = email;
-        }
-
-        public RegistrationViewModel(string userId, string name, string email, string phone, string address, string additionalAddress, string district, string city, string state, string zipCode)
-            : this(userId, email)
-        {
-            //UserId = userId;
-            Name = name;
-            //Email = email;
 

@@ -1,25 +1,30 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MVC.Areas.Identity.Data;
 using MVC.Models.ViewModels;
-using MVC.Services;
+using System.Threading.Tasks;
 
 namespace MVC.Controllers
 {
     [Authorize]
     public class RegistrationController : BaseController
     {
-        private readonly IHttpHelper httpHelper;
+        private readonly UserManager<AppIdentityUser> userManager;
 
-        public RegistrationController(IHttpHelper httpHelper)
+        public RegistrationController(UserManager<AppIdentityUser> userManager)
         {
-            this.httpHelper = httpHelper;
+            this.userManager = userManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var viewModel = httpHelper.GetRegistration(GetUserId(), GetUserEmail());
+            var user = await userManager.GetUserAsync(this.User);
+            var viewModel = new RegistrationViewModel(
+                user.Id, user.Name, user.Email, user.Phone,
+                user.Address, user.AdditionalAddress, user.District,
+                user.City, user.State, user.ZipCode
+            );
             return View(viewModel);
         }
     }

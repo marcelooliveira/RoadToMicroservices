@@ -39,7 +39,6 @@ namespace MVC
             services.AddTransient<IBasketService, BasketService>();
             var userCounterServiceInstance = new UserCounterService();
             services.AddSingleton<IUserCounterService>(userCounterServiceInstance);
-            services.AddTransient<IHttpHelper, HttpHelper>();
 
             services.Configure<IdentityOptions>(options =>
             {

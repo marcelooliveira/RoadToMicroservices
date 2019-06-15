@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MVC.Areas.Identity.Data;
 using MVC.Models.ViewModels;
 using System.Threading.Tasks;
 
@@ -8,11 +10,11 @@ namespace MVC.Controllers
     [Authorize]
     public class CheckoutController : BaseController
     {
-        private readonly IHttpHelper httpHelper;
+        private readonly UserManager<AppIdentityUser> userManager;
 
-        public CheckoutController(IHttpHelper httpHelper)
+        public CheckoutController(UserManager<AppIdentityUser> userManager)
         {
-            this.httpHelper = httpHelper;
+            this.userManager = userManager;
         }
 
         [HttpPost]
@@ -21,7 +23,19 @@ namespace MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                httpHelper.SetRegistration(GetUserId(), registration);
+                var usuario = await userManager.GetUserAsync(this.User);
+
+                usuario.Email = registration.Email;
+                usuario.Phone = registration.Phone;
+                usuario.Name = registration.Name;
+                usuario.Address = registration.Address;
+                usuario.AdditionalAddress = registration.AdditionalAddress;
+                usuario.District = registration.District;
+                usuario.City = registration.City;
+                usuario.State = registration.State;
+                usuario.ZipCode = registration.ZipCode;
+
+                await userManager.UpdateAsync(usuario);
                 return View(registration);
             }
             return RedirectToAction("Index", "Registration");
