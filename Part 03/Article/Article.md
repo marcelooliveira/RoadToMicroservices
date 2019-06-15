@@ -609,6 +609,14 @@ Part 03/MVC/appsettings.json
 
 ![Enter Microsoft](enter-microsoft.png)
 
+![Loggedin As Microsoft](loggedin-as-microsoft.png)
+
+![Enter Google](enter-google.png)
+
+![Associate Your Google Account](associate-your-google-account.png)
+
+![Loggedin As Google](loggedin-as-google.png)
+
 ### Persisting User Data to Identity Database
 
 ![Registration Form](RegistrationForm.png)
