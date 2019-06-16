@@ -2,47 +2,22 @@
 
 ![Identity](identity.png)
 
-At the end of part 2 of this sequence of courses, we had an e-commerce application
-with views in which the user could choose products from a catalog, 
-place them in the shopping basket and fill in a registration form with address and 
-other personal data for future shipping procedures.
+At the end of part 2 of this sequence of articles, we had an e-commerce application with views in which the user could choose products from a catalog, place them in the shopping basket and fill in a registration form with address and other personal data for future shipping procedures. Of course, all of it was made using dummy data.
 
-Our application does not currently require user login or password of any kind. 
-A growing number of e-commerce websites also choose not to require this type of 
-information, requesting only the customer's credit card or other payment methods 
-at the checkout page. On the other hand, many e-commerce websites require a login 
-and password to authenticate the user.
+Our application does not currently require user login or password of any kind. A growing number of e-commerce websites also choose not to require this type of information, requesting only the customer's credit card or other payment methods at the checkout page. On the other hand, many e-commerce websites require a login and password to authenticate the user.
 
-Both models have benefits and drawbacks. An e-commerce website that does not require 
-authentication is more convenient for customers as it reduces friction that could hurt 
-conversions, in user experience parlance. On the other hand, authentication enables 
-you to identify users and possibly better analyze their behavior over time, as 
-well as allowing you to provide users with certain benefits, such as displaying an order history 
-of a customer that has previously purchased on the website. In this course, we will 
-follow the second approach.
+Both models have benefits and drawbacks. An e-commerce website that does not require authentication is more convenient for customers as it reduces friction that could hurt conversions, in user experience parlance. On the other hand, authentication enables you to identify users and possibly better analyze their behavior over time, as well as allowing you to provide users with certain benefits, such as displaying an order history of a customer that has previously purchased on the website. In this article, we will follow the second approach.
 
-In this third course of the series, we will use a login system and ensure that our 
-application is accessed only by authenticated users. It allows you to protect the 
-sensitive points of the application from anonymous users. With authentication, we 
-ensure the user enters the system through a secure identification service. That also 
-enables the application to track user access, identify usage patterns, automatically 
-fill out registration forms, view customer order history, and other conveniences, 
-enhancing user experience.
+In this third installment of the article series, we will use a login system and ensure that our application is accessed only by authenticated users. It allows you to protect the sensitive points of the application from anonymous users. With authentication, we ensure the user enters the system through a secure identification service. That also enables the application to track user access, identify usage patterns, automatically fill out registration forms, view customer order history, and other conveniences, enhancing user experience.
 
-If all you need is a user table with login and password columns and a user profile 
-for your application, then ASP.NET Core Identity is the best option for you.
+If all you need is a user table with login and password columns and a user profile for your application, then ASP.NET Core Identity is the best option for you.
 
-In this chapter, we will learn how to install ASP.NET Core Identity in our e-commerce 
-solution and take advantage of the security, login/logout, authentication, and user 
-profile features provided by this framework.
+In this chapter, we will learn how to install ASP.NET Core Identity in our e-commerce solution and take advantage of the security, login/logout, authentication, and user profile features provided by this framework.
 
-By default, the database engine used by Identity is SQL Server. However, we will be 
-using SQLite, which is a simpler and more compact database engine than SQL Server. 
-Before installing Identity, we will prepare the project to use this new database 
+By default, the database engine used by Identity is SQL Server. However, we will be using SQLite, which is a simpler and more compact database engine than SQL Server. Before installing Identity, we will prepare the project to use this new database 
 engine.
 
-Right-click the MVC project name, choose the Add NuGet Package submenu, and the package 
-installation page opens, enter the package name: Microsoft.EntityFrameworkCore.SQLite
+Right-click the MVC project name, choose the Add NuGet Package submenu, and the package installation page opens, enter the package name: Microsoft.EntityFrameworkCore.SQLite
 
 ![Add Nuget Package](add_nuget_package.png)
 
