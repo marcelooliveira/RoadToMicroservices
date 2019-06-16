@@ -330,7 +330,41 @@ and register links are also present here:
 
 #### Razor Pages
 
+When you install ASP.NET Core Identity scaffolding, the new Identity components included in your
+project does not follow the MVC architecture. Instead, Identity components are based on Razor Pages.
+
+But what's the difference between MVC and Razor Pages?
+
+We can see by the image below how a typical MVC project keeps the components of a single page in a set of files scattered in many files and folders:
+
+![M V C](MVC.png)
+
+So, in MVC there’s not a single “web page” file. And it’s a little awkward to explain it to someone who’s new to the technology.
+
+What if you took an MVC application, then you called your View as a Page (e.g. in Index.cshtml file), and you centralized not only the Model data but also the server-side code related to that page (that used to reside on your Controller) inside a class dedicated to that page (inside an Index.cshtml.cs file) - that you now called a Page Model?
+
+If you have already worked in native mobile apps, then you have probably seen something similar to this in the Model-View-ViewModel (MVVM) pattern.
+
 ![Razorpages](razorpages.png)
+
+Despite being different from MVC, Razor Pages still relies on ASP.NET Core MVC Framework. Once you create a new project with Razor Pages template, Visual Studio configures the application via Startup.cs file to enable the ASP.NET Core MVC Framework, as we have just seen.
+
+The template not only configures the new web application for MVC use, but also creates the Page folder and a set of Razor pages and page models for the example application:
+
+![Razor Pages Structure](razor-pages-structure.png)
+
+#### Anatomy of a Razor Page
+
+At first sight, a Razor Page looks pretty much like an ordinary ASP.NET MVC View file. But a Razor Page requires a new directive. Every Razor Page must start with the @page directive, which tells ASP.NET Core to treat it as Razor page. The folowing image shows a little more detail about a typical razor page.  
+
+![Anatomy Razor Page](anatomy-razor-page.png)
+
+@page - Identify the file as a Razor Page. Without it, the page is simply unreacheable by ASP.NET Core.
+@model - much like in an MVC application, defines the class from which originates the binding data, as well as the Get/Post methods requested by the page.
+@using - the regular directive for defining namespaces.
+@inject - configures which interface(s) instance(s) should be injected into the page model class.
+@{ } - a piece of C# code inside Razor brackets, which in this case is used to define the page title.
+<div…> - the regular HTML code that comes along with the Razor-enabled C# Code.
 
 #### Creating a New User
 
@@ -669,6 +703,7 @@ Part 03/MVC/Models/ViewModels/RegistrationViewModel.cs
 
 Part 03/MVC/Views/Registration/Index.cshtml
 
+```html
 //<form method="post" action="checkout">
 <form method="post" asp-controller="checkout" asp-action="index">
 
@@ -680,7 +715,11 @@ Part 03/MVC/Views/Registration/Index.cshtml
     <label class="control-label" for="email">Email</label>
     <input type="email" class="form-control" id="email" asp-for="@Model.Email">
     <span asp-validation-for="@Model.Email" class="text-danger"></span>
+```
 
+
+
+```html
 //<input type="text" class="form-control" />
 <input class="form-control" asp-for="@Model.Phone" />
 
@@ -701,6 +740,7 @@ Part 03/MVC/Views/Registration/Index.cshtml
 
     //<input type="text" class="form-control" />
     <input  class="form-control" asp-for="@Model.ZipCode" />
+```
 
 #### Persisting User Data to Identity Database
 
@@ -757,6 +797,7 @@ Part 03/MVC/Views/Checkout/Index.cshtml
 
 Part 03/MVC/Views/Registration/Index.cshtml
 
+```html
 <input type="hidden" asp-for="@Model.UserId" />
 
 //                        <label class="control-label">Customer Name</label>
@@ -771,10 +812,15 @@ Part 03/MVC/Views/Registration/Index.cshtml
                         <span asp-validation-for="@Model.Phone" class="text-danger"></span>
                         <span asp-validation-for="@Model.Name" class="text-danger"></span>
 
+```
+
+
+```html
 @section Scripts
 {
     <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml"/>
 }
+```
 
 
 
