@@ -554,14 +554,17 @@ Part 03/MVC/Views/Registration/Index.cshtml
 Part 03/MVC/Areas/Identity/Data/AppIdentityUser.cs
 
 ```csharp
-public string Name { get; set; }
-public string Phone { get; set; }
-public string Address { get; set; }
-public string AdditionalAddress { get; set; }
-public string District { get; set; }
-public string City { get; set; }
-public string State { get; set; }
-public string ZipCode { get; set; }
+public class AppIdentityUser : IdentityUser
+{
+    public string Name { get; set; }
+    public string Phone { get; set; }
+    public string Address { get; set; }
+    public string AdditionalAddress { get; set; }
+    public string District { get; set; }
+    public string City { get; set; }
+    public string State { get; set; }
+    public string ZipCode { get; set; }
+}
 ```
 
 #### Retrieving User Data From Identity Database
