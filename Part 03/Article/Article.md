@@ -396,16 +396,6 @@ _Layout.cshtml
 
 ![Click User Name](click_user_name.png)
 
-![Account Manage](account_manage.png)
-
-![Change Password](change_password.png)
-
-![Account Manage Twofactorauthentication](account_manage_twofactorauthentication.png)
-
-![Account Manage Personaldata](account_manage_personaldata.png)
-
-
-
 ![Mvc Db](mvc_db.png)
 
 #### Authorizing ASP.NET Core Resources
@@ -413,7 +403,7 @@ _Layout.cshtml
 ![Basket Nonauthorized](basket_nonauthorized.png)
 
 Now that we have Identity working, we will begin to protect some areas of our MVC project from anonymous access, that is, unauthenticated access. This will ensure that only users who have entered a valid login and password can access protected system resources.
-But what resources should be protected?
+But what resources should be protected against anonymous access?
 
 |Controller               |Should be protected?|
 |-------------------------|--------------------|
