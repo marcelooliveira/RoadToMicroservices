@@ -430,6 +430,9 @@ Running the application as an anonymous user, we go to the product search page, 
 
 ![Add To Basket Nonauthorized](add_to_basket_nonauthorized.png)
 
+
+So we closed the topic on ASP.NET Core Identity Configuration. From now on, we will begin to get the user information that can finally be used in our application.
+
 https://localhost:44340/Identity/Account/Login?ReturnUrl=%2FBasket
 
 ![Returnurl](returnurl.png)
@@ -439,6 +442,12 @@ The url where the user has to authenticate: http: // localhost: 5001 / Identity 
 The original url, to which the user will return after authentication: ReturnUrl =% 2Payed% 2Fetch% 2F180
 We can look at this redirection process more closely by opening the Developer Tools (Chrome Key F12) and opening the Headers tab, where we have seen that the call to the Action / Cart action is redirected via HTTP code 302, which is a code of redirection:
 
+![Redirect](redirect.png)
+
+### Managing User Data
+
+
+#### Preparing the User Registration Form
 
 Part 03/MVC/Models/ViewModels/RegistrationViewModel.cs
 
@@ -554,8 +563,6 @@ public string City { get; set; }
 public string State { get; set; }
 public string ZipCode { get; set; }
 ```
-
-### Managing User Data
 
 #### Retrieving User Data From Identity Database
 
