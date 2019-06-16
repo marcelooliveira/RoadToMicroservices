@@ -776,6 +776,7 @@ Part 03/MVC/Models/ViewModels/RegistrationViewModel.cs
 
 Part 03/MVC/Views/Checkout/Index.cshtml
 
+```html
 //@model string
 @model RegistrationViewModel
 
@@ -784,6 +785,7 @@ Part 03/MVC/Views/Checkout/Index.cshtml
 //    <p>Soon you will receive an e-mail at <b>@email</b> including all order details.</p>
     <p>Soon you will receive an e-mail at <b>@Model.Email</b> including all order details.</p>
 
+```
 
 Part 03/MVC/Views/Registration/Index.cshtml
 
