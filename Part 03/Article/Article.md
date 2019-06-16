@@ -215,6 +215,8 @@ normal execution of the application. This mechanism resembles a water pipeline. 
 new service further extends the plumbing system, taking the water at one end, and 
 passing it to the next segment.
 
+![P I P E L I N E](PIPELINE.png)
+
 Similarly, ASP.NET Core will pass requests along a chain of middlewares. Upon receiving 
 a request, each middleware decides either to process it or to pass the request to the next 
 middleware in the chain. If the user is anonymous and the resource requires authorization, 
