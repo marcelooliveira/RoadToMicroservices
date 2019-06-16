@@ -1,4 +1,4 @@
-﻿using IdentityModel;
+﻿//using IdentityModel;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -39,12 +39,6 @@ namespace MVC
             services.AddTransient<IBasketService, BasketService>();
             var userCounterServiceInstance = new UserCounterService();
             services.AddSingleton<IUserCounterService>(userCounterServiceInstance);
-
-            services.Configure<IdentityOptions>(options =>
-            {
-                options.ClaimsIdentity.UserIdClaimType = JwtClaimTypes.Subject;
-                options.ClaimsIdentity.UserNameClaimType = JwtClaimTypes.Name;
-            });
 
             //services.AddAuthentication()
             //    .AddMicrosoftAccount(options =>

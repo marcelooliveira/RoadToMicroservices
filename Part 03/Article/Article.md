@@ -1,5 +1,3 @@
-### CAROUSEL - PUT THIS COMMIT FIRST!
-
 ### Introduction
 
 ![Identity](identity.png)
@@ -53,6 +51,8 @@ installation page opens, enter the package name: Microsoft.EntityFrameworkCore.S
 Now click the "Install" button and wait for the package to install.
 
 Okay, now the project is ready to receive the ASP.NET Core Identity scaffolding.
+
+### Installing ASP.NET Core Identity
 
 #### Applying the ASP.NET Core Identity Scaffold
 
@@ -198,7 +198,9 @@ That's it! Now our application already has all the necessary components to perfo
 authentication and authorization. From now on, we will start using these components to 
 integrate ASP.NET Core Identity features in our application.
 
-### Adding ASP.NET Core Identity Components to the Back-End
+### Configuring ASP.NET Core Identity
+
+#### Adding Identity Components to the Back-End
 
 ![Backend](backend.png)
 
@@ -253,7 +255,7 @@ you can integrate ASP.NET Core Identity views with the application user interfac
 by including an Identity in the layout markup that will allow users to log in or 
 register.
 
-### Adding ASP.NET Core Identity Components to the Front-End
+#### Adding Identity Components to the Front-End
 
 ![Frontend](frontend.png)
 
@@ -328,14 +330,9 @@ and register links are also present here:
 
 ![Razorpages](razorpages.png)
 
-##### Creating a New User
+#### Creating a New User
 
 Since we created a new database without users,  our customers need to fill in the Identity's Register page. 
-
-##### 
-##### 
-##### 
-##### 
 
 ![Identity Account Register](identity_account_register.png)
 
@@ -375,61 +372,61 @@ _Layout.cshtml
 
 ![Mvc Db](mvc_db.png)
 
-### Identity Core
+#### Authorizing ASP.NET Core Resources
 
 ![Basket Nonauthorized](basket_nonauthorized.png)
 
-Part 03/MVC/Controllers/BasketController.cs
+Now that we have Identity working, we will begin to protect some areas of our MVC project from anonymous access, that is, unauthenticated access. This will ensure that only users who have entered a valid login and password can access protected system resources.
+But what resources should be protected?
 
-REMOVE
+|Controller               |Should be protected?|
+|-------------------------|--------------------|
+| CatalogController       |         No         |
+| BasketController        |         Yes        |
+| CheckoutController      |         Yes        |
+| NotificationsController |         Yes        |
+| RegistrationController  |         Yes        |
 
-using Microsoft.AspNetCore.Mvc;
+Note that both the Carousel and SearchProducts will be unprotected. Because? We want to allow users to browse the site's product freely, without forcing them to log in with the password. The other actions are all protected, as they involve the handling of orders, which can only be done by customers.
+But how are we going to protect these resources? We must mark one of these actions in the RequestController with an authorization attribute:
 
-ADD
 
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
+```csharp
 [Authorize]
+public class BasketController : BaseController
+{
+    public IActionResult Index()
+    ...
+```
 
-
-Part 03/MVC/Controllers/CheckoutController.cs
-
-REMOVE
-
-using Microsoft.AspNetCore.Mvc;
-
-ADD
-
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
- [Authorize]
-
-Part 03/MVC/Controllers/NotificationsController.cs
-
-REMOVE
-
-using Microsoft.AspNetCore.Mvc;
-
-ADD
-
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
-  [Authorize]
-
-Part 03/MVC/Controllers/RegistrationController.cs
-
-ADD 
-
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using MVC.Areas.Identity.Data;
-using MVC.Models.ViewModels;
-using MVC.Services;
-
+```csharp
 [Authorize]
+public class BasketController : BaseController
+...
+```
+
+```csharp
+[Authorize]
+public class CheckoutController : BaseController
+...
+```
+
+```csharp
+[Authorize]
+public class NotificationsController : BaseController
+...
+```
+
+```csharp
+[Authorize]
+public class RegistrationController : BaseController
+...
+```
+
+Let's take a test now: What happens when an anonymous user tries to access one of these features marked with [Authorize]?
+ASP.NET Core Identity will receive each of the requisitions made to the application. If the user is already authenticated, Identity passes the processing to the next component of the pipeline. If the user is anonymous and the resource being accessed requires authorization then Identity will redirect the user to the login page.
+
+Running the application as an anonymous user, we go to the product search page, which we can access without any problem, since this action is unprotected (that is without the [Authorize] attribute):
 
 ![Add To Basket Nonauthorized](add_to_basket_nonauthorized.png)
 
@@ -437,125 +434,130 @@ https://localhost:44340/Identity/Account/Login?ReturnUrl=%2FBasket
 
 ![Returnurl](returnurl.png)
 
-Part 03/MVC/MVC.csproj
+Note that this url has 2 parts:
+The url where the user has to authenticate: http: // localhost: 5001 / Identity / Account / Login
+The original url, to which the user will return after authentication: ReturnUrl =% 2Payed% 2Fetch% 2F180
+We can look at this redirection process more closely by opening the Developer Tools (Chrome Key F12) and opening the Headers tab, where we have seen that the call to the Action / Cart action is redirected via HTTP code 302, which is a code of redirection:
 
-<PackageReference Include="IdentityModel" Version="3.10.10" />
-
-CREATED
-
-Part 03/MVC/MVC.db
-Part 03/MVC/Migrations/20190503043129_UserProfileData.cs
-Part 03/MVC/Migrations/AppIdentityContextModelSnapshot.cs
-
-ADDED
 
 Part 03/MVC/Models/ViewModels/RegistrationViewModel.cs
 
-namespace MVC.Models.ViewModels
+```csharp
+public class RegistrationViewModel
 {
-    public class RegistrationViewModel
-    {
-        public string UserId { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
-        public string Address { get; set; }
-        public string AdditionalAddress { get; set; }
-        public string District { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public string ZipCode { get; set; }
-    }
+    public string UserId { get; set; }
+    public string Name { get; set; }
+    public string Email { get; set; }
+    public string Phone { get; set; }
+    public string Address { get; set; }
+    public string AdditionalAddress { get; set; }
+    public string District { get; set; }
+    public string City { get; set; }
+    public string State { get; set; }
+    public string ZipCode { get; set; }
 }
-
-Part 03/MVC/Services/IIdentityParser.cs
-
-using System.Security.Principal;
-
-namespace MVC.Services
-{
-    public interface IIdentityParser<T>
-    {
-        T Parse(IPrincipal principal);
-    }
-}
-
-Part 03/MVC/Services/IdentityParser.cs
-
-using System.Security.Principal;
-
-namespace MVC.Services
-{
-    public interface IIdentityParser<T>
-    {
-        T Parse(IPrincipal principal);
-    }
-}
+```
 
 Part 03/MVC/Views/Registration/Index.cshtml
 
+```html
 @using MVC.Models.ViewModels
 @model RegistrationViewModel
 @{
+    ViewData["Title"] = "Registration";
+}
+<h3>Registration</h3>
 
+<form method="post" asp-controller="checkout" asp-action="index">
+    <input type="hidden" asp-for="@Model.UserId" />
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label" for="name">Customer Name</label>
+                        <input type="text" class="form-control" id="name" asp-for="@Model.Name" />
+                        <span asp-validation-for="@Model.Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="email">Email</label>
+                        <input type="email" class="form-control" id="email" asp-for="@Model.Email">
+                        <span asp-validation-for="@Model.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="phone">Phone</label>
+                        <input type="text" class="form-control" id="phone" asp-for="@Model.Phone" />
+                        <span asp-validation-for="@Model.Phone" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label" for="address">Address</label>
+                        <input type="text" class="form-control" id="address" asp-for="@Model.Address" />
+                        <span asp-validation-for="@Model.Address" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="additionaladdress">Additional Address</label>
+                        <input type="text" class="form-control" id="additionaladdress" asp-for="@Model.AdditionalAddress" />
+                        <span asp-validation-for="@Model.AdditionalAddress" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="district">District</label>
+                        <input type="text" class="form-control" id="district" asp-for="@Model.District" />
+                        <span asp-validation-for="@Model.District" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label" for="city">City</label>
+                        <input type="text" class="form-control" id="city" asp-for="@Model.City" />
+                        <span asp-validation-for="@Model.City" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="state">State</label>
+                        <input type="text" class="form-control" id="state" asp-for="@Model.State" />
+                        <span asp-validation-for="@Model.State" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="zipcode">Zip Code</label>
+                        <input type="text" class="form-control" id="zipcode" asp-for="@Model.ZipCode" />
+                        <span asp-validation-for="@Model.ZipCode" class="text-danger"></span>
+                    </div>
 
-        //<input type="text" class="form-control" />
-        <input type="text" class="form-control" value="@Model.Name" />
+                    <div class="form-group">
+                        <a class="btn btn-success" href="/">
+                            Keep buying
+                        </a>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit"
+                                class="btn btn-success button-notification">
+                            Check out
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+```
 
 Part 03/MVC/Areas/Identity/Data/AppIdentityUser.cs
 
-ADD
+```csharp
+public string Name { get; set; }
+public string Phone { get; set; }
+public string Address { get; set; }
+public string AdditionalAddress { get; set; }
+public string District { get; set; }
+public string City { get; set; }
+public string State { get; set; }
+public string ZipCode { get; set; }
+```
 
-        public string Name { get; set; }
-        public string Phone { get; set; }
-        public string Address { get; set; }
-        public string AdditionalAddress { get; set; }
-        public string District { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public string ZipCode { get; set; }
+### Managing User Data
 
-
-Part 03/MVC/Controllers/BaseController.cs
-
-ADD
-
-        protected string GetUserId()
-        {
-            return @User.FindFirst("sub")?.Value;
-        }
-
-### AddMicrosoftAccount
-
-![Microsoft Google](microsoft-google.png)
-
-Part 03/MVC/Startup.cs
-
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading.Tasks;
-//using IdentityModel;
-using IdentityModel;
-
-//using Microsoft.AspNetCore.HttpsPolicy;
-
-            services.AddAuthentication().AddMicrosoftAccount(microsoftOptions =>
-            {
-                microsoftOptions.ClientId = Configuration["Authentication_Microsoft_ApplicationId"];
-                microsoftOptions.ClientSecret = Configuration["Authentication_Microsoft_Password"];
-            });
-
-
-Part 03/MVC/appsettings.json
-
-//  }
-  },
-  "Authentication_Microsoft_ApplicationId": "365218f7-1110-4d12-ad00-2472000b3219",
-  "Authentication_Microsoft_Password": "wutBVKOC4[lgpwLC4147$-("
-
-
-### Persisting User Data to Identity Database
+#### Retrieving User Data From Identity Database
 
 ![Registration Form](RegistrationForm.png)
 
@@ -626,6 +628,7 @@ public class RegistrationController : BaseController
 
 Part 03/MVC/Models/ViewModels/RegistrationViewModel.cs
 
+```csharp
     public RegistrationViewModel()
     {
 
@@ -649,6 +652,7 @@ Part 03/MVC/Models/ViewModels/RegistrationViewModel.cs
     {
         return new RegistrationViewModel(this.Name, this.Email, this.Phone, this.Address, this.AdditionalAddress, this.District, this.City, this.State, this.ZipCode);
     }
+```
 
 
 Part 03/MVC/Views/Registration/Index.cshtml
@@ -686,7 +690,7 @@ Part 03/MVC/Views/Registration/Index.cshtml
     //<input type="text" class="form-control" />
     <input  class="form-control" asp-for="@Model.ZipCode" />
 
-### Form validation
+#### Persisting User Data to Identity Database
 
 Part 03/MVC/Controllers/CheckoutController.cs
 
@@ -727,7 +731,6 @@ Part 03/MVC/Models/ViewModels/RegistrationViewModel.cs
 [Required]
 [Required]
 [Required]...
-
 
 Part 03/MVC/Views/Checkout/Index.cshtml
 
@@ -884,6 +887,8 @@ Eventually we can investigate which user accounts were created outside our syste
 ![Associate Your Google Account](associate-your-google-account.png)
 
 ![Loggedin As Google](loggedin-as-google.png)
+
+![Microsoft Google](microsoft-google.png)
 
 Note that the table above has the UserId column, where we can find the id of the user who just logged in to the Microsoft service.
 
