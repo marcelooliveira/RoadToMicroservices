@@ -141,26 +141,18 @@ That's it! Now our application already has all the necessary components to perfo
 
 ![Backend](backend.png)
 
-The Identity components are already present in our project. However, we 
-need to add further configuration that will integrate these components 
-with the rest of the application.
+The Identity components are already present in our project. However, we need to add further configuration that will integrate these components with the rest of the application.
 
-In software architecture, that is referred to as middleware.
+In software architecture, that is referred to as **middleware**.
 
-ASP.NET Core provides a standard approach to integrate a middleware into the 
-normal execution of the application. This mechanism resembles a water pipeline. Each 
-new service further extends the plumbing system, taking the water at one end, and 
+ASP.NET Core provides a standard approach to integrate a middleware into the normal execution of the application. This mechanism resembles a water pipeline. Each new service further extends the plumbing system, taking the water at one end, and 
 passing it to the next segment.
 
 ![P I P E L I N E](PIPELINE.png)
 
-Similarly, ASP.NET Core will pass requests along a chain of middlewares. Upon receiving 
-a request, each middleware decides either to process it or to pass the request to the next 
-middleware in the chain. If the user is anonymous and the resource requires authorization, 
-then Identity will redirect the user to the login page.
+Similarly, ASP.NET Core will pass requests along a chain of middlewares. Upon receiving a request, each middleware decides either to process it or to pass the request to the next middleware in the chain. If the user is anonymous and the resource requires an authorization, then Identity will redirect the user to the login page.
 
-The scaffolding process created the IdentityHostingStartup class, which already configured 
-some Identity services.
+The scaffolding process created the IdentityHostingStartup class, which already configured some Identity services.
 
 ```csharp
 public void Configure(IWebHostBuilder builder)
@@ -172,12 +164,9 @@ public void Configure(IWebHostBuilder builder)
 }
 ```
 
-The AddDefaultIdentity() method adds a set of common identity services to the application, 
-including a default UI, token providers, and configures authentication to use identity 
-cookies.
+The AddDefaultIdentity() method adds a set of common identity services to the application, including a default UI, token providers, and configures authentication to use identity cookies.
 
-Identity is enabled by calling UseAuthentication. This method adds authentication middleware 
-to the request pipeline:
+Identity is enabled by calling the UseAuthentication extension method. This method adds authentication middleware to the request pipeline:
 
 ```csharp
     ...
@@ -186,13 +175,9 @@ to the request pipeline:
     ...
 ```
 
-The UseAuthentication() method adds the AuthenticationMiddleware to the specified 
-ApplicationBuilder, which enables authentication capabilities.
+The UseAuthentication() method adds the AuthenticationMiddleware to the specified ApplicationBuilder, which enables authentication capabilities.
 
-However, the above code configures just the back end behavior. For the front end, 
-you can integrate ASP.NET Core Identity views with the application user interface 
-by including an Identity in the layout markup that will allow users to log in or 
-register.
+However, the above code configures just the back end behavior. For the front end, you can integrate ASP.NET Core Identity views with the application user interface by including a partial view in the layout markup that will allow users to log in or register. Let's take a look at it in the next section.
 
 #### Adding Identity Components to the Front-End
 
