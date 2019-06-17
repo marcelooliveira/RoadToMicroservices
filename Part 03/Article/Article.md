@@ -243,26 +243,25 @@ Now we will click to add any product to navigate to the shopping cart page. Noti
 
 #### Razor Pages
 
-When you install ASP.NET Core Identity scaffolding, the new Identity components included in your
-project does not follow the MVC architecture. Instead, Identity components are based on Razor Pages.
+When you install ASP.NET Core Identity scaffolding, the new Identity components included in your project does not follow the MVC architecture. Instead, Identity components are based on Razor Pages.
 
 But what's the difference between MVC and Razor Pages?
 
-We can see by the image below how a typical MVC project keeps the components of a single page in a set of files scattered in many files and folders:
+We can see from the screenshot below how a typical MVC project keeps the components of a single page in a set of files spread across many files and folders:
 
 ![M V C](MVC.png)
 
-So, in MVC there’s not a single “web page” file. And it’s a little awkward to explain it to someone who’s new to the technology.
+So, in MVC there’s not a single “web page” file. And it’s a little awkward to explain this fact to someone who’s new to the technology.
 
-What if you took an MVC application, then you called your View as a Page (e.g. in Index.cshtml file), and you centralized not only the Model data but also the server-side code related to that page (that used to reside on your Controller) inside a class dedicated to that page (inside an Index.cshtml.cs file) - that you now called a Page Model?
+What if you took an MVC application, then you called your View as a "Page" (e.g. in Index.cshtml file), and you centralized not only the Model data but also the server-side code related to that page (that used to reside on your Controller) inside a class dedicated to that page (inside an Index.cshtml.cs file) - that you now called a Page Model?
 
 If you have already worked in native mobile apps, then you have probably seen something similar to this in the Model-View-ViewModel (MVVM) pattern.
 
 ![Razorpages](razorpages.png)
 
-Despite being different from MVC, Razor Pages still relies on ASP.NET Core MVC Framework. Once you create a new project with Razor Pages template, Visual Studio configures the application via Startup.cs file to enable the ASP.NET Core MVC Framework, as we have just seen.
+Despite being different from MVC, Razor Pages still relies on ASP.NET Core MVC Framework. Once you create a new project with the Razor Pages template, Visual Studio configures the application via Startup.cs file to enable the ASP.NET Core MVC Framework, as we have just seen.
 
-The template not only configures the new web application for MVC use, but also creates the Page folder and a set of Razor pages and page models for the example application:
+The template not only configures the new web application for MVC use but also creates the Page folder and a set of Razor pages and page models for the example application:
 
 ![Razor Pages Structure](razor-pages-structure.png)
 
