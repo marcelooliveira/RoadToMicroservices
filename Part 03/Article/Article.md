@@ -315,8 +315,7 @@ _Layout.cshtml
 
 ![Basket Nonauthorized](basket_nonauthorized.png)
 
-Now that we have Identity working, we will begin to protect some areas of our MVC project from anonymous access, that is, unauthenticated access. This will ensure that only users who have entered a valid login and password can access protected system resources.
-But what resources should be protected against anonymous access?
+Now that we have Identity working, we will begin to protect some areas of our MVC project from anonymous access, that is, unauthenticated access. This will ensure that only users who have entered a valid login and password can access protected system resources. But what resources should be protected against anonymous access?
 
 |Controller               |Should be protected?|
 |-------------------------|--------------------|
@@ -326,9 +325,7 @@ But what resources should be protected against anonymous access?
 | NotificationsController |         Yes        |
 | RegistrationController  |         Yes        |
 
-Note that both the Carousel and SearchProducts will be unprotected. Because? We want to allow users to browse the site's product freely, without forcing them to log in with the password. The other actions are all protected, as they involve the handling of orders, which can only be done by customers.
-But how are we going to protect these resources? We must mark one of these actions in the RequestController with an authorization attribute:
-
+Note that the CatalogController will be unprotected. Why? We want to allow users to browse the site's product freely, without forcing them to log in with the password. The other controllers are all protected, as they involve the handling of orders, which can only be done by customers. But how are we going to protect these resources? We must mark these controllers with an authorization attribute:
 
 ```csharp
 [Authorize]
@@ -363,25 +360,28 @@ public class RegistrationController : BaseController
 ```
 
 Let's take a test now: What happens when an anonymous user tries to access one of these features marked with [Authorize]?
-ASP.NET Core Identity will receive each of the requisitions made to the application. If the user is already authenticated, Identity passes the processing to the next component of the pipeline. If the user is anonymous and the resource being accessed requires authorization then Identity will redirect the user to the login page.
+ASP.NET Core Identity will receive each of the requisitions made to the application. If the user is already authenticated, Identity passes the processing to the next component of the pipeline. If the user is anonymous and the resource being accessed requires an authorization then Identity will redirect the user to the login page.
 
-Running the application as an anonymous user, we go to the product search page, which we can access without any problem, since this action is unprotected (that is without the [Authorize] attribute):
+Running the application as an anonymous user, we go to the product search page, which we can access without any problem since this action is unprotected (that is without the [Authorize] attribute):
 
 ![Add To Basket Nonauthorized](add_to_basket_nonauthorized.png)
 
-
-So we closed the topic on ASP.NET Core Identity Configuration. From now on, we will begin to get the user information that can finally be used in our application.
+When ASP.NET Core tries to execute the Index actin within the Basket controller, the [Authorize] attribute checks whether the user is authenticated. Since there is no authenticated user, ASP.NET Core redirects the request through the url:
 
 https://localhost:44340/Identity/Account/Login?ReturnUrl=%2FBasket
 
 ![Returnurl](returnurl.png)
 
 Note that this url has 2 parts:
-The url where the user has to authenticate: http: // localhost: 5001 / Identity / Account / Login
-The original url, to which the user will return after authentication: ReturnUrl =% 2Payed% 2Fetch% 2F180
-We can look at this redirection process more closely by opening the Developer Tools (Chrome Key F12) and opening the Headers tab, where we have seen that the call to the Action / Cart action is redirected via HTTP code 302, which is a code of redirection:
+
+- The url where the user has to authenticate: http://localhost:5001/Identity/Account/Login
+- The original url, to which the user will return after authentication
+
+We can look at this redirection process more closely by opening the Developer Tools (Chrome Key F12) and opening the Headers tab, where we have seen that the call to the Action / Cart action is redirected via HTTP code 302, which is a code for redirection:
 
 ![Redirect](redirect.png)
+
+So we closed the topic on ASP.NET Core Identity Configuration. From now on, we will begin to get the user information that can finally be used in our application.
 
 ### Managing User Data
 
