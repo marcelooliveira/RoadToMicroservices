@@ -183,13 +183,11 @@ However, the above code configures just the back end behavior. For the front end
 
 ![Frontend](frontend.png)
 
-The ASP.NET Core Identity scaffolding process includes the LoginPartial file in
-the Views\Shared folder. This file contains the partial view that displays either the 
-authenticated user name or hyperlinks for login and registration.
+The ASP.NET Core Identity scaffolding process includes the LoginPartial file in the Views\Shared folder. This file contains the partial view that displays either the authenticated user's name or hyperlinks for login and registration.
 
 ![File Loginpartial](file_loginpartial.png)
 
-```
+```html
 @using Microsoft.AspNetCore.Identity
 @using MVC.Areas.Identity.Data
 @inject SignInManager<AppIdentityUser> SignInManager
@@ -225,12 +223,7 @@ You can add this component to any of the application views, with the line below:
 <partial name="_LoginPartial" />
 ```
 
-However, adding this line more than one time would cause undesirable code duplication. 
-We can avoid this redundancy by including the line above in the standard layout view of 
-the application (_Layout.cshtml file) since this will cause the component to be visible 
-through all of our e-commerce views. We need to include it more specifically in the 
-application's navigation bar, inside the <div> element that contains the "navbar-collapse" 
-class:
+However, adding this line more than one time would cause undesirable code duplication.  We can avoid this redundancy by including the line above in the standard layout view of the application (_Layout.cshtml file) since this will cause the component to be visible through all of our e-commerce views. We need to include it more specifically in the application's navigation bar, inside the <div> element that contains the "navbar-collapse" class:
 
 _Layout.cshtml
 
@@ -240,13 +233,11 @@ _Layout.cshtml
         <ul class="nav navbar-nav">
 ```
 
-By running the application, we can now see the log and login links at the upper right corner 
-of the product search page:
+By running the application, we can now see the log and login links at the upper right corner of the product search page:
 
 ![Register Link](register_link.png)
 
-Now we will click to add any product to navigate to the shopping cart page. Notice how the login 
-and register links are also present here:
+Now we will click to add any product to navigate to the shopping cart page. Notice how the login and register links are also present here:
 
 ![Register Link](register_link.png)
 
