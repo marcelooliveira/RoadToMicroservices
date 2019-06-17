@@ -385,7 +385,6 @@ So we closed the topic on ASP.NET Core Identity Configuration. From now on, we w
 
 ### Managing User Data
 
-
 #### Preparing the User Registration Form
 
 Part 03/MVC/Models/ViewModels/RegistrationViewModel.cs
@@ -649,28 +648,31 @@ Part 03/MVC/Views/Registration/Index.cshtml
 
 Part 03/MVC/Controllers/CheckoutController.cs
 
-    if (ModelState.IsValid)
-    {
-        var usuario = await userManager.GetUserAsync(this.User);
+```csharp
+if (ModelState.IsValid)
+{
+    var usuario = await userManager.GetUserAsync(this.User);
 
-        usuario.Email = registration.Email;
-        usuario.Phone = registration.Phone;
-        usuario.Name = registration.Name;
-        usuario.Address = registration.Address;
-        usuario.AdditionalAddress = registration.AdditionalAddress;
-        usuario.District = registration.District;
-        usuario.City = registration.City;
-        usuario.State = registration.State;
-        usuario.ZipCode = registration.ZipCode;
+    usuario.Email = registration.Email;
+    usuario.Phone = registration.Phone;
+    usuario.Name = registration.Name;
+    usuario.Address = registration.Address;
+    usuario.AdditionalAddress = registration.AdditionalAddress;
+    usuario.District = registration.District;
+    usuario.City = registration.City;
+    usuario.State = registration.State;
+    usuario.ZipCode = registration.ZipCode;
 
-        await userManager.UpdateAsync(usuario);
-        return View(registration);
-    }
-    return RedirectToAction("Index", "Registration");
+    await userManager.UpdateAsync(usuario);
+    return View(registration);
+}
+return RedirectToAction("Index", "Registration");
+```
 
 
 Part 03/MVC/Models/ViewModels/RegistrationViewModel.cs
 
+```csharp
 //    public RegistrationViewModel(string name, string email, string phone, string address, string additionalAddress, string district, string city, string state, string zipCode)
     public RegistrationViewModel(string userId)
     {
@@ -680,12 +682,8 @@ Part 03/MVC/Models/ViewModels/RegistrationViewModel.cs
     public RegistrationViewModel(string userId, string name, string email, string phone, string address, string additionalAddress, string district, string city, string state, string zipCode)
     {
         UserId = userId;
+```
 
-
-[Required]
-[Required]
-[Required]
-[Required]...
 
 Part 03/MVC/Views/Checkout/Index.cshtml
 
@@ -735,13 +733,13 @@ Part 03/MVC/Views/Registration/Index.cshtml
 
 #### Why allow external account login?
 
-Registering a new user and password in a web application is an often tedious process, which in an e-commerce application can be not only unmotivating to the client, but also detrimental to the business, as any additional steps may deter potential buyers. may prefer another e-commerce website that is friendlier and less bureaucratic. Undoubtedly, the worst of all is the loss of sales as the end result.
+Registering a new user and password in a web application is often a tedious process, which in an e-commerce application can be not only disappointing to the client, but also detrimental to the business, as any additional steps may discourage potential buyers. They may prefer another e-commerce website that is friendlier and less bureaucratic. In short: forcing users to register can hurt sales.
 
 An external login process, which allows us to integrate the identity process with existing accounts on external services such as Microsoft, Google and Facebook, and without the need to create new passwords, can provide a more convenient registration process for our clients.
 
-However, it is critical that this external login process is only an alternative, not a requirement for entry into our application. Otherwise, we will be requiring you to have an account already registered with one of these external services.
+However, this external login process must be implemented as an alternative, and not the only registration method.
 
-Fortunately, ASP.NET Core Identity provides a mechanism to allow users to enter their existing credentials into services such as Microsoft, Google, Facebook, Twitter, etc.
+Fortunately, ASP.NET Core Identity provides a mechanism to allow users to perform log on through external providers such as Microsoft, Google, Facebook, Twitter, etc.
 
 #### Configuring External Logon with Microsoft Account
 
