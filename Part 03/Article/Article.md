@@ -73,12 +73,10 @@ Observe the new structure under Areas folder:
 
 #### Creating and Applying ASP.NET Core Identity Model Migration
 
-It is not enough to install the ASP.NET Core Identity package in our project; we still have 
-to generate the database schema, which includes tables and initial data required by for ASP.NET 
+It is not enough to install the ASP.NET Core Identity package in our project; we still have to generate the database schema, which includes tables and initial data required by for ASP.NET 
 Identity Core.
 
-When we made the scaffolding of ASP.NET Identity Core, a new Identity data model was 
-automatically added to our project, as we can see in the IdentityHostingStartup.cs file class:
+When we made the scaffolding of ASP.NET Identity Core, a new Identity data model was automatically added to our project, as we can see in the IdentityHostingStartup.cs file class:
 
 ```csharp
 public void Configure(IWebHostBuilder builder)
@@ -94,12 +92,10 @@ public void Configure(IWebHostBuilder builder)
 }
 ```
 
-Notice how the above Entity Framework configuration (AddDbContext method) is using the 
-AppIdentityContext class, whose name we chose in the scaffolding process.
+Notice how the above Entity Framework configuration  (AddDbContext method) is using the AppIdentityContext class, a name we chose in the scaffolding process.
 
 The same process also added a new AppIdentityContextConnection connection string to the 
-appsettings.json configuration file. ASP.NET Core Identity will use this connection 
-string to access the SQLite database:
+appsettings.json configuration file. ASP.NET Core Identity will use this connection string to access the SQLite database:
 
 ```json
 .
@@ -111,41 +107,33 @@ string to access the SQLite database:
 }
 ```
 
-But note that the scaffolding process alone did not create the Identity SQLite database 
-by itself. This can be achieved by creating a new Migration, which we saw in the previous 
-courses.
+But note that the scaffolding process alone did not create the Identity SQLite database by itself. This can be achieved by creating a new Entity Framework Migration.
 
-To add a new migration, open the Tool s> Package Manager Console menu, and type in the 
-console.
+To add a new migration, open the **Tools > Package Manager Console** menu, and type in the console.
 
 ```
 PM> Add-Migration Identity 
 ```
 
-The above command added the classes containing the migration statements, but it did not 
-create the database itself:
+The above command added the classes containing the migration statements, but it did not create the database itself:
 
 ![Add Migration](add_migration.png)
 
-To create the database, you must apply the migration by executing the Update-Database command:
+In order to create the SQLite database, you must apply the migration by executing the Update-Database command:
 
 ```
 PM> Update-Database -verbose
 ```
 
-This command creates the MVC.db database file defined in the connection string included in 
-the appsettings.json configuration file:
+This command creates the MVC.db database file defined in the connection string included in the appsettings.json configuration file:
 
 ![Mvc Db](mvc_db.png)
 
-Let's take a look at this file by double-clicking on it. This will open the DB Browser for 
-SQLite application we installed at the beginning of this article:
+Now let's take a look at this file by double-clicking on it. This will open the DB Browser for SQLite application we installed at the beginning of this article:
 
 ![Db Browser 1](db_browser_1.png)
 
-That's it! Now our application already has all the necessary components to perform 
-authentication and authorization. From now on, we will start using these components to 
-integrate ASP.NET Core Identity features in our application.
+That's it! Now our application already has all the necessary components to perform authentication and authorization. From now on, we will start using these components to integrate ASP.NET Core Identity features in our application.
 
 ### Configuring ASP.NET Core Identity
 
