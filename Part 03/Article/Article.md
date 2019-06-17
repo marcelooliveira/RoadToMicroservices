@@ -33,69 +33,43 @@ Okay, now the project is ready to receive the ASP.NET Core Identity scaffolding.
 
 ![Scaffolding](scaffolding.png)
 
-Installing a new ASP.NET Core with Identity from the beginning is different from 
-installing it in an existing project. Since our project does not have Identity, 
-we will install a package of files containing the functionalities we need. This process 
-is similar to building walls in a construction site using prefabricated modules. 
-This process is known as scaffolding.
+Installing a new ASP.NET Core with Identity from the beginning is different from installing it in an existing project. Since our project does not have Identity, we will install a package of files and assemblies containing the functionalities we need. This process is similar to building walls in a construction site using prefabricated modules. This process is known as scaffolding.
 
-If we had to manually create login/logout, authentication and other features in our 
-application, that would require a lot of effort. We are talking about the development 
-of views, business logic, model entities, data access, security, etc., in addition to 
-many hours of unit testing, functional testing, integrated testing and so on.
+If we had to manually create login/logout, authentication and other features in our application, that would require a lot of effort. We are talking about the development of views, business logic, model entities, data access, security, etc., in addition to many hours of unit testing, functional testing, integrated testing and so on.
 
-Fortunately, our application can benefit from authentication and authorization features 
-without much effort. Authentication and authorization are ubiquitous in web applications. 
-Because of this, Microsoft provides a package of files to be transparently installed in 
-ASP.NET Core projects that lack such features. It's called ASP.NET Core Identity.
+Fortunately, our application can benefit from authentication and authorization features without much effort. Authentication and authorization are ubiquitous in web applications. Because of this, Microsoft provides a package that can be transparently installed in ASP.NET Core projects that lack such features. It's called ASP.NET Core Identity.
 
-To apply ASP.NET Core Identity in our solution, we right-click the project, click 
-Add Scaffolded Item and then choose the Add option. That will open a new Add Scaffold 
-dialog window.
+To apply ASP.NET Core Identity in our solution, we right-click the project, click Add Scaffolded Item and then choose the Add option. That will open a new Add Scaffold dialog window.
 
 ![New Scaffolding Item](new_scaffolding_item.png)
 
-Here, we will choose Installed > Identity > Identity. 
+Here, we will choose **Installed > Identity > Identity**. 
 
 ![Add Scaffold](add_scaffold.png)
 
-The ASP.NET Core Identity Scaffold will open a new dialog window containing a series of 
-configuration parameters. There, you can define the layout of the pages, what source code 
-you will include, the data and user context classes, and also which type of database 
-(SQL Server or SQLite) Identity will use.
+The ASP.NET Core Identity Scaffold will open a new dialog window containing a series of configuration parameters. There, you can define the layout of the pages, what source code you will include, the data and user context classes, and also which type of database (SQL Server or SQLite) Identity will use.
 
 ![Add Identity](add_identity.png)
 
-Let's select this options:
+Let's select these options:
 
-- Layout: The _Layout.cshtml file that already exists in our project. It will define a basic 
-markup to be shared by the Identity pages and the rest of our application.
-- Identity pages: Login, Logout, Register, ExternalLogin. The scaffolding process will 
-copy those pages to our application, where you can edit them. Note that you still can 
-navigate to the other Identity pages that you left unmarked, but you cannot modify or 
+- **Layout**: The _Layout.cshtml file that already exists in our project. It will define a basic markup to be shared by the Identity pages and the rest of our application.
+- **Identity pages**: Login, Logout, Register, ExternalLogin. The scaffolding process will copy those pages to our application, where you can edit them. Note that you still can navigate to the other Identity pages that you left unmarked, but you cannot modify or 
 customize them since they will not be present in the project.
-- Context class: AppIdentityContext.
-- User class: AppIdentityUser. Represents a user in the identity system
+- **Context class**: AppIdentityContext.
+- **User class**: AppIdentityUser. Represents a user in the identity system
 
-After confirming these parameters, the scaffolding will modify our project.
-The most notable change is the new file structure under the Areas / Identity folder of our project.
+After confirming these parameters, the scaffolding will modify our project. The most notable change is the new file structure under the **Areas / Identity** folder of our project.
 
 ![Identity Area](identity_area.png)
 
 Observe the new structure under Areas folder:
 
-- The AppIdentityContext class: this is the class for the Entity Framework database context used for identity.
-- The AppIdentityUser class: it represents a user in the identity system.
-- The pages below Pages / Account: Those are pages containing the markup code for Identity 
-pages. They are Razor Pages, that is, a kind of MVC structure type where the view is in 
-the file and the actions of the controller and the template reside in a single file. As we 
-have said, these pages can be modified and customized in our application, but the other 
-- Identity pages can be accessed, but not changed, since their files are not present in the 
-project.
-- Partial Views: _ValidationScriptPartial, _ViewImports, _ViewStart
-- IdentityHostingStartup class: The ASP.NET Core WebHost executes this class as soon as the 
-application runs. The IdentityHostingStartup class configures database and other services 
-that Identity needs to work.
+- The **AppIdentityContext** class: this is the class used for the Entity Framework database context for ASP.NET Core Identity.
+- The **AppIdentityUser** class: represents a user in the identity system.
+- The **pages below Pages / Account**: Those are pages containing the markup code for Identity pages. They are Razor Pages, that is, a kind of MVC structure type where the view is in the file and the actions of the controller and the template reside in a single file. As we have said, these pages can be modified and customized in our application, but the other Identity pages can be accessed, but not changed, since their files are not present in the project.
+- **Partial Views**: _ValidationScriptPartial, _ViewImports, _ViewStart
+- **IdentityHostingStartup** class: The ASP.NET Core WebHost executes this class as soon as the application runs. The IdentityHostingStartup class configures database and other services that Identity needs to work.
 
 #### Creating and Applying ASP.NET Core Identity Model Migration
 
