@@ -267,20 +267,19 @@ The template not only configures the new web application for MVC use but also cr
 
 #### Anatomy of a Razor Page
 
-At first sight, a Razor Page looks pretty much like an ordinary ASP.NET MVC View file. But a Razor Page requires a new directive. Every Razor Page must start with the @page directive, which tells ASP.NET Core to treat it as Razor page. The folowing image shows a little more detail about a typical razor page.  
+At first sight, a Razor Page looks pretty much like an ordinary ASP.NET MVC View file. But a Razor Page requires a new directive. Every Razor Page must start with the @page directive, which tells ASP.NET Core to treat it as a Razor page. The following image shows a little more detail about a typical razor page.  
 
 ![Anatomy Razor Page](anatomy-razor-page.png)
 
-@page - Identify the file as a Razor Page. Without it, the page is simply unreacheable by ASP.NET Core.
-@model - much like in an MVC application, defines the class from which originates the binding data, as well as the Get/Post methods requested by the page.
-@using - the regular directive for defining namespaces.
-@inject - configures which interface(s) instance(s) should be injected into the page model class.
-@{ } - a piece of C# code inside Razor brackets, which in this case is used to define the page title.
-<div…> - the regular HTML code that comes along with the Razor-enabled C# Code.
+**@page** - Identifies the file as a Razor Page. Without it, the page is simply unreachable by ASP.NET Core.
+**@model** - much like in an MVC application, defines the class from which originates the binding data, as well as the Get/Post methods requested by the page.
+**@using** - the regular directive for defining namespaces.
+**@inject** - configures which interface(s) instance(s) should be injected into the page model class.
+**@{ }** - a piece of C# code inside Razor brackets, which in this case is used to define the page title.
 
 #### Creating a New User
 
-Since we created a new database without users,  our customers need to fill in the Identity's Register page. 
+Since we created a new SQLite database without users,  our customers need to fill in the Identity's Register page. 
 
 ![Identity Account Register](identity_account_register.png)
 
@@ -292,6 +291,7 @@ Since we created a new database without users,  our customers need to fill in th
 
 _Layout.cshtml
 
+```html
     @if (User.Identity.IsAuthenticated)
     {
         <ul class="nav navbar-nav">
@@ -303,6 +303,7 @@ _Layout.cshtml
             </li>
         </ul>
     }
+```
 
 ![Register Login No Icons](register_login_no_icons.png)
 
