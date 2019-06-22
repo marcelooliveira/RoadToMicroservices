@@ -23,19 +23,19 @@ namespace MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                var usuario = await userManager.GetUserAsync(this.User);
+                var user = await userManager.GetUserAsync(this.User);
 
-                usuario.Email = registration.Email;
-                usuario.Phone = registration.Phone;
-                usuario.Name = registration.Name;
-                usuario.Address = registration.Address;
-                usuario.AdditionalAddress = registration.AdditionalAddress;
-                usuario.District = registration.District;
-                usuario.City = registration.City;
-                usuario.State = registration.State;
-                usuario.ZipCode = registration.ZipCode;
+                user.Email = registration.Email;
+                user.Phone = registration.Phone;
+                user.Name = registration.Name;
+                user.Address = registration.Address;
+                user.AdditionalAddress = registration.AdditionalAddress;
+                user.District = registration.District;
+                user.City = registration.City;
+                user.State = registration.State;
+                user.ZipCode = registration.ZipCode;
 
-                await userManager.UpdateAsync(usuario);
+                await userManager.UpdateAsync(user);
                 return View(registration);
             }
             return RedirectToAction("Index", "Registration");
