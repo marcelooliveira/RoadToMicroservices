@@ -505,6 +505,8 @@ public class AppIdentityUser : IdentityUser
 }
 ```
 
+![User Profile Data](UserProfileData.png)
+
 #### Retrieving User Data From Identity Database
 
 ![Registration Form](RegistrationForm.png)
