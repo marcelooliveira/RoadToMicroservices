@@ -1,0 +1,46 @@
+﻿@using MVC.Models.ViewModels
+@addTagHelper *, MVC
+@model BasketItemList;
+
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-sm-6">
+                Item
+            </div>
+            <div class="col-sm-2 text-center">
+                Unit Price
+            </div>
+            <div class="col-sm-2 text-center">
+                Quantity
+            </div>
+            <div class="col-sm-2">
+                <span class="pull-right">
+                    Subtotal
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        @foreach (var item in Model.List)
+        {
+            <vc:basket-item item="@item" is-summary="Model.IsSummary"></vc:basket-item>
+        }
+    </div>
+    <div class="card-footer">
+        <div class="row">
+            <div class="col-sm-10">
+                <span numero-items>
+                    Total: @Model.List.Count
+                    item@(Model.List.Count > 1 ? "s" : "")
+                </span>
+            </div>
+            <div class="col-sm-2">
+                Total: <span class="pull-right" total>
+                    @(Model.List.Sum(item => item.Quantity * item.UnitPrice).ToString("C"))
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+

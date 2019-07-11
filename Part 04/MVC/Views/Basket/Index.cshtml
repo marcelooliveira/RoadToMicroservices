@@ -1,0 +1,18 @@
+﻿@using MVC.Models.ViewModels
+@addTagHelper *, MVC
+
+@{
+    ViewData["Title"] = "My Basket";
+}
+
+<partial name="_BasketControls" />
+
+<h3>My Basket</h3>
+
+<vc:basket-list is-summary="false"></vc:basket-list>
+
+<br />
+
+<partial name="_BasketControls" />
+
+

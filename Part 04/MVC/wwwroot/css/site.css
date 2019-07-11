@@ -1,0 +1,164 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+    background: url('../images/logo.png');
+    width: 215px;
+    height: 55px;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    line-height: 60px; /* Vertically center the text there */
+}
+
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}
+
+.left.carousel-control,
+.right.carousel-control {
+    background-image: none;
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.carousel-control-prev
+,.carousel-control-next {
+    width: 32px;
+}
+
+.carousel-control-prev {
+    margin-left: -32px;
+}
+
+.carousel-control-next {
+    margin-right: -32px;
+}
+
+.carousel-control-prev-icon {
+    filter: brightness(0);
+}
+
+.carousel-control-next-icon {
+    filter: brightness(0);
+}
+
+.btn-addtobasket::before {
+    content: "\f07a";
+    font-family: "FontAwesome";
+}
+
+.btn-search::before {
+    content: "\f002";
+    font-family: "FontAwesome";
+}
+
+.row-center {
+    display: flex;
+    align-items: center;
+}
+
+.user-count {
+    display: inline-block;
+    position: relative;
+    padding: 0.08em;
+    font-size: 1.2em;
+}
+
+.user-count::before,
+.user-count::after {
+    color: #000;
+}
+
+.user-count::after {
+    font-family: Arial;
+    font-size: 0.7em;
+    font-weight: 700;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    padding: 4px 6px;
+    line-height: 100%;
+    border-radius: 60px;
+    background: #ffcc00;
+    opacity: 0;
+    content: attr(data-count);
+    opacity: 0;
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
+    transition: transform, opacity;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-out;
+}
+
+.user-count.show-count::after {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+}
