@@ -2,12 +2,17 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MVC.Areas.Identity.Data;
+using MVC.Controllers;
 using MVC.Models.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
-namespace MVC.Controllers
+namespace MVC.Areas.Registration.Controllers
 {
     [Authorize]
+    [Area("Registration")]
     public class RegistrationController : BaseController
     {
         private readonly UserManager<AppIdentityUser> userManager;

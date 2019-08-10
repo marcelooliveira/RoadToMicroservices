@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MVC.Controllers;
 
-namespace MVC.Controllers
+namespace MVC.Areas.Notification.Controllers
 {
     [Authorize]
-    public class NotificationsController : BaseController
+    [Area("Notification")]
+    public class NotificationController : BaseController
     {
         public IActionResult Index()
         {

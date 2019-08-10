@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MVC.Areas.Notification.Services;
 using MVC.Models.ViewModels;
-using MVC.Services;
 
 namespace MVC.ViewComponents
 {

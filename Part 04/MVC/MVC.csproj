@@ -5,6 +5,64 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Areas\Registration\Views\Registration\**" />
+    <Compile Remove="Services\**" />
+    <Compile Remove="Views\Basket\**" />
+    <Compile Remove="Views\Catalog\**" />
+    <Compile Remove="Views\Checkout\**" />
+    <Compile Remove="Views\Notifications\**" />
+    <Compile Remove="Views\Registration\**" />
+    <Compile Remove="Views\Shared\Components\BasketItem\**" />
+    <Compile Remove="Views\Shared\Components\BasketList\**" />
+    <Content Remove="Areas\Registration\Views\Registration\**" />
+    <Content Remove="Services\**" />
+    <Content Remove="Views\Basket\**" />
+    <Content Remove="Views\Catalog\**" />
+    <Content Remove="Views\Checkout\**" />
+    <Content Remove="Views\Notifications\**" />
+    <Content Remove="Views\Registration\**" />
+    <Content Remove="Views\Shared\Components\BasketItem\**" />
+    <Content Remove="Views\Shared\Components\BasketList\**" />
+    <EmbeddedResource Remove="Areas\Registration\Views\Registration\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <EmbeddedResource Remove="Views\Basket\**" />
+    <EmbeddedResource Remove="Views\Catalog\**" />
+    <EmbeddedResource Remove="Views\Checkout\**" />
+    <EmbeddedResource Remove="Views\Notifications\**" />
+    <EmbeddedResource Remove="Views\Registration\**" />
+    <EmbeddedResource Remove="Views\Shared\Components\BasketItem\**" />
+    <EmbeddedResource Remove="Views\Shared\Components\BasketList\**" />
+    <None Remove="Areas\Registration\Views\Registration\**" />
+    <None Remove="Services\**" />
+    <None Remove="Views\Basket\**" />
+    <None Remove="Views\Catalog\**" />
+    <None Remove="Views\Checkout\**" />
+    <None Remove="Views\Notifications\**" />
+    <None Remove="Views\Registration\**" />
+    <None Remove="Views\Shared\Components\BasketItem\**" />
+    <None Remove="Views\Shared\Components\BasketList\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\BasketController.cs" />
+    <Compile Remove="Controllers\CatalogController.cs" />
+    <Compile Remove="Controllers\CheckoutController.cs" />
+    <Compile Remove="Controllers\NotificationController.cs" />
+    <Compile Remove="ViewComponents\BasketItemViewComponent.cs" />
+    <Compile Remove="ViewComponents\BasketListViewComponent.cs" />
+    <Compile Remove="ViewComponents\CarouselPageViewComponent.cs" />
+    <Compile Remove="ViewComponents\CarouselViewComponent.cs" />
+    <Compile Remove="ViewComponents\CategoriesViewComponent.cs" />
+    <Compile Remove="ViewComponents\ProductCardViewComponent.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Areas\Registration\Views\Registration\Index.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="bootstrap" Version="4.3.1" />

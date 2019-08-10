@@ -1,14 +1,12 @@
-﻿//using IdentityModel;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MVC.Areas.Identity.Data;
-using MVC.Controllers;
-using MVC.Services;
+using MVC.Areas.Basket.Services;
+using MVC.Areas.Notification.Services;
 
 namespace MVC
 {
@@ -29,6 +27,14 @@ namespace MVC
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+            services.Configure<RazorViewEngineOptions>(options =>
+            {
+                options.AreaViewLocationFormats.Clear();
+                options.AreaViewLocationFormats.Add("/Areas/{2}/Views/{1}/{0}.cshtml");
+                options.AreaViewLocationFormats.Add("/Areas/{2}/Views/Shared/{0}.cshtml");
+                options.AreaViewLocationFormats.Add("/Views/Shared/{0}.cshtml");
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -74,9 +80,34 @@ namespace MVC
             app.UseSession();
             app.UseMvc(routes =>
             {
+                routes.MapAreaRoute(
+                    name: "AreaCatalog",
+                    areaName: "Catalog",
+                    template: "Catalog/{controller=Product}/{action=Index}/{id?}");
+
+                routes.MapAreaRoute(
+                    name: "AreaBasket",
+                    areaName: "Basket",
+                    template: "Basket/{controller=Basket}/{action=Index}/{id?}");
+
+                routes.MapAreaRoute(
+                    name: "AreaRegistration",
+                    areaName: "Registration",
+                    template: "Registration/{controller=Registration}/{action=Index}/{id?}");
+
+                routes.MapAreaRoute(
+                    name: "AreaCheckout",
+                    areaName: "Checkout",
+                    template: "Checkout/{controller=Checkout}/{action=Index}/{id?}");
+
+                routes.MapAreaRoute(
+                    name: "AreaNotification",
+                    areaName: "Notification",
+                    template: "Notification/{controller=Notification}/{action=Index}/{id?}");
+
                 routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Catalog}/{action=Index}/{id?}");
+                   name: "default",
+                   template: "Catalog/{controller=Product}/{action=Index}/{id?}");
             });
         }
     }
