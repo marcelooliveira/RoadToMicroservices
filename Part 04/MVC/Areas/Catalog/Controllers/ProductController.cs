@@ -19,7 +19,7 @@ namespace MVC.Areas.Catalog.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var products = await SeedData.GetProducts();
+            var products = await ProductSeedData.GetProducts();
             List<Product> model = mapper.Map<List<Product>>(products);
             return base.View(model);
         }

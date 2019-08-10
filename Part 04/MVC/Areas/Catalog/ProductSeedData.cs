@@ -5,13 +5,13 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MVC
+namespace MVC.Areas.Catalog
 {
-    public class SeedData
+    public class ProductSeedData
     {
         public static async Task<List<Product>> GetProducts()
         {
-            var json = await File.ReadAllTextAsync("products.json");
+            var json = await File.ReadAllTextAsync("Areas/Catalog/products.json");
             var data = JsonConvert.DeserializeObject<List<ProductData>>(json);
 
             var dict = new Dictionary<string, Category>();

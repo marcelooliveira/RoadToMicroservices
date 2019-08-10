@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MVC.Areas.Basket.Services;
+using MVC.Areas.Catalog;
 using MVC.Areas.Notification.Services;
 
 namespace MVC
@@ -67,7 +68,7 @@ namespace MVC
             // Auto Mapper Configurations
             var mappingConfig = new MapperConfiguration(mc =>
             {
-                mc.AddProfile(new MappingProfile());
+                mc.AddProfile(new CatalogMappingProfile());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();
