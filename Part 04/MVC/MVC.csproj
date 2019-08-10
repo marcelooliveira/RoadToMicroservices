@@ -41,11 +41,6 @@
     <Compile Remove="Controllers\CatalogController.cs" />
     <Compile Remove="Controllers\CheckoutController.cs" />
     <Compile Remove="Controllers\NotificationController.cs" />
-    <Compile Remove="Migrations\20190503020135_CreateIdentitySchema.cs" />
-    <Compile Remove="Migrations\20190503020135_CreateIdentitySchema.Designer.cs" />
-    <Compile Remove="Migrations\20190503043129_UserProfileData.cs" />
-    <Compile Remove="Migrations\20190503043129_UserProfileData.Designer.cs" />
-    <Compile Remove="Migrations\AppIdentityContextModelSnapshot.cs" />
     <Compile Remove="Models\ViewModels\CarouselPageViewModel.cs" />
     <Compile Remove="Models\ViewModels\CarouselViewModel.cs" />
     <Compile Remove="Models\ViewModels\CategoriesViewModel.cs" />
@@ -66,6 +61,7 @@
 
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.1.1" />
     <PackageReference Include="bootstrap" Version="4.3.1" />
     <PackageReference Include="IdentityModel" Version="3.10.10" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
@@ -76,7 +72,6 @@
 
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
     <Folder Include="wwwroot\images\catalog\" />
   </ItemGroup>
 

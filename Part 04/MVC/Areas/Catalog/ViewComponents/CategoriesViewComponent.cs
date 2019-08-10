@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MVC.Areas.Catalog.Models;
 using MVC.Areas.Catalog.Models.ViewModels;
-using MVC.Models;
 using System.Collections.Generic;
 using System.Linq;
 
