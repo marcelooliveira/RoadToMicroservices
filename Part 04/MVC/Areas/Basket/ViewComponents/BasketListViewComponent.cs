@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MVC.Areas.Basket.Services;
 using MVC.Models.ViewModels;
+using MVC.Areas.Basket.Services;
 using System.Collections.Generic;
 
 namespace MVC.Areas.Basket.ViewComponents

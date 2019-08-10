@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
+using MVC.Areas.Basket.ViewComponents;
 using MVC.Models.ViewModels;
 using MVC.ViewComponents;
 using System;

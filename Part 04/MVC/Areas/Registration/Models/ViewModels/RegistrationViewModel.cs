@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace MVC.Models.ViewModels
+namespace MVC.Areas.Registration.Models.ViewModels
 {
     public class RegistrationViewModel
     {

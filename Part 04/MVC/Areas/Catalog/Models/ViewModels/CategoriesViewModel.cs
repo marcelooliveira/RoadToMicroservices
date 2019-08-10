@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using MVC.Models;
+using System.Collections.Generic;
 
-namespace MVC.Models.ViewModels
+namespace MVC.Areas.Catalog.Models.ViewModels
 {
     public class CategoriesViewModel
     {

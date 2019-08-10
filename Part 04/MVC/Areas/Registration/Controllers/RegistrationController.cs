@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MVC.Areas.Identity.Data;
+using MVC.Areas.Registration.Models.ViewModels;
 using MVC.Controllers;
 using MVC.Models.ViewModels;
 using System;

@@ -3,16 +3,14 @@ using System;
 using MVC.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace MVC.Migrations
+namespace MVC.Areas.Identity.Migrations
 {
     [DbContext(typeof(AppIdentityContext))]
-    [Migration("20190503043129_UserProfileData")]
-    partial class UserProfileData
+    partial class AppIdentityContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

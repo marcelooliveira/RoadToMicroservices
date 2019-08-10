@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace MVC.Migrations
+namespace MVC.Areas.Identity.Migrations
 {
     [DbContext(typeof(AppIdentityContext))]
-    [Migration("20190503020135_CreateIdentitySchema")]
-    partial class CreateIdentitySchema
+    [Migration("20190503043129_UserProfileData")]
+    partial class UserProfileData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -25,8 +25,16 @@ namespace MVC.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<string>("AdditionalAddress");
+
+                    b.Property<string>("Address");
+
+                    b.Property<string>("City");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
+
+                    b.Property<string>("District");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256);
@@ -37,6 +45,8 @@ namespace MVC.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
 
+                    b.Property<string>("Name");
+
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
 
@@ -45,16 +55,22 @@ namespace MVC.Migrations
 
                     b.Property<string>("PasswordHash");
 
+                    b.Property<string>("Phone");
+
                     b.Property<string>("PhoneNumber");
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
                     b.Property<string>("SecurityStamp");
 
+                    b.Property<string>("State");
+
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
+
+                    b.Property<string>("ZipCode");
 
                     b.HasKey("Id");
 
