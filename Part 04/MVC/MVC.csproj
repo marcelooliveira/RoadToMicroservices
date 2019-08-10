@@ -8,6 +8,7 @@
   <ItemGroup>
     <Compile Remove="Areas\Registration\Views\Registration\**" />
     <Compile Remove="Services\**" />
+    <Compile Remove="ViewComponents\**" />
     <Compile Remove="Views\Basket\**" />
     <Compile Remove="Views\Catalog\**" />
     <Compile Remove="Views\Checkout\**" />
@@ -15,6 +16,7 @@
     <Compile Remove="Views\Registration\**" />
     <Content Remove="Areas\Registration\Views\Registration\**" />
     <Content Remove="Services\**" />
+    <Content Remove="ViewComponents\**" />
     <Content Remove="Views\Basket\**" />
     <Content Remove="Views\Catalog\**" />
     <Content Remove="Views\Checkout\**" />
@@ -22,6 +24,7 @@
     <Content Remove="Views\Registration\**" />
     <EmbeddedResource Remove="Areas\Registration\Views\Registration\**" />
     <EmbeddedResource Remove="Services\**" />
+    <EmbeddedResource Remove="ViewComponents\**" />
     <EmbeddedResource Remove="Views\Basket\**" />
     <EmbeddedResource Remove="Views\Catalog\**" />
     <EmbeddedResource Remove="Views\Checkout\**" />
@@ -29,6 +32,7 @@
     <EmbeddedResource Remove="Views\Registration\**" />
     <None Remove="Areas\Registration\Views\Registration\**" />
     <None Remove="Services\**" />
+    <None Remove="ViewComponents\**" />
     <None Remove="Views\Basket\**" />
     <None Remove="Views\Catalog\**" />
     <None Remove="Views\Checkout\**" />
@@ -45,12 +49,6 @@
     <Compile Remove="Models\ViewModels\CarouselViewModel.cs" />
     <Compile Remove="Models\ViewModels\CategoriesViewModel.cs" />
     <Compile Remove="Models\ViewModels\RegistrationViewModel.cs" />
-    <Compile Remove="ViewComponents\BasketItemViewComponent.cs" />
-    <Compile Remove="ViewComponents\BasketListViewComponent.cs" />
-    <Compile Remove="ViewComponents\CarouselPageViewComponent.cs" />
-    <Compile Remove="ViewComponents\CarouselViewComponent.cs" />
-    <Compile Remove="ViewComponents\CategoriesViewComponent.cs" />
-    <Compile Remove="ViewComponents\ProductCardViewComponent.cs" />
   </ItemGroup>
 
   <ItemGroup>
