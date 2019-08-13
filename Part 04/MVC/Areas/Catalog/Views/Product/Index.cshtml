@@ -1,6 +1,7 @@
 ﻿@addTagHelper *, MVC
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@model List<MVC.Areas.Catalog.Models.Product>;
+@using MVC.Areas.Catalog.Models.ViewModels;
+@model SearchProductsViewModel;
 @{
     ViewData["Title"] = "Catalog";
     Layout = "/Views/Shared/_Layout.cshtml";
@@ -8,4 +9,4 @@
 
 <partial name="_SearchProducts" />
 
-<vc:categories products="@Model"></vc:categories>
+<vc:categories products="@Model.Products"></vc:categories>

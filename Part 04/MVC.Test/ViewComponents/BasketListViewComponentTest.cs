@@ -3,7 +3,6 @@ using Moq;
 using MVC.Areas.Basket.Services;
 using MVC.Areas.Basket.ViewComponents;
 using MVC.Models.ViewModels;
-using MVC.ViewComponents;
 using System.Collections.Generic;
 using Xunit;
 

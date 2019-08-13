@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using API.Catalog.Data;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -47,6 +48,7 @@ namespace MVC
             services.AddSession();
 
             services.AddTransient<IBasketService, BasketService>();
+            services.AddTransient<IProductService, ProductService>();
             var userCounterServiceInstance = new UserCounterService();
             services.AddSingleton<IUserCounterService>(userCounterServiceInstance);
 

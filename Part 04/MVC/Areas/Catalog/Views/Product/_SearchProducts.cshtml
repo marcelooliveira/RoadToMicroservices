@@ -1,23 +1,43 @@
-﻿<div class="container">
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model MVC.Areas.Catalog.Models.ViewModels.SearchProductsViewModel;
+
+<div class="container">
     <h2>Search products</h2>
     <div id="custom-search-input">
         <div class="input-group col-md-12">
-            <form>
+            <form asp-area="catalog"
+                  asp-controller="product"
+                  asp-action="index">
                 <div class="container">
                     <div class="row">
                         <div>
-                            <input type="text" name="search"
+                            <input type="text" name="searchText"
                                    class="form-control input-lg"
-                                   placeholder="category or product" />
+                                   placeholder="category or product"
+                                   value="@Model.SearchText" />
                         </div>
                         <div>
                             <div class="input-group-btn text-center">
-                                <a href="#" class="btn btn-success">
-                                    <span class="fa fa-search"></span>
-                                </a>
+                                <button class="btn btn-success" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
+                    @if (!string.IsNullOrWhiteSpace(Model.SearchText))
+                    {
+                        <br />
+                        <div class="row">
+                            @if (Model.Products.Count > 0)
+                            {
+                                <div class="alert alert-success">@Model.Products.Count item(s) found.</div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-danger">No items found.</div>
+                            }
+                        </div>
+                    }
                 </div>
             </form>
         </div>

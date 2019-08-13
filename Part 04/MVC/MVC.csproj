@@ -81,4 +81,9 @@
     <None Include="Views\Shared\Components\BasketList\Empty.cshtml" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <ProjectReference Include="..\API.Catalog\API.Catalog.csproj" />
+  </ItemGroup>
+
 </Project>
