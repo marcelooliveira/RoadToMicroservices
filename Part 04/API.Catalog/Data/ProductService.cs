@@ -11,7 +11,7 @@ namespace API.Catalog.Data
 {
     public class ProductService : IProductService
     {
-        private const string fileName = "Data/data.json";
+        private const string fileName = "Data/products.json";
 
         public async Task<List<Product>> GetProductsAsync()
         {
