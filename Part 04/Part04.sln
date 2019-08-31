@@ -16,6 +16,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.Catalog", "API.Catalog\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.Catalog.Tests", "API.Catalog.Tests\API.Catalog.Tests.csproj", "{57E59923-E46B-4A2D-A999-A0878934A2C9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.Basket.Tests", "API.Basket.Tests\API.Basket.Tests.csproj", "{426904B6-3556-4661-AE73-ECAD4911F20D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.Basket", "API.Basket\API.Basket.csproj", "{C83D11F5-1A8E-466C-9FED-AB95760BA8FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +42,14 @@ Global
 		{57E59923-E46B-4A2D-A999-A0878934A2C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57E59923-E46B-4A2D-A999-A0878934A2C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57E59923-E46B-4A2D-A999-A0878934A2C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{426904B6-3556-4661-AE73-ECAD4911F20D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{426904B6-3556-4661-AE73-ECAD4911F20D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{426904B6-3556-4661-AE73-ECAD4911F20D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{426904B6-3556-4661-AE73-ECAD4911F20D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C83D11F5-1A8E-466C-9FED-AB95760BA8FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C83D11F5-1A8E-466C-9FED-AB95760BA8FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C83D11F5-1A8E-466C-9FED-AB95760BA8FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C83D11F5-1A8E-466C-9FED-AB95760BA8FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
