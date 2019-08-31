@@ -8,6 +8,5 @@ namespace MVC.Areas.Catalog.Data
     {
         List<Product> GetProducts();
         Task<List<Product>> GetProductsAsync();
-        Task<List<Product>> SearchProductsAsync(string text);
     }
 }

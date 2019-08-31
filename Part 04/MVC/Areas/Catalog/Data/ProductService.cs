@@ -63,21 +63,6 @@ namespace MVC.Areas.Catalog.Data
             string json = await File.ReadAllTextAsync("areas/catalog/data/products.json");
             return JsonConvert.DeserializeObject<List<ProductData>>(json);
         }
-
-        public async Task<List<Product>> SearchProductsAsync(string searchText)
-        {
-            searchText = searchText ?? "";
-            searchText = searchText.Trim();
-
-            List<ProductData> data = await GetProductDataFromFile();
-            var filtered = data.Where(p => p.name.ToLower().Contains(searchText.ToLower()) ||
-                    p.category.ToLower().Contains(searchText.ToLower()))
-                .ToList();
-            List<Product> products = GetProducts(filtered);
-
-            return products;
-        }
-
     }
 
     public class ProductData

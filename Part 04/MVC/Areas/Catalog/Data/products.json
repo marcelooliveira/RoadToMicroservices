@@ -3,67 +3,67 @@
     "number": 1,
     "name": "Oranges",
     "category": "Fruits",
-    "price": 5.90
+    "price": 2.90
   },
   {
     "number": 2,
     "name": "Lemons",
     "category": "Fruits",
-    "price": 5.90
+    "price": 1.90
   },
   {
     "number": 3,
     "name": "Bananas",
     "category": "Fruits",
-    "price": 6.90
+    "price": 1.90
   },
   {
     "number": 4,
     "name": "Strawberries",
     "category": "Fruits",
-    "price": 7.90
+    "price": 0.90
   },
   {
     "number": 5,
     "name": "Grapes",
     "category": "Fruits",
-    "price": 5.90
+    "price": 1.90
   },
   {
     "number": 6,
     "name": "Carrots",
     "category": "Legumes",
-    "price": 5.90
+    "price": 0.90
   },
   {
     "number": 7,
     "name": "Yellow peppers",
     "category": "Legumes",
-    "price": 8.90
+    "price": 1.90
   },
   {
     "number": 8,
     "name": "Potatoes",
     "category": "Legumes",
-    "price": 5.90
+    "price": 0.90
   },
   {
     "number": 9,
     "name": "Tomatoes",
     "category": "Legumes",
-    "price": 4.90
+    "price": 1.90
   },
   {
     "number": 10,
     "name": "Eggplants",
     "category": "Legumes",
-    "price": 5.90
+    "price": 1.90
   },
   {
     "number": 11,
     "name": "Lettuce",
     "category": "Vegetables",
-    "price": 7.90
+    "price": 2.90
   },
   {
     "number": 12,
