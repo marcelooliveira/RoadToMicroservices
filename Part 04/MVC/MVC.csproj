@@ -41,6 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Catalog\MappingProfile.cs" />
     <Compile Remove="Controllers\BasketController.cs" />
     <Compile Remove="Controllers\CatalogController.cs" />
     <Compile Remove="Controllers\CheckoutController.cs" />
@@ -64,7 +65,7 @@
     <PackageReference Include="IdentityModel" Version="3.10.10" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.6" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
   </ItemGroup>
 
@@ -83,7 +84,9 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\API.Catalog\API.Catalog.csproj" />
+    <Content Update="Areas\Catalog\Data\products.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

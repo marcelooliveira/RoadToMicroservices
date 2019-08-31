@@ -4,7 +4,13 @@ namespace MVC.Areas.Catalog.Models.ViewModels
 {
     public class SearchProductsViewModel
     {
-        public string SearchText { get; set; }
+        public SearchProductsViewModel(List<Product> products, string searchText)
+        {
+            Products = products;
+            SearchText = searchText;
+        }
+
         public List<Product> Products { get; set; }
+        public string SearchText { get; set; }
     }
 }

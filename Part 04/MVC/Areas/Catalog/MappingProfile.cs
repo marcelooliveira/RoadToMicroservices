@@ -7,11 +7,11 @@ namespace MVC.Areas.Catalog
         public CatalogMappingProfile()
         {
             // Add as many of these lines as you need to map your objects
-            CreateMap<Models.Product, API.Catalog.Models.Product>();
-            CreateMap<API.Catalog.Models.Product, Models.Product>();
+            CreateMap<MVC.Models.Product, MVC.Areas.Catalog.Models.Product>();
+            CreateMap<MVC.Areas.Catalog.Models.Product, MVC.Models.Product>();
 
-            CreateMap<Models.Category, API.Catalog.Models.Category>();
-            CreateMap<API.Catalog.Models.Category, Models.Category>();
+            CreateMap<MVC.Models.Category, MVC.Areas.Catalog.Models.Category>();
+            CreateMap<MVC.Areas.Catalog.Models.Category, MVC.Models.Category>();
         }
     }
 }

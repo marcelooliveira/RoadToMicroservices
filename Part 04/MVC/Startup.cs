@@ -1,14 +1,16 @@
-﻿using API.Catalog.Data;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MVC.Areas.Basket.Services;
 using MVC.Areas.Catalog;
+using MVC.Areas.Catalog.Data;
+using MVC.Areas.Catalog.Data.Repositories;
 using MVC.Areas.Notification.Services;
 
 namespace MVC
@@ -40,46 +42,41 @@ namespace MVC
                 options.AreaViewLocationFormats.Add("/Views/Shared/{0}.cshtml");
             });
 
-            SetupAutoMapper(services);
+            //SetupAutoMapper(services);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddDistributedMemoryCache();
             services.AddSession();
 
+            ConfigureContext<CatalogDbContext>(services, "CatalogContextConnection");
+
             services.AddTransient<IBasketService, BasketService>();
             services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IProductRepository, ProductRepository>();
             var userCounterServiceInstance = new UserCounterService();
             services.AddSingleton<IUserCounterService>(userCounterServiceInstance);
 
-            //services.AddAuthentication()
-            //    .AddMicrosoftAccount(options =>
-            //    {
-            //        options.ClientId = Configuration["ExternalLogin:Microsoft:ClientId"];
-            //        options.ClientSecret = Configuration["ExternalLogin:Microsoft:ClientSecret"];
-            //    })
-            //    .AddGoogle(options =>
-            //    {
-            //        options.ClientId = Configuration["ExternalLogin:Google:ClientId"];
-            //        options.ClientSecret = Configuration["ExternalLogin:Google:ClientSecret"];
-            //    });
+            services.AddDbContext<CatalogDbContext>(options =>
+            {
+                options.UseSqlite(Configuration.GetConnectionString("CatalogContextConnection"));
+            });
         }
 
-        private static void SetupAutoMapper(IServiceCollection services)
+        private void ConfigureContext<T>(IServiceCollection services, string connectionName) where T : DbContext
         {
-            // Auto Mapper Configurations
-            var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new CatalogMappingProfile());
-            });
+            string connectionString = Configuration.GetConnectionString(connectionName);
 
-            IMapper mapper = mappingConfig.CreateMapper();
-            services.AddSingleton(mapper);
+            services.AddDbContext<T>(options =>
+                options.UseSqlServer(connectionString)
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            MigrateDatabase<CatalogDbContext>(app);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -127,6 +124,19 @@ namespace MVC
                    name: "default",
                    template: "Catalog/{controller=Product}/{action=Index}/{id?}");
             });
+        }
+
+        private static void MigrateDatabase<T>(IApplicationBuilder app) where T : DbContext
+        {
+            using (var serviceScope = app.ApplicationServices
+                .GetRequiredService<IServiceScopeFactory>()
+                .CreateScope())
+            {
+                using (var context = serviceScope.ServiceProvider.GetService<T>())
+                {
+                    context.Database.Migrate();
+                }
+            }
         }
     }
 }

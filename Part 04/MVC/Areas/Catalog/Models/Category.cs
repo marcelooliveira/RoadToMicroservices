@@ -5,6 +5,11 @@ namespace MVC.Areas.Catalog.Models
 {
     public class Category : BaseModel
     {
+        public Category()
+        {
+
+        }
+
         public Category(int id, string name)
         {
             Id = id;

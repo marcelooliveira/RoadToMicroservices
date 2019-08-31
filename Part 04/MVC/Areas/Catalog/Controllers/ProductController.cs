@@ -1,10 +1,7 @@
-﻿using API.Catalog.Data;
-using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using MVC.Areas.Catalog.Models;
-using MVC.Areas.Catalog.Models.ViewModels;
+﻿using Microsoft.AspNetCore.Mvc;
+using MVC.Areas.Catalog.Data;
+using MVC.Areas.Catalog.Data.Repositories;
 using MVC.Controllers;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MVC.Areas.Catalog.Controllers
@@ -12,24 +9,16 @@ namespace MVC.Areas.Catalog.Controllers
     [Area("Catalog")]
     public class ProductController : BaseController
     {
-        private readonly IMapper mapper;
-        private readonly IProductService productService;
+        private readonly IProductRepository productRepository;
 
-        public ProductController(IMapper mapper, IProductService productService)
+        public ProductController(IProductRepository productRepository)
         {
-            this.mapper = mapper;
-            this.productService = productService;
+            this.productRepository = productRepository;
         }
 
         public async Task<IActionResult> Index(string searchText)
         {
-            var products = await productService.SearchProductsAsync(searchText);
-
-            var viewModel = new SearchProductsViewModel
-            {
-                Products = mapper.Map<List<Product>>(products),
-                SearchText = searchText
-            };
+            var viewModel = await productRepository.GetProductsAsync(searchText);
             return base.View(viewModel);
         }
     }
