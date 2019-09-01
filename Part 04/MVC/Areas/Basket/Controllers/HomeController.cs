@@ -59,10 +59,12 @@ namespace MVC.Areas.Basket.Controllers
         /// <param name="input">Shopping basket item to be updated</param>
         /// <returns></returns>
         [HttpPut]
-        [Route("[action]/{customerId}")]
+        [ValidateAntiForgeryToken]
         [ProducesResponseType(typeof(BasketItem), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<UpdateQuantityOutput>> UpdateItem(string customerId, [FromBody] UpdateQuantityInput input)
+        public async Task<ActionResult<UpdateQuantityOutput>> UpdateItem([FromBody] UpdateQuantityInput input)
         {
+            string customerId = userManager.GetUserId(this.User);
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

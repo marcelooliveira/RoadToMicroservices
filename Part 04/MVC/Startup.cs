@@ -11,6 +11,7 @@ using MVC.Areas.Basket.Data;
 using MVC.Areas.Catalog.Data;
 using MVC.Areas.Catalog.Data.Repositories;
 using MVC.Areas.Notification.Services;
+using Newtonsoft.Json.Serialization;
 using StackExchange.Redis;
 
 namespace MVC
@@ -45,8 +46,10 @@ namespace MVC
             //SetupAutoMapper(services);
 
             services.AddMvc(options =>
-               options.EnableEndpointRouting = false)
-               .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                options.EnableEndpointRouting = false)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddJsonOptions(a => a.SerializerSettings.ContractResolver 
+                    = new DefaultContractResolver());
 
             services.AddDistributedMemoryCache();
             services.AddSession();
