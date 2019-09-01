@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc.ViewComponents;
+using MVC.Areas.Basket.Model;
 using MVC.Areas.Basket.ViewComponents;
-using MVC.Models.ViewModels;
 using Xunit;
 
 namespace MVC.Test.ViewComponents
@@ -13,7 +13,7 @@ namespace MVC.Test.ViewComponents
             //arrange 
             var vc = new BasketItemViewComponent();
             BasketItem item =
-                new BasketItem { Id = 1, ProductId = 1, Name = "Broccoli", UnitPrice = 59.90m, Quantity = 2 };
+                new BasketItem { Id = "1", ProductId = "1", ProductName = "Broccoli", UnitPrice = 59.90m, Quantity = 2 };
 
             //act 
             var result = vc.Invoke(item);
@@ -31,7 +31,7 @@ namespace MVC.Test.ViewComponents
             //arrange 
             var vc = new BasketItemViewComponent();
             BasketItem item =
-                new BasketItem { Id = 2, ProductId = 5, Name = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 };
+                new BasketItem { Id = "2", ProductId = "5", ProductName = "Green Grapes", UnitPrice = 59.90m, Quantity = 3 };
 
             //act 
             var result = vc.Invoke(item, true);

@@ -1,5 +1,4 @@
-﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@model MVC.Areas.Catalog.Models.Product;
+﻿@model MVC.Areas.Catalog.Models.Product;
 
 @{
     var product = Model;
@@ -14,7 +13,12 @@
             <p class="card-text">@product.Name</p>
             <h5 class="card-title text-center">@product.Price.ToString("C")</h5>
             <div class="text-center">
-                <a asp-area="basket" asp-controller="basket" asp-action="index" class="btn btn-success">
+                <a 
+                    asp-area="basket" 
+                    asp-controller="home" 
+                    asp-action="index" 
+                    asp-route-code="@product.Code" 
+                    class="btn btn-success">
                     <span class="fa fa-shopping-cart"></span>
                     Add to basket
                 </a>

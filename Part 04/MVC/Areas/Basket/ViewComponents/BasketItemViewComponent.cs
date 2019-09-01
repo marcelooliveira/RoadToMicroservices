@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MVC.Models.ViewModels;
+using MVC.Areas.Basket.Model;
 
 namespace MVC.Areas.Basket.ViewComponents
 {

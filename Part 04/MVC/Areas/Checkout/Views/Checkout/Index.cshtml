@@ -1,11 +1,9 @@
 ﻿@addTagHelper *, MVC
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @using MVC.Areas.Registration.Models.ViewModels
 @model RegistrationViewModel
 @{
     ViewData["Title"] = "Checkout";
-    Layout = "/Views/Shared/_Layout.cshtml";
 }
 <h3>Order Has Been Placed!</h3>
 
@@ -13,7 +11,7 @@
     <p>Thank you very much, <b>@Model.Name</b>!</p>
     <p>Your order has been placed.</p>
     <p>Soon you will receive an e-mail at <b>@Model.Email</b> including all order details.</p>
-    <p><a asp-area="catalog" asp-controller="product" asp-action="index" class="btn btn-success">Back to product catalog</a></p>
+    <p><a asp-area="catalog" asp-controller="home" asp-action="index" class="btn btn-success">Back to product catalog</a></p>
 </div>
 
 <h4>Summary</h4>

@@ -1,4 +1,4 @@
-﻿@using MVC.Models.ViewModels
+﻿@using MVC.Areas.Basket.Model
 
 @model BasketItem
 
@@ -8,10 +8,10 @@
 
 <div class="row row-center">
     <div class="col-sm-2">
-        <img class="img-product-basket w-75" src="/images/catalog/large_@(item.ProductId.ToString("000")).jpg" />
+        <img class="img-product-basket w-75" src="/images/catalog/large_@(item.ProductId).jpg" />
     </div>
     <input type="hidden" name="productId" value="012" />
-    <div class="col-sm-4">@item.Name</div>
+    <div class="col-sm-4">@item.ProductName</div>
     <div class="col-sm-2 text-center">@item.UnitPrice.ToString("C")</div>
     <div class="col-sm-2 text-center">
         <div class="input-group">

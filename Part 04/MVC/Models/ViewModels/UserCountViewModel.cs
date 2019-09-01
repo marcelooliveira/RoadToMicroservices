@@ -1,7 +1,7 @@
 ﻿namespace MVC.Models.ViewModels
 {
     public class UserCountViewModel
-    {   
+    {
         public UserCountViewModel(string title, string controllerName, string cssClass, string icon, int count)
         {
             Title = title;

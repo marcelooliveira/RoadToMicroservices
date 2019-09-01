@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MVC.Areas.Basket.Services;
-using MVC.Areas.Catalog;
+using MVC.Areas.Basket.Data;
 using MVC.Areas.Catalog.Data;
 using MVC.Areas.Catalog.Data.Repositories;
 using MVC.Areas.Notification.Services;
+using StackExchange.Redis;
 
 namespace MVC
 {
@@ -44,23 +44,42 @@ namespace MVC
 
             //SetupAutoMapper(services);
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(options =>
+               options.EnableEndpointRouting = false)
+               .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddDistributedMemoryCache();
             services.AddSession();
 
             ConfigureContext<CatalogDbContext>(services, "CatalogContextConnection");
 
-            services.AddTransient<IBasketService, BasketService>();
+            ConfigureRedis(services);
+            ConfigureDI(services);
+        }
+
+        private void ConfigureRedis(IServiceCollection services)
+        {
+            //By connecting here we are making sure that our service
+            //cannot start until redis is ready. This might slow down startup,
+            //but given that there is a delay on resolving the ip address
+            //and then creating the connection it seems reasonable to move
+            //that cost to startup instead of having the first request pay the
+            //penalty.
+            services.AddSingleton<IConnectionMultiplexer>(sp =>
+            {
+                var configuration = ConfigurationOptions.Parse(Configuration.GetConnectionString("RedisConnectionString"), true);
+                configuration.ResolveDns = true;
+                return ConnectionMultiplexer.Connect(configuration);
+            });
+        }
+
+        private static void ConfigureDI(IServiceCollection services)
+        {
+            services.AddTransient<IBasketRepository, RedisBasketRepository>();
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IProductRepository, ProductRepository>();
             var userCounterServiceInstance = new UserCounterService();
             services.AddSingleton<IUserCounterService>(userCounterServiceInstance);
-
-            services.AddDbContext<CatalogDbContext>(options =>
-            {
-                options.UseSqlite(Configuration.GetConnectionString("CatalogContextConnection"));
-            });
         }
 
         private void ConfigureContext<T>(IServiceCollection services, string connectionName) where T : DbContext
@@ -98,12 +117,12 @@ namespace MVC
                 routes.MapAreaRoute(
                     name: "AreaCatalog",
                     areaName: "Catalog",
-                    template: "Catalog/{controller=Product}/{action=Index}/{id?}");
+                    template: "Catalog/{controller=Home}/{action=Index}/{searchText?}");
 
                 routes.MapAreaRoute(
                     name: "AreaBasket",
                     areaName: "Basket",
-                    template: "Basket/{controller=Basket}/{action=Index}/{id?}");
+                    template: "Basket/{controller=Home}/{action=Index}/{code?}");
 
                 routes.MapAreaRoute(
                     name: "AreaRegistration",
@@ -122,7 +141,7 @@ namespace MVC
 
                 routes.MapRoute(
                    name: "default",
-                   template: "Catalog/{controller=Product}/{action=Index}/{id?}");
+                   template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
 

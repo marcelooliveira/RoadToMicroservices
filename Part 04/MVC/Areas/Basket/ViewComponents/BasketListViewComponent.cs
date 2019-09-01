@@ -1,30 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MVC.Models.ViewModels;
-using MVC.Areas.Basket.Services;
+using MVC.Areas.Basket.Model;
 using System.Collections.Generic;
 
 namespace MVC.Areas.Basket.ViewComponents
 {
     public class BasketListViewComponent : ViewComponent
     {
-        private readonly IBasketService basketService;
-
-        public BasketListViewComponent(IBasketService basketService)
+        public BasketListViewComponent()
         {
-            this.basketService = basketService;
         }
 
-        public IViewComponentResult Invoke(bool isSummary = false)
+        public IViewComponentResult Invoke(CustomerBasket customerBasket, bool isSummary = false)
         {
-            List<BasketItem> items = basketService.GetBasketItems();
-
-            if (items.Count == 0)
+            if (customerBasket.Items.Count == 0)
             {
                 return View("Empty");
             }
             return View("Default", new BasketItemList
             {
-                List = items,
+                List = customerBasket.Items,
                 IsSummary = isSummary
             });
         }

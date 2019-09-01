@@ -1,16 +1,16 @@
 ﻿@addTagHelper *, MVC
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
     ViewData["Title"] = "My Basket";
-    Layout = "/Views/Shared/_Layout.cshtml";
 }
+@using MVC.Areas.Basket.Model;
+@model CustomerBasket;
 
 <partial name="_BasketControls" />
 
 <h3>My Basket</h3>
 
-<vc:basket-list is-summary="false"></vc:basket-list>
+<vc:basket-list is-summary="false" customer-basket="@Model"></vc:basket-list>
 
 <br />
 

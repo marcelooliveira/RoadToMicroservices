@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 namespace MVC.Areas.Catalog.Controllers
 {
     [Area("Catalog")]
-    public class ProductController : BaseController
+    public class HomeController : BaseController
     {
         private readonly IProductRepository productRepository;
 
-        public ProductController(IProductRepository productRepository)
+        public HomeController(IProductRepository productRepository)
         {
             this.productRepository = productRepository;
         }
