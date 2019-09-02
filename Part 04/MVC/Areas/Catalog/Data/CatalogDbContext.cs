@@ -10,7 +10,7 @@ namespace MVC.Areas.Catalog.Data
         private const string fileName = "Data/products.json";
         private readonly IProductService productService;
 
-        public CatalogDbContext(DbContextOptions options, IProductService productService) : base(options)
+        public CatalogDbContext(DbContextOptions<CatalogDbContext> options, IProductService productService) : base(options)
         {
             this.productService = productService;
         }

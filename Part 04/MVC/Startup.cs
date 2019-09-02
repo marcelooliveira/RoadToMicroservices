@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MVC.Areas.Basket.Data;
 using MVC.Areas.Catalog.Data;
 using MVC.Areas.Catalog.Data.Repositories;
+using MVC.Areas.Checkout.Data;
 using MVC.Areas.Notification.Services;
 using Newtonsoft.Json.Serialization;
 using StackExchange.Redis;
@@ -55,6 +56,7 @@ namespace MVC
             services.AddSession();
 
             ConfigureContext<CatalogDbContext>(services, "CatalogContextConnection");
+            ConfigureContext<CheckoutDbContext>(services, "CheckoutContextConnection");
 
             ConfigureRedis(services);
             ConfigureDI(services);
@@ -98,6 +100,7 @@ namespace MVC
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             MigrateDatabase<CatalogDbContext>(app);
+            MigrateDatabase<CheckoutDbContext>(app);
 
             if (env.IsDevelopment())
             {
