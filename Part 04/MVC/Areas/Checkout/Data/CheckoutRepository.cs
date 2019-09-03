@@ -13,7 +13,7 @@ namespace MVC.Areas.Checkout.Data
         private readonly CheckoutDbContext context;
 
         public CheckoutRepository(CheckoutDbContext contexto)
-        { 
+        {
             this.context = contexto;
         }
 
@@ -51,16 +51,8 @@ namespace MVC.Areas.Checkout.Data
                 )
                 throw new InvalidUserDataException();
 
-            EntityEntry<Order> entityEntry;
-            try
-            {
-                entityEntry = await context.Set<Order>().AddAsync(order);
-                await context.SaveChangesAsync();
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
+            EntityEntry<Order> entityEntry = await context.Set<Order>().AddAsync(order);
+            await context.SaveChangesAsync();
             return entityEntry.Entity;
         }
 

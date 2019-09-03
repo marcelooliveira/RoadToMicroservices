@@ -39,11 +39,8 @@ namespace MVC.Areas.Checkout.Controllers
             if (ModelState.IsValid)
             {
                 var user = await userManager.GetUserAsync(this.User);
-
                 await UpdateUser(viewModel, user);
-
                 await CreateOrder(user);
-
                 return View(viewModel);
             }
             return RedirectToAction("Index", "Registration");
@@ -61,6 +58,8 @@ namespace MVC.Areas.Checkout.Controllers
             var order = new Order(items, user.Id, user.Name, user.Email, user.Phone, user.Address, user.AdditionalAddress, 
                 user.District, user.City, user.State, user.ZipCode);
             await checkoutRepository.CreateOrUpdate(order);
+
+            await basketRepository.DeleteBasketAsync(user.Id);
         }
 
         private async Task UpdateUser(CheckoutViewModel viewModel, AppIdentityUser user)
