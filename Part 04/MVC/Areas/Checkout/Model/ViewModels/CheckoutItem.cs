@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace MVC.Areas.Checkout.Model
+namespace MVC.Areas.Checkout.Model.ViewModels
 {
-    public class OrderItem : BaseModel
+    public class CheckoutItem : IValidatableObject
     {
-        public OrderItem()
+        public CheckoutItem()
         {
 
         }
 
-        public OrderItem(int id, string productId, string productName, decimal unitPrice, int quantity)
+        public CheckoutItem(string id, string productId, string productName, decimal unitPrice, int quantity)
         {
             Id = id;
             ProductId = productId;
@@ -19,6 +19,7 @@ namespace MVC.Areas.Checkout.Model
             Quantity = quantity;
         }
 
+        public string Id { get; set; }
         [Required]
         public string ProductId { get; set; }
         [Required]

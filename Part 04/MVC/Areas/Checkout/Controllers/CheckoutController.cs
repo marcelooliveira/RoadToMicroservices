@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MVC.Areas.Checkout.Model.ViewModels;
 using MVC.Areas.Identity.Data;
-using MVC.Areas.Registration.Models.ViewModels;
 using MVC.Controllers;
-using MVC.Models.ViewModels;
 using System.Threading.Tasks;
 
 namespace MVC.Areas.Checkout.Controllers
@@ -22,24 +21,25 @@ namespace MVC.Areas.Checkout.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(RegistrationViewModel registration)
+        public async Task<IActionResult> Index(CheckoutViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
                 var user = await userManager.GetUserAsync(this.User);
 
-                user.Email = registration.Email;
-                user.Phone = registration.Phone;
-                user.Name = registration.Name;
-                user.Address = registration.Address;
-                user.AdditionalAddress = registration.AdditionalAddress;
-                user.District = registration.District;
-                user.City = registration.City;
-                user.State = registration.State;
-                user.ZipCode = registration.ZipCode;
+                user.Email = viewModel.Email;
+                user.Phone = viewModel.Phone;
+                user.Name = viewModel.Name;
+                user.Address = viewModel.Address;
+                user.AdditionalAddress = viewModel.AdditionalAddress;
+                user.District = viewModel.District;
+                user.City = viewModel.City;
+                user.State = viewModel.State;
+                user.ZipCode = viewModel.ZipCode;
 
                 await userManager.UpdateAsync(user);
-                return View(registration);
+                               
+                return View(viewModel);
             }
             return RedirectToAction("Index", "Registration");
         }

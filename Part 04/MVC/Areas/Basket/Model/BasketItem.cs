@@ -5,7 +5,7 @@ namespace MVC.Areas.Basket.Model
 {
     public class BasketItem : IValidatableObject
     {
-        public BasketItem()
+        public BasketItem() 
         {
 
         }

@@ -1,7 +1,7 @@
 ﻿@addTagHelper *, MVC
 
-@using MVC.Areas.Registration.Models.ViewModels
-@model RegistrationViewModel
+@using MVC.Areas.Checkout.Model.ViewModels
+@model CheckoutViewModel
 @{
     ViewData["Title"] = "Checkout";
 }
@@ -14,7 +14,4 @@
     <p><a asp-area="catalog" asp-controller="home" asp-action="index" class="btn btn-success">Back to product catalog</a></p>
 </div>
 
-<h4>Summary</h4>
-
-<vc:basket-list is-summary="true"></vc:basket-list>
 

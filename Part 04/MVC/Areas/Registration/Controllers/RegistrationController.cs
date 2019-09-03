@@ -2,12 +2,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MVC.Areas.Identity.Data;
-using MVC.Areas.Registration.Models.ViewModels;
+using MVC.Areas.Registration.Model.ViewModels;
 using MVC.Controllers;
-using MVC.Models.ViewModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MVC.Areas.Registration.Controllers
