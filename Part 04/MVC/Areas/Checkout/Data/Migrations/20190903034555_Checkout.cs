@@ -35,6 +35,7 @@ namespace MVC.Areas.Checkout.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    OrderId = table.Column<int>(nullable: false),
                     ProductId = table.Column<string>(nullable: false),
                     ProductName = table.Column<string>(nullable: false),
                     Quantity = table.Column<int>(nullable: false),
@@ -43,16 +44,27 @@ namespace MVC.Areas.Checkout.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrderItem", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderItem_Order_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Order",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderItem_OrderId",
+                table: "OrderItem",
+                column: "OrderId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Order");
+                name: "OrderItem");
 
             migrationBuilder.DropTable(
-                name: "OrderItem");
+                name: "Order");
         }
     }
 }

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVC.Areas.Checkout.Data.Migrations
 {
     [DbContext(typeof(CheckoutDbContext))]
-    [Migration("20190903010806_Checkout")]
+    [Migration("20190903034555_Checkout")]
     partial class Checkout
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -66,6 +66,8 @@ namespace MVC.Areas.Checkout.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("OrderId");
+
                     b.Property<string>("ProductId")
                         .IsRequired();
 
@@ -78,7 +80,17 @@ namespace MVC.Areas.Checkout.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("OrderId");
+
                     b.ToTable("OrderItem");
+                });
+
+            modelBuilder.Entity("MVC.Areas.Checkout.Model.OrderItem", b =>
+                {
+                    b.HasOne("MVC.Areas.Checkout.Model.Order", "Order")
+                        .WithMany("Items")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

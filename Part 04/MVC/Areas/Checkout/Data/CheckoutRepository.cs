@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MVC.Areas.Checkout.Data
 {
-    public class CheckoutRepository
+    public class CheckoutRepository : ICheckoutRepository
     {
         private readonly CheckoutDbContext context;
 

@@ -22,8 +22,8 @@ namespace MVC.Areas.Checkout.Model
             CustomerEmail = email;
         }
 
-        public Order(List<OrderItem> items, string userId, string customerName, string email, string customerPhone, string customerAddress, string customerAdditionalAddress, string customerDistrict, string customerCity, string customerState, string customerZipCode)
-            : this(userId, email)
+        public Order(List<OrderItem> items, string customerId, string customerName, string customerEmail, string customerPhone, string customerAddress, string customerAdditionalAddress, string customerDistrict, string customerCity, string customerState, string customerZipCode)
+            : this(customerId, customerEmail)
         {
             Items = items;
             CustomerName = customerName;
@@ -57,7 +57,7 @@ namespace MVC.Areas.Checkout.Model
         [Required]
         public string CustomerZipCode { get; set; }
 
-        public List<OrderItem> Items = new List<OrderItem>();
+        public List<OrderItem> Items { get; set; } = new List<OrderItem>();
 
         public decimal Total()
         {

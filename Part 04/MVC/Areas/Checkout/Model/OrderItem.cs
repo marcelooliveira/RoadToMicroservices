@@ -10,15 +10,16 @@ namespace MVC.Areas.Checkout.Model
 
         }
 
-        public OrderItem(int id, string productId, string productName, decimal unitPrice, int quantity)
+        public OrderItem(string productId, string productName, decimal unitPrice, int quantity)
         {
-            Id = id;
             ProductId = productId;
             ProductName = productName;
             UnitPrice = unitPrice;
             Quantity = quantity;
         }
 
+        [Required]
+        public Order Order { get; set; }
         [Required]
         public string ProductId { get; set; }
         [Required]

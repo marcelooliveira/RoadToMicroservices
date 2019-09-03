@@ -22,12 +22,14 @@ namespace MVC.Areas.Checkout.Data
             builder.Entity<Order>(b =>
             {
                 b.HasKey(t => t.Id);
+                b.HasMany(t => t.Items).WithOne(t => t.Order);
             });
 
             builder.Entity<OrderItem>(b =>
             {
                 b.HasKey(t => t.Id);
             });
+            builder.Entity<OrderItem>();
         }
     }
 }

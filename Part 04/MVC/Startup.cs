@@ -81,6 +81,7 @@ namespace MVC
         private static void ConfigureDI(IServiceCollection services)
         {
             services.AddTransient<IBasketRepository, RedisBasketRepository>();
+            services.AddTransient<ICheckoutRepository, CheckoutRepository>();
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IProductRepository, ProductRepository>();
             var userCounterServiceInstance = new UserCounterService();
