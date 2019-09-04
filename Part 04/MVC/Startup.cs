@@ -86,7 +86,7 @@ namespace MVC
             services.AddTransient<ICheckoutRepository, CheckoutRepository>();
             services.AddTransient<IProductService, ProductService>();
             //services.AddTransient<IProductRepository, EFProductRepository>();
-            services.AddTransient<IProductRepository, ElasticProductRepository>();
+            services.AddSingleton<IProductRepository, ElasticProductRepository>();
             var userCounterServiceInstance = new UserCounterService();
             services.AddSingleton<IUserCounterService>(userCounterServiceInstance);
         }
