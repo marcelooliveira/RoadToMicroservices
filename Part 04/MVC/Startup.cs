@@ -14,6 +14,8 @@ using MVC.Areas.Checkout.Data;
 using MVC.Areas.Notification.Services;
 using Newtonsoft.Json.Serialization;
 using StackExchange.Redis;
+using System;
+using System.Threading.Tasks;
 
 namespace MVC
 {
@@ -83,7 +85,8 @@ namespace MVC
             services.AddTransient<IBasketRepository, RedisBasketRepository>();
             services.AddTransient<ICheckoutRepository, CheckoutRepository>();
             services.AddTransient<IProductService, ProductService>();
-            services.AddTransient<IProductRepository, ProductRepository>();
+            //services.AddTransient<IProductRepository, EFProductRepository>();
+            services.AddTransient<IProductRepository, ElasticProductRepository>();
             var userCounterServiceInstance = new UserCounterService();
             services.AddSingleton<IUserCounterService>(userCounterServiceInstance);
         }
@@ -100,7 +103,8 @@ namespace MVC
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            MigrateDatabase<CatalogDbContext>(app);
+            InitializeProductRepository<IProductRepository>(app);
+            //MigrateDatabase<CatalogDbContext>(app);
             MigrateDatabase<CheckoutDbContext>(app);
 
             if (env.IsDevelopment())
@@ -162,6 +166,17 @@ namespace MVC
                 {
                     context.Database.Migrate();
                 }
+            }
+        }
+
+        private static void InitializeProductRepository<T>(IApplicationBuilder app) where T : IProductRepository
+        {
+            using (var serviceScope = app.ApplicationServices
+                .GetRequiredService<IServiceScopeFactory>()
+                .CreateScope())
+            {
+                var repository = serviceScope.ServiceProvider.GetService<T>();
+                repository.Initialize();
             }
         }
     }

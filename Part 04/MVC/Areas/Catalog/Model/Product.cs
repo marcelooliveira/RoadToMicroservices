@@ -1,5 +1,8 @@
-﻿namespace MVC.Areas.Catalog.Models
+﻿using Nest;
+
+namespace MVC.Areas.Catalog.Models
 {
+    [ElasticsearchType(IdProperty = nameof(Code))]
     public class Product : BaseModel
     {
         public Category Category { get; set; }

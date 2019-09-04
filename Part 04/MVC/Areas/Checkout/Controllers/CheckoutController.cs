@@ -57,6 +57,7 @@ namespace MVC.Areas.Checkout.Controllers
 
             var order = new Order(items, user.Id, user.Name, user.Email, user.Phone, user.Address, user.AdditionalAddress, 
                 user.District, user.City, user.State, user.ZipCode);
+
             await checkoutRepository.CreateOrUpdate(order);
 
             await basketRepository.DeleteBasketAsync(user.Id);

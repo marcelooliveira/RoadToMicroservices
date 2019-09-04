@@ -8,12 +8,17 @@ using System.Threading.Tasks;
 
 namespace MVC.Areas.Catalog.Data.Repositories
 {
-    public class ProductRepository : BaseRepository<Product>, IProductRepository
+    public class EFProductRepository : BaseRepository<Product>, IProductRepository
     {
         static List<Product> products;
-        public ProductRepository(IConfiguration configuration,
+        public EFProductRepository(IConfiguration configuration,
             CatalogDbContext context) : base(configuration, context)
         {
+        }
+
+        public void Initialize()
+        {
+            throw new System.NotImplementedException();
         }
 
         public async Task<IList<Product>> GetProductsAsync()
