@@ -106,14 +106,22 @@ namespace MVC.Areas.Catalog.Data.Repositories
 
         public async Task<SearchProductsViewModel> GetProductsAsync(string searchText)
         {
+            QueryContainer query = 
+                       new QueryContainerDescriptor<Product>()
+                       .MatchPhrasePrefix(c => c
+                            .Field(p => p.Name)
+                            .Query(searchText)
+                        )
+                    || new QueryContainerDescriptor<Product>()
+                        .MatchPhrasePrefix(c => c
+                            .Field(p => p.Category.Name)
+                            .Query(searchText)
+                        );
+
             var response =
-                await client
-                .SearchAsync<Product>(s => s
-                .Index("product-index")
-                .Query(q =>
-                       q.Match(mq => mq.Field(f => f.Name).Query(searchText))
-                    || q.Match(mq => mq.Field(f => f.Category.Name).Query(searchText))
-                )
+            await client.SearchAsync<Product>(s => s
+                .Index(ProductIndexName)
+                .Query(x => query)
                 .Size(1000));
 
             var products = response.Documents.ToList();
