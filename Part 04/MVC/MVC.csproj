@@ -45,7 +45,7 @@
     <Compile Remove="Controllers\BasketController.cs" />
     <Compile Remove="Controllers\CatalogController.cs" />
     <Compile Remove="Controllers\CheckoutController.cs" />
-    <Compile Remove="Controllers\NotificationController.cs" />
+    <Compile Remove="Controllers\HomeController.cs" />
     <Compile Remove="Models\ViewModels\CarouselPageViewModel.cs" />
     <Compile Remove="Models\ViewModels\CarouselViewModel.cs" />
     <Compile Remove="Models\ViewModels\CategoriesViewModel.cs" />

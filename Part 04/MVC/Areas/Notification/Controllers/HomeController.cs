@@ -6,7 +6,7 @@ namespace MVC.Areas.Notification.Controllers
 {
     [Authorize]
     [Area("Notification")]
-    public class NotificationController : BaseController
+    public class HomeController : BaseController
     {
         public IActionResult Index()
         {

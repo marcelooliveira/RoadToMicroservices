@@ -148,7 +148,7 @@ namespace MVC
                 routes.MapAreaRoute(
                     name: "AreaNotification",
                     areaName: "Notification",
-                    template: "Notification/{controller=Notification}/{action=Index}/{id?}");
+                    template: "Notification/{controller=Home}/{action=Index}/{id?}");
 
                 routes.MapRoute(
                    name: "default",
