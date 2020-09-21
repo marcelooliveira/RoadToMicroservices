@@ -1,0 +1,66 @@
+,Part 03,Part 04,,
+,Filename,,Folder,Comparison result
+Moved to new area,BasketController.cs,,MVC\Controllers,Left only: C:\Users\moliveira\Downloads\Part03\MVC\Controllers
+New area: Basket,,Basket,MVC\Areas,Right only: C:\Users\moliveira\Documents\GitHub\RoadToMicroservices\Part 04\MVC\Areas
+Moved to new area,CatalogController.cs,,MVC\Controllers,Left only: C:\Users\moliveira\Downloads\Part03\MVC\Controllers
+New area: Catalog,,Catalog,MVC\Areas,Right only: C:\Users\moliveira\Documents\GitHub\RoadToMicroservices\Part 04\MVC\Areas
+Moved to new area,CheckoutController.cs,,MVC\Controllers,Left only: C:\Users\moliveira\Downloads\Part03\MVC\Controllers
+New area: Checkout,,Checkout,MVC\Areas,Right only: C:\Users\moliveira\Documents\GitHub\RoadToMicroservices\Part 04\MVC\Areas
+Moved to new area,NotificationsController.cs,,MVC\Controllers,Left only: C:\Users\moliveira\Downloads\Part03\MVC\Controllers
+New area: Notification,,Notification,MVC\Areas,Right only: C:\Users\moliveira\Documents\GitHub\RoadToMicroservices\Part 04\MVC\Areas
+Moved to new area,RegistrationController.cs,,MVC\Controllers,Left only: C:\Users\moliveira\Downloads\Part03\MVC\Controllers
+New area: Registration,,Registration,MVC\Areas,Right only: C:\Users\moliveira\Documents\GitHub\RoadToMicroservices\Part 04\MVC\Areas
+IdentityServer was replaced by ASP.NET Core Identity,,,,
+,,Notification,MVC\Areas,Right only: C:\Users\moliveira\Documents\GitHub\RoadToMicroservices\Part 04\MVC\Areas
+,,Registration,MVC\Areas,Right only: C:\Users\moliveira\Documents\GitHub\RoadToMicroservices\Part 04\MVC\Areas
+,,,,
+,,Migrations,MVC\Areas\Identity,Right only: C:\Users\moliveira\Documents\GitHub\RoadToMicroservices\Part 04\MVC\Areas\Identity
+,,,,
+,,Identity.db,MVC\Areas\Identity,Right only: C:\Users\moliveira\Documents\GitHub\RoadToMicroservices\Part 04\MVC\Areas\Identity
+,,,,
+View Imports for areas,,_ViewImports.cshtml,MVC\Areas,Right only: C:\Users\moliveira\Documents\GitHub\RoadToMicroservices\Part 04\MVC\Areas
+View Start for areas,,_ViewStart.cshtml,MVC\Areas,Right only: C:\Users\moliveira\Documents\GitHub\RoadToMicroservices\Part 04\MVC\Areas
+Just redirects to Catalog,,HomeController.cs,MVC\Controllers,Right only: C:\Users\moliveira\Documents\GitHub\RoadToMicroservices\Part 04\MVC\Controllers
+Moved to new area,Migrations,,MVC,Left only: C:\Users\moliveira\Downloads\Part03\MVC
+,BasketItem.cs,BasketItem.cs,MVC\Models\ViewModels,Text files are different
+,BasketItemList.cs,BasketItemList.cs,MVC\Models\ViewModels,Text files are different
+,CarouselPageViewModel.cs,,MVC\Models\ViewModels,Left only: C:\Users\moliveira\Downloads\Part03\MVC\Models\ViewModels
+,CarouselViewModel.cs,,MVC\Models\ViewModels,Left only: C:\Users\moliveira\Downloads\Part03\MVC\Models\ViewModels
+,CategoriesViewModel.cs,,MVC\Models\ViewModels,Left only: C:\Users\moliveira\Downloads\Part03\MVC\Models\ViewModels
+,RegistrationViewModel.cs,,MVC\Models\ViewModels,Left only: C:\Users\moliveira\Downloads\Part03\MVC\Models\ViewModels
+,UserCountViewModel.cs,UserCountViewModel.cs,MVC\Models\ViewModels,Text files are different
+,launchSettings.json,launchSettings.json,MVC\Properties,Text files are different
+,Services,,MVC,Left only: C:\Users\moliveira\Downloads\Part03\MVC
+,BasketItemViewComponent.cs,,MVC\ViewComponents,Left only: C:\Users\moliveira\Downloads\Part03\MVC\ViewComponents
+,BasketListViewComponent.cs,,MVC\ViewComponents,Left only: C:\Users\moliveira\Downloads\Part03\MVC\ViewComponents
+,CarouselPageViewComponent.cs,,MVC\ViewComponents,Left only: C:\Users\moliveira\Downloads\Part03\MVC\ViewComponents
+,CarouselViewComponent.cs,,MVC\ViewComponents,Left only: C:\Users\moliveira\Downloads\Part03\MVC\ViewComponents
+,CategoriesViewComponent.cs,,MVC\ViewComponents,Left only: C:\Users\moliveira\Downloads\Part03\MVC\ViewComponents
+,ProductCardViewComponent.cs,,MVC\ViewComponents,Left only: C:\Users\moliveira\Downloads\Part03\MVC\ViewComponents
+,,UserCounterViewComponent.cs,MVC\ViewComponents,Text files are different
+,Basket,,MVC\Views,Left only: C:\Users\moliveira\Downloads\Part03\MVC\Views
+,Catalog,,MVC\Views,Left only: C:\Users\moliveira\Downloads\Part03\MVC\Views
+,Checkout,,MVC\Views,Left only: C:\Users\moliveira\Downloads\Part03\MVC\Views
+,Notifications,,MVC\Views,Left only: C:\Users\moliveira\Downloads\Part03\MVC\Views
+,Registration,,MVC\Views,Left only: C:\Users\moliveira\Downloads\Part03\MVC\Views
+,Default.cshtml,Default.cshtml,MVC\Views\Shared\Components\BasketItem,Text files are different
+,SummaryItem.cshtml,SummaryItem.cshtml,MVC\Views\Shared\Components\BasketItem,Text files are different
+,Default.cshtml,Default.cshtml,MVC\Views\Shared\Components\BasketList,Text files are different
+,Empty.cshtml,Empty.cshtml,MVC\Views\Shared\Components\BasketList,Text files are different
+,Default.cshtml,Default.cshtml,MVC\Views\Shared\Components\UserCounter,Text files are different
+,_Layout.cshtml,_Layout.cshtml,MVC\Views\Shared,Text files are different
+,font-awesome.css,font-awesome.css,MVC\wwwroot\font-awesome\css,Text files are different
+,font-awesome.css.map,font-awesome.css.map,MVC\wwwroot\font-awesome\css,Text files are different
+,font-awesome.min.css,font-awesome.min.css,MVC\wwwroot\font-awesome\css,Text files are different
+,fontawesome-webfont.svg,fontawesome-webfont.svg,MVC\wwwroot\font-awesome\fonts,Text files are different
+,,basket.js,MVC\wwwroot\js,Right only: C:\Users\moliveira\Documents\GitHub\RoadToMicroservices\Part 04\MVC\wwwroot\js
+,favicon.ico,favicon.ico,MVC\wwwroot,Binary files are different
+,appsettings.json,appsettings.json,MVC,Text files are different
+,MVC.csproj,MVC.csproj,MVC,Text files are different
+,MVC.csproj.user,,MVC,Left only: C:\Users\moliveira\Downloads\Part03\MVC
+,MVC.db,,MVC,Left only: C:\Users\moliveira\Downloads\Part03\MVC
+,products.json,,MVC,Left only: C:\Users\moliveira\Downloads\Part03\MVC
+,SeedData.cs,,MVC,Left only: C:\Users\moliveira\Downloads\Part03\MVC
+,Startup.cs,Startup.cs,MVC,Text files are different
+,BasketItemViewComponentTest.cs,BasketItemViewComponentTest.cs,MVC.Test\ViewComponents,Text files are different
+,BasketListViewComponentTest.cs,BasketListViewComponentTest.cs,MVC.Test\ViewComponents,Text files are different
