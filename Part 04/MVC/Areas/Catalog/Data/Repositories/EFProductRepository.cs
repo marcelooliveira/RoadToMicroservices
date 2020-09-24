@@ -18,7 +18,7 @@ namespace MVC.Areas.Catalog.Data.Repositories
 
         public void Initialize()
         {
-            throw new System.NotImplementedException();
+
         }
 
         public async Task<IList<Product>> GetProductsAsync()

@@ -85,8 +85,8 @@ namespace MVC
             services.AddTransient<IBasketRepository, RedisBasketRepository>();
             services.AddTransient<ICheckoutRepository, CheckoutRepository>();
             services.AddTransient<IProductService, ProductService>();
-            //services.AddTransient<IProductRepository, EFProductRepository>();
-            services.AddSingleton<IProductRepository, ElasticProductRepository>();
+            services.AddTransient<IProductRepository, EFProductRepository>();
+            //services.AddSingleton<IProductRepository, ElasticProductRepository>();
             var userCounterServiceInstance = new UserCounterService();
             services.AddSingleton<IUserCounterService>(userCounterServiceInstance);
         }
@@ -104,7 +104,7 @@ namespace MVC
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             InitializeProductRepository<IProductRepository>(app);
-            //MigrateDatabase<CatalogDbContext>(app);
+            MigrateDatabase<CatalogDbContext>(app);
             MigrateDatabase<CheckoutDbContext>(app);
 
             if (env.IsDevelopment())
